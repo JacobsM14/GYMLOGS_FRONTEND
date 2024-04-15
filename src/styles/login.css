@@ -1,0 +1,74 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@100;300;400;500;600;700;800;900&display=swap');
+
+.global {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background: rgb(225, 232, 235);
+  background: linear-gradient(
+    146deg,
+    rgba(225, 232, 235, 1) 13%,
+    rgba(121, 82, 179, 1) 68%
+  );
+  font-family: "Kanit", sans-serif;
+}
+
+.logo img {
+  width: 130px;
+  height: auto;
+  display: block;
+  margin: auto;
+}
+
+.logo h1 {
+  font-size: 31px;
+  text-align: center;
+  color: var(--dark-1);
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0px auto;
+}
+
+.form input {
+  width: 100%;
+  padding: 10px 20px;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 3px;
+  border: 2px solid var(--dark-1);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.form input::placeholder {
+  color: var(--dark-1);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.form button {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 0px;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 3px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+.form a {
+  color: var(--light);
+  font-weight: 700;
+}

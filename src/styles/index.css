@@ -1,0 +1,23 @@
+:root {
+  --light: #E1E8EB;
+  --dark-1: #343A40;
+  --dark-2: #27292B;
+  --primary: #7952B3;
+  --secondary: #FFC107;
+}
+
+html, body{
+  margin: 0px;
+  padding: 0px;
+}
+
+.button1{
+  background-color: var(--dark-1);
+  color: var(--light);
+}
+
+.button2{
+  background-color: var(--secondary);
+  color: var(--dark-1);
+  margin-top: 30px !important;
+}
