@@ -11,6 +11,15 @@ html, body{
   padding: 0px;
 }
 
+button{
+  cursor: pointer;
+  outline: none;
+}
+
+button:scope{
+  border: none;
+}
+
 .button1{
   background-color: var(--dark-1);
   color: var(--light);
@@ -19,5 +28,27 @@ html, body{
 .button2{
   background-color: var(--secondary);
   color: var(--dark-1);
-  margin-top: 30px !important;
+  margin-top: 30px;
+}
+
+.button3{
+  background-color: var(--primary);
+  color: var(--secondary);
+
+}
+
+button a{
+  text-decoration: none;
+}
+
+.button1 a{
+  color: var(--light);
+}
+
+.button2 a{
+  color: var(--dark-1);
+}
+
+.button3 a{
+  color: var(--secondary);
 }

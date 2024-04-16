@@ -16,6 +16,15 @@
   font-family: "Kanit", sans-serif;
 }
 
+.cageCont{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 80%;
+  padding: 20px 0px;
+}
+
 .logo img {
   width: 130px;
   height: auto;
@@ -34,17 +43,17 @@
 .form {
   display: flex;
   flex-direction: column;
-  width: 80%;
+  width: 100%;
   margin: 0px auto;
 }
 
 .form input {
   width: 100%;
-  padding: 10px 20px;
+  padding: 10px 10px;
   margin: 10px 0px;
   border: none;
   border-radius: 3px;
-  border: 2px solid var(--dark-1);
+  border: 1 px solid var(--dark-1);
   outline: none;
   box-sizing: border-box;
 }
@@ -71,4 +80,86 @@
 .form a {
   color: var(--light);
   font-weight: 700;
+}
+
+.checkboxForm input, .checkboxForm label{
+  display: inline-block;
+}
+
+.checkboxForm label{
+  margin-left: 5px;
+  font-size: 15px;
+}
+
+.checkboxForm input{
+  width: auto;
+}
+
+@media (min-width: 521px) {
+  .cageCont{
+    width: 400px;
+    background-color: var(--dark-1);
+    border-radius: 15px;
+  }
+
+  .form{
+    width: 70%;
+  }
+
+  .logo img{
+    width: 130px;
+  }
+
+  .logo h1{
+    font-size: 30px;
+    color: var(--light);
+    margin-top: 0px;
+  }
+  .button1{
+    background-color: var(--primary) !important;
+    color: var(--secondary) !important;
+  }
+
+  .button1 a{
+    color: var(--secondary) !important;
+  }
+}
+
+@media (min-width: 1500px) {
+  .cageCont{
+    width: 600px;
+  }
+
+  .logo img{
+    width: 200px;
+  }
+
+  .logo h1{
+    font-size: 50px;
+  }
+
+  .form input {
+    padding: 15px 20px;
+    margin: 15px 0px;
+    font-size: 20px;
+  }
+
+  .form input::placeholder{
+    font-size: 20px;
+  }
+
+  .form button {
+    padding: 15px 0px;
+    margin: 15px 0px;
+  }
+
+  .form a{
+    font-size: 20px;
+  }
+  
+  .form button{
+    font-size: 20px;
+  }
+
+
 }
