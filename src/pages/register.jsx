@@ -1,16 +1,14 @@
-import "./../styles/login.css";
-
 function Register() {
 
   return (
     <>
-      <div className="global">
-        <div className="cageCont">
-          <div className="logo">
+      <div className="allCont flex justify-center align-center flex-column backgroundGradient">
+        <div className="cage80 loginOnDeskop">
+          <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
             <h1>GYMLOGS</h1>
           </div>
-          <div className="form">
+          <div className="loginForm">
             <input type="text" placeholder="Usuario:" name="user" id="user"/>
             <input type="text" placeholder="Correo Electronico:" name="email" id="email"/>
             <input type="text" placeholder="Contraseña:" name="passwd" id="passwd"/>

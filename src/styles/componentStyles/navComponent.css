@@ -1,0 +1,35 @@
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  background-color: var(--dark-1);
+  padding: 10px 0px;
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+}
+
+nav a {
+  text-decoration: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+nav a svg {
+  max-width: 40px;
+  height: auto;
+  fill: var(--light);
+}
+
+nav a p {
+  margin-top: 5px;
+  margin-bottom: 0px;
+  text-align: center;
+  text-decoration: none;
+  color: var(--light);
+  font-size: 10px;
+  font-family: "Kanit", sans-serif;
+}

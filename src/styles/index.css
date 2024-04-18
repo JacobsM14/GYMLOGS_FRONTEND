@@ -1,54 +1,371 @@
+@import url("https://fonts.googleapis.com/css2?family=Kanit:wght@100;300;400;500;600;700;800;900&display=swap");
+
 :root {
-  --light: #E1E8EB;
-  --dark-1: #343A40;
-  --dark-2: #27292B;
-  --primary: #7952B3;
-  --secondary: #FFC107;
+  --light: #e1e8eb;
+  --dark-1: #343a40;
+  --dark-2: #27292b;
+  --primary: #7952b3;
+  --secondary: #ffc107;
 }
 
-html, body{
+html,
+body {
   margin: 0px;
   padding: 0px;
+  font-family: "Kanit", sans-serif;
 }
 
-button{
+.allCont {
+  width: 100%;
+  height: 100vh;
+}
+
+.backgroundGradient {
+  background: rgb(225, 232, 235);
+  background: linear-gradient(
+    146deg,
+    rgba(225, 232, 235, 1) 13%,
+    rgba(121, 82, 179, 1) 68%
+  );
+}
+
+.backgroundBlack {
+  background-color: var(--dark-1);
+}
+
+.cage90 {
+  width: 90%;
+}
+
+.cage80 {
+  width: 80%;
+}
+
+/* FLEX GLOBAL */
+.flex {
+  display: flex;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+/* POSITION GLOBAL */
+.position-relative {
+  position: relative;
+}
+
+.position-fixed {
+  position: fixed;
+}
+
+/* MARGIN */
+.marginTop-10 {
+  margin-top: 10px;
+}
+
+.marginTop-20 {
+  margin-top: 20px;
+}
+
+/* BORDERS */
+.border-r5 {
+  border-radius: 5px;
+}
+
+/* BUTTONS */
+button {
   cursor: pointer;
   outline: none;
 }
 
-button:scope{
+button:scope {
   border: none;
 }
 
-.button1{
+.button1 {
   background-color: var(--dark-1);
   color: var(--light);
 }
 
-.button2{
+.button2 {
   background-color: var(--secondary);
   color: var(--dark-1);
   margin-top: 30px;
 }
 
-.button3{
+.button3 {
   background-color: var(--primary);
   color: var(--secondary);
-
 }
 
-button a{
+button a {
   text-decoration: none;
 }
 
-.button1 a{
-  color: var(--light);
+.button1 a {
+  color: var(--light) !important;
 }
 
-.button2 a{
+.button2 a {
+  color: var(--dark-1) !important;
+}
+
+.button3 a {
+  color: var(--secondary) !important;
+}
+
+/* LOGIN */
+.loginOnDeskop {
+  padding-top: 0px;
+  padding-bottom: 20px;
+}
+
+.loginLogo img {
+  width: 130px;
+  height: auto;
+  display: block;
+  margin: auto;
+}
+
+.loginLogo h1 {
+  font-size: 31px;
+  text-align: center;
   color: var(--dark-1);
+  font-family: "Kanit", sans-serif;
+  font-weight: 700;
 }
 
-.button3 a{
+.loginForm {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0px auto;
+}
+
+.loginForm input {
+  width: 100%;
+  padding: 10px 10px;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 3px;
+  border: 1 px solid var(--dark-1);
+  outline: none;
+  box-sizing: border-box;
+}
+
+.loginForm input::placeholder {
+  color: var(--dark-1);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.loginForm button {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 0px;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 3px;
+  font-weight: 700;
+  cursor: pointer;
+  outline: none;
+}
+
+.loginForm a {
+  color: var(--light);
+  font-weight: 700;
+}
+
+.checkboxForm input,
+.checkboxForm label {
+  display: inline-block;
+}
+
+.checkboxForm label {
+  margin-left: 5px;
+  font-size: 15px;
+}
+
+.checkboxForm input {
+  width: auto;
+}
+
+@media (min-width: 521px) {
+  .loginOnDeskop {
+    width: 400px;
+    background-color: var(--dark-1) !important;
+    border-radius: 15px;
+  }
+
+  .loginForm {
+    width: 70%;
+  }
+
+  .loginLogo img {
+    width: 130px;
+  }
+
+  .loginLogo h1 {
+    font-size: 30px;
+    color: var(--light);
+    margin-top: 0px;
+  }
+  .button1 {
+    background-color: var(--primary) !important;
+    color: var(--secondary) !important;
+  }
+
+  .button1 a {
+    color: var(--secondary) !important;
+  }
+}
+
+@media (min-width: 1500px) {
+  .loginOnDeskop {
+    width: 600px;
+  }
+
+  .loginLogo img {
+    width: 200px;
+  }
+
+  .loginLogo h1 {
+    font-size: 50px;
+  }
+
+  .loginForm input {
+    padding: 15px 20px;
+    margin: 15px 0px;
+    font-size: 20px;
+  }
+
+  .loginForm input::placeholder {
+    font-size: 20px;
+  }
+
+  .loginForm button {
+    padding: 15px 0px;
+    margin: 15px 0px;
+  }
+
+  .loginForm a {
+    font-size: 20px;
+  }
+
+  .loginForm button {
+    font-size: 20px;
+  }
+}
+
+/* START */
+#start p,
+#start h1 {
+  color: var(--light);
+  text-align: center;
+}
+
+#start h1 {
+  margin: 0px auto;
+  font-size: 30px;
+}
+
+.startLogo img {
+  width: 175px;
+  height: auto;
+  display: block;
+  margin: 0px auto;
+}
+
+.startText p {
+  letter-spacing: 1px;
+}
+
+.startText p span {
   color: var(--secondary);
+}
+
+.backgroundModified {
+  color: var(--dark-1) !important;
+  background-color: var(--secondary) !important;
+}
+
+.startText button {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 10px 0px;
+  margin: 10px 0px;
+  border: none;
+  border-radius: 4px;
+}
+
+.startText .button2 {
+  margin-top: 10px !important;
+}
+
+@media (min-width: 600px) {
+  #start {
+    width: 600px;
+  }
+
+  #start .startLogo h1 {
+    font-size: 40px;
+  }
+
+  .startText .buttonsText {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .startText .buttonsText button {
+    max-width: 200px;
+  }
+}
+
+@media (min-width: 1500px) {
+  #start {
+    width: 1000px;
+  }
+
+  #start .startLogo img {
+    width: 290px;
+  }
+
+  #start .startLogo h1 {
+    font-size: 60px;
+  }
+
+  .startText p {
+    font-size: 30px;
+  }
+
+  .startText .buttonsText button {
+    max-width: 400px;
+  }
+
+  .startText button {
+    font-size: 30px;
+  }
+}
+
+/* HOME */
+
+#home {
+}
+
+#favoriteRutine{
+  color: var(--light);
+  text-align: center;
 }

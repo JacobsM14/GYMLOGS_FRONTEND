@@ -1,16 +1,13 @@
-import "./../styles/login.css";
-
 function logIn() {
-
   return (
     <>
-      <div className="global">
-        <div className="cageCont">
-          <div className="logo">
+      <div className="allCont backgroundGradient flex justify-center align-center flex-column">
+        <div className="cage80 loginOnDeskop" id="contLogin">
+          <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
             <h1>GYMLOGS</h1>
           </div>
-          <div className="form">
+          <div className="loginForm">
             <input type="text" placeholder="Correo Electronico:" />
             <input type="text" placeholder="Contraseña:" />
             <button className="button1">INICIAR SESION</button>

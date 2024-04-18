@@ -1,15 +1,13 @@
-import "./../styles/start.css";
-
 function Start() {
   return (
     <>
-      <div className="globalHome">
-        <div className="cageContHome">
-          <div className="logo">
+      <div className="allCont flex justify-center align-center flex-column backgroundBlack">
+        <div className="cage90 flex justify-center align-center flex-column" id="start">
+          <div className="startLogo">
             <img src="logo.png" alt="gymlogs" />
             <h1>GYMLOGS</h1>
           </div>
-          <div className="text">
+          <div className="startText">
             <p>
               <span className="backgroundModified">Gymlogs</span> es una web que
               permite a los usuarios regsitrar y hacer un{" "}
