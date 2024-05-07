@@ -1,4 +1,45 @@
+import React, { useState, useEffect } from "react";
+import { login } from "./../services/userApi";
+import Cookies from 'universal-cookie';
+
+
 function logIn() {
+  useEffect(() => {
+    const cookies = new Cookies();
+    const token = cookies.get('token');
+    
+    if (token) {
+      window.location.href = "/home";
+    }
+  }, []);
+
+  const userLogIn = async (event) => {
+    event.preventDefault();
+    const email = document.getElementById("email").value;
+    const pssd = document.getElementById("pssd").value;
+    const emailReg = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,6}$/;
+    let works = true;
+    console.log(email, pssd);
+    if (email === "" || pssd === "") {
+      alert("Por favor llena todos los campos");
+      works = false;
+    } else if (emailReg.test(email) === false) {
+      alert("Correo no valido");
+      works = false;
+    } else if (works === true) {
+      const response = await login(email, pssd);
+      if (response) {
+        alert("Bienvenido");
+        // localStorage.setItem("token", response.id);
+        const cookies = new Cookies();
+        cookies.set('token', response.id, { path: '/' });
+        window.location.href = "/home";
+      } else {
+        alert("Correo o contraseña incorrecta");
+      }
+    }
+  };
+
   return (
     <>
       <div className="allCont backgroundGradient flex justify-center align-center flex-column">
@@ -8,11 +49,15 @@ function logIn() {
             <h1>GYMLOGS</h1>
           </div>
           <div className="loginForm">
-            <input type="text" placeholder="Correo Electronico:" />
-            <input type="text" placeholder="Contraseña:" />
-            <button className="button1">INICIAR SESION</button>
-            <a href="">Has olvidado tu contraseña?</a>
-            <button className="button2"><a href="/register">REGISTRARSE</a></button>
+            <form action="" onSubmit={userLogIn}>
+              <input type="text" placeholder="Correo Electronico:" id="email" />
+              <input type="text" placeholder="Contraseña:" id="pssd" />
+              <input type="submit" className="button1" value="INICIAR SESION" />
+              <a href="">Has olvidado tu contraseña?</a>
+              <button className="button2">
+                <a href="/register">REGISTRARSE</a>
+              </button>
+            </form>
           </div>
         </div>
       </div>

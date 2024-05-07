@@ -1,5 +1,6 @@
 import "./../../styles/componentStyles/navComponent.css";
 
+
 function NavComponent() {
   return (
     <>
@@ -37,7 +38,7 @@ function NavComponent() {
           </svg>
           {/* <p>Inicio</p> */}
         </a>
-        <a href="">
+        <a href="/user">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"

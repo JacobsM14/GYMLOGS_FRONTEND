@@ -82,9 +82,14 @@ body {
 }
 
 /* BUTTONS */
-button {
+button,
+input[type="submit"] {
   cursor: pointer;
   outline: none;
+}
+
+input[type="submit"] {
+  font-weight: 700;
 }
 
 button:scope {
@@ -365,7 +370,21 @@ button a {
 #home {
 }
 
-#favoriteRutine{
+#favoriteRoutine {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.rutines {
+  height: 120px;
+  margin-bottom: 20px;
+}
+
+.rutines h2 {
   color: var(--light);
   text-align: center;
+  font-size: 20px;
+  width: 90%;
+  margin: auto;
 }
