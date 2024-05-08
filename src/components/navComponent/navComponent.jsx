@@ -1,11 +1,24 @@
+import { useEffect } from "react";
 import "./../../styles/componentStyles/navComponent.css";
 
+function NavComponent({ webPage }) {
+  useEffect(() => {
+    // console.log(webPage); 
+    if (webPage === "rutina") {
+      document.getElementById("rutinaNav").classList.add("active");
+    } else if (webPage === "calendario") {
+      document.getElementById("calendarioNav").classList.add("active");
+    } else if (webPage === "home") {
+      document.getElementById("homeNav").classList.add("active");
+    } else if (webPage === "user") {
+      document.getElementById("userNav").classList.add("active");
+    }
+  });
 
-function NavComponent() {
   return (
     <>
       <nav>
-        <a href="">
+        <a href="" id="rutinaNav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -16,7 +29,7 @@ function NavComponent() {
           </svg>
           {/* <p>Rutinas</p> */}
         </a>
-        <a href="">
+        <a href="" id="calendarioNav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -27,7 +40,7 @@ function NavComponent() {
           </svg>
           {/* <p>Calendar</p> */}
         </a>
-        <a href="/home">
+        <a href="/home" id="homeNav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -38,16 +51,14 @@ function NavComponent() {
           </svg>
           {/* <p>Inicio</p> */}
         </a>
-        <a href="/user">
+        <a href="/user" id="userNav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
             height="128"
             viewBox="0 0 256 256"
           >
-            <path
-              d="M230.93 220a8 8 0 0 1-6.93 4H32a8 8 0 0 1-6.92-12c15.23-26.33 38.7-45.21 66.09-54.16a72 72 0 1 1 73.66 0c27.39 8.95 50.86 27.83 66.09 54.16a8 8 0 0 1 .01 8"
-            />
+            <path d="M230.93 220a8 8 0 0 1-6.93 4H32a8 8 0 0 1-6.92-12c15.23-26.33 38.7-45.21 66.09-54.16a72 72 0 1 1 73.66 0c27.39 8.95 50.86 27.83 66.09 54.16a8 8 0 0 1 .01 8" />
           </svg>
           {/* <p>Mi Cuenta</p> */}
         </a>

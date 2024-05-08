@@ -19,7 +19,7 @@ function Home() {
             {/* <h2>CREA MAS DE UNA RUTINA</h2> */}
           </div>
         </div>
-        <Nav />
+        <Nav webPage="home" />
       </div>
     </>
   );
