@@ -3,7 +3,7 @@ import "./../../styles/componentStyles/navComponent.css";
 
 function NavComponent({ webPage }) {
   useEffect(() => {
-    // console.log(webPage); 
+    // console.log(webPage);
     if (webPage === "rutina") {
       document.getElementById("rutinaNav").classList.add("active");
     } else if (webPage === "calendario") {
@@ -17,8 +17,9 @@ function NavComponent({ webPage }) {
 
   return (
     <>
+      <div id="navHeight60"></div>
       <nav>
-        <a href="" id="rutinaNav">
+        <a href="/routines" id="rutinaNav">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"

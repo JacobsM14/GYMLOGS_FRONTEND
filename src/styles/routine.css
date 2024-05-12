@@ -1,0 +1,170 @@
+#routine h2 {
+  color: var(--dark-1);
+  text-align: center;
+  font-size: 30px;
+  margin-top: 40px;
+  margin-bottom: 0px;
+}
+
+#routine .createRoutine {
+  border: 0px;
+  padding: 5px 10px;
+  box-sizing: border-box;
+  margin-top: 30px;
+}
+
+#routine .createRoutine svg {
+  fill: var(--light);
+  width: 50px;
+  height: 50px;
+}
+
+#routine .editRoutineAdvise{
+  margin-top: 30px;
+}
+
+#routine .editRoutineAdvise h3 {
+  color: var(--light);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: center;
+}
+
+#routine .editRoutine{
+  border: 0px;
+  box-sizing: border-box;
+}
+
+#routine .createRoutine h3,
+#routine .editRoutine h3 {
+  color: var(--light);
+  font-size: 20px;
+  margin-left: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+#routine .editRoutine {
+  margin-top: 30px;
+}
+
+#routine .editRoutine h3 {
+  font-weight: 600;
+  margin: 10px 20px 0px;
+}
+
+/* ADDONS ROUTINE */
+#addonSet {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+}
+
+#addonSet .addonSetContainer {
+  height: fit-content;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  box-sizing: border-box;
+  overflow: hidden;
+  box-shadow: 2px 2px 10px var(--dark-1);
+}
+
+#addonSet .addonSetContainer h2 {
+  color: var(--primary);
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+  margin: 10px 0px;
+}
+
+#addonSet .addonSetContainer h3 {
+  color: var(--dark-1);
+  font-weight: 600;
+  text-align: center;
+  margin: 15px auto;
+}
+
+#addonSet .addonSetContainer svg {
+  fill: var(--dark-1);
+  width: 30px;
+  height: 30px;
+}
+
+#addonSet .addonSetContainer input {
+  display: block;
+  width: 90%;
+  box-sizing: border-box;
+  margin: 10px auto;
+  padding: 10px 20px;
+  border: 0px;
+  border-radius: 3px;
+  outline: none;
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#addonSet .addonSetContainer input::placeholder {
+  color: var(--secondary);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+#addonSet #contWeekDays {
+  gap: 10px;
+}
+
+#addonSet #contWeekDays button {
+  border: 0px;
+  border-radius: 100%;
+  box-sizing: border-box;
+  margin: 0px;
+  width: 33px;
+  height: 33px;
+
+  outline: none;
+  background-color: var(--primary);
+  color: var(--secondary);
+
+  font-size: 18px;
+  font-weight: 800;
+  vertical-align: middle;
+}
+
+.weekDaySelected {
+  background-color: var(--dark-1) !important;
+  color: var(--light) !important;
+}
+
+.createRutineAddonButton {
+  width: 100%;
+  padding: 10px 0px;
+  margin-top: 30px;
+  border: 0px;
+  outline: none;
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-weight: 800;
+}
+
+.createRutineAddonButton:hover {
+  background-color: var(--dark-1);
+  color: var(--light);
+}
+
+/* SHOW ADDONS */
+#addonSet{
+    display: none;
+}
+
+#createPlanedRoutineAddon{
+    display: none;
+}
+
+#createFreeRoutineAddon{
+    display: none;
+}

@@ -21,7 +21,7 @@ function Start() {
             </p>
             <div className="buttonsText">
               <button className="button2">
-                <a href="">REGISTRARSE</a>
+                <a href="/register">REGISTRARSE</a>
               </button>
               <button className="button3">
                 <a href="/login">YA TIENES CUENTA?</a>

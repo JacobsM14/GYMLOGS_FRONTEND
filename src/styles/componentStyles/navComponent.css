@@ -1,3 +1,9 @@
+#navHeight60{
+  /* padding: 30px 0px; */
+  width: 100%;
+}
+
+
 nav {
   display: flex;
   justify-content: center;

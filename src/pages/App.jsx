@@ -6,6 +6,8 @@ import Register from "./register";
 import Recover from "./recover";
 import Home from "./home";
 import User from "./user";
+import Routine from "./routine";
+
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -19,6 +21,7 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/*" element={<Navigate to="/login" />} />
       <Route path="/user" element={<User />}></Route>
+      <Route path="/routines" element={<Routine />}></Route>
     </Routes>
   );
 }
