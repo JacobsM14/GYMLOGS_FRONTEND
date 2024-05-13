@@ -81,3 +81,21 @@ export async function createRoutine(routine_name ,type_routine, day_routine, num
 export async function getRoutinesByUser(user_id){
   return await getFetch(`${urlServer}routine/${user_id}`);
 }
+
+export async function createSessionPlanedRoutine(nom_session, week_day, fk_id_routine){
+  return await postAndPutFetch("POST", `${urlServer}sessions/${fk_id_routine}`, {
+    nom_session: nom_session,
+    week_day: week_day,
+    fk_category_1: null,
+    fk_category_2: null,
+  });
+
+}
+
+export async function getRoutineById(routine_id){
+   return await getFetch(`${urlServer}routine/id/${routine_id}`);
+}
+
+export async function getSessionsByRoutineId(session_id){
+  return await getFetch(`${urlServer}sessions/${session_id}`);
+}

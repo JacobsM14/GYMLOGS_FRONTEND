@@ -1,7 +1,26 @@
 import Nav from "./../components/navComponent/navComponent";
 import "./../styles/home.css";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import Cookies from "universal-cookie";
 
 function Home() {
+  const navigate = useNavigate();
+
+  // NEED TO BE LOGED IN TO ACCESS THIS PAGE
+  useEffect(() => {
+    const cookies = new Cookies();
+    const token = cookies.get("token");
+
+    if (!token) {
+      useNavigate("/login");
+
+    } else {
+      
+    }
+  }, []);
+
+
   return (
     <>
       <div className="allCont flex flex-column align-center backgroundGradient position-relative">

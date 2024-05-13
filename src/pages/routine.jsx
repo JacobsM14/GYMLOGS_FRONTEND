@@ -1,11 +1,20 @@
 import Nav from "./../components/navComponent/navComponent";
 import "./../styles/routine.css";
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+
 import Cookies from "universal-cookie";
+
 //IMPORT API
-import { createRoutine, getRoutinesByUser } from "./../services/userApi";
+import {
+  createRoutine,
+  getRoutinesByUser,
+  createSessionPlanedRoutine,
+  getRoutineById,
+} from "./../services/userApi";
 
 function Routine() {
+  const navigate = useNavigate();
   const [routines, setRoutines] = useState([]);
 
   // NEED TO BE LOGED IN TO ACCESS THIS PAGE
@@ -14,7 +23,7 @@ function Routine() {
     const token = cookies.get("token");
 
     if (!token) {
-      window.location.href = "/login";
+      navigate("/login");
     } else {
       getRoutinesByUser(token)
         .then((data) => {
@@ -58,7 +67,6 @@ function Routine() {
     } else {
       setSelectedDays([...selectedDays, day]);
     }
-    console.log(selectedDays);
   };
 
   //INPUTS VALUES
@@ -99,18 +107,32 @@ function Routine() {
       setSelectedDaysAdvise(true);
       return;
     } else {
-      const result = createRoutine(
-        inputValue,
-        "semanal",
-        selectedDays,
-        null,
-        id
-      );
-      console.log(result);
-      // console.log(inputValue);
-      // console.log(selectedDays);
-      // console.log(id);
-      // console.log(inputPlanedROutine);
+      let getRoutinedata;
+
+      createRoutine(inputValue, "semanal", selectedDays, null, id)
+        .then((data) => {
+          getRoutinedata = data;
+          console.log("something: " + getRoutinedata);
+          if (getRoutinedata !== null) {
+            // console.log("getRoutinedata");
+            // console.log(getRoutinedata.id);
+            let routineID = getRoutinedata.id;
+
+            if (routineID !== null) {
+              // console.log(selectedDays);
+              // console.log("typeof selectedys: " + typeof selectedDays);
+              selectedDays.forEach((element) => {
+                createSessionPlanedRoutine(element, element, routineID)
+                  .then((data) => {
+                    console.log(data);
+                  })
+                  .catch((error) => console.error(error));
+              });
+              navigate(`/editPlanedRoutine/${routineID}`);
+            }
+          }
+        })
+        .catch((error) => console.error(error));
     }
   };
 
@@ -122,9 +144,30 @@ function Routine() {
       setInputFreeRoutineAdvise(true);
       return;
     } else {
-      console.log(inputValue);
-      console.log(id);
+      // console.log(inputValue);
+      // console.log(id);
     }
+  };
+
+  // ENTER ON EDIT ROUTINE
+  const editRoutine = (routineID) => {
+    const result = getRoutineById(routineID);
+    result
+      .then((data) => {
+        if (data && !data.error) {
+          // console.log("alo: " + data);
+          if (data[0].type_routine === "libre") {
+            navigate(`/editFreeRoutine/${routineID}`);
+          } else if (data[0].type_routine === "semanal") {
+            navigate(`/editPlanedRoutine/${routineID}`);
+          }
+        } else {
+          // console.log("error: ", data.error);
+        }
+      })
+      .catch((error) => {
+        // console.log("error: ", error);
+      });
   };
 
   return (
@@ -336,6 +379,7 @@ function Routine() {
                 <button
                   id={routine.pk_id_routine}
                   key={index}
+                  onClick={() => editRoutine(routine.pk_id_routine)}
                   className="editRoutine backgroundBlack border-r5 flex flex-column"
                 >
                   <h3>{routine.routine_name}</h3>

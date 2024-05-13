@@ -1,8 +1,22 @@
 import Nav from "./../components/navComponent/navComponent";
 import "./../styles/user.css";
 import Cookies from "universal-cookie";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function User() {
+  const navigate = useNavigate();
+  
+  // NEED TO BE LOGED IN TO ACCESS THIS PAGE
+  useEffect(() => {
+    const cookies = new Cookies();
+    const token = cookies.get("token");
+
+    if (!token) {
+      useNavigate("/login");
+    }
+  }, []);
+
   const closeSession = () => {
     const cookies = new Cookies();
     cookies.remove("token");

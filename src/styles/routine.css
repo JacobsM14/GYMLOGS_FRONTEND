@@ -38,11 +38,12 @@
 #routine .createRoutine h3,
 #routine .editRoutine h3 {
   color: var(--light);
-  font-size: 20px;
+  font-size: 18px;
   margin-left: 10px;
   font-weight: 700;
-  text-transform: uppercase;
+  text-align: left;
 }
+
 
 #routine .editRoutine {
   margin-top: 30px;
@@ -51,6 +52,7 @@
 #routine .editRoutine h3 {
   font-weight: 600;
   margin: 10px 20px 0px;
+  text-transform: uppercase;
 }
 
 /* ADDONS ROUTINE */

@@ -1,5 +1,5 @@
 import React from "react";
-import { Navigate, Route, Routes } from "react-router-dom";
+import { Navigate, Route, Routes, useParams } from "react-router-dom";
 import Start from "./start";
 import Login from "./login";
 import Register from "./register";
@@ -7,6 +7,7 @@ import Recover from "./recover";
 import Home from "./home";
 import User from "./user";
 import Routine from "./routine";
+import EditPlanedRoutine from "./editPlanedRoutine";
 
 
 function App() {
@@ -22,6 +23,7 @@ function App() {
       <Route path="/*" element={<Navigate to="/login" />} />
       <Route path="/user" element={<User />}></Route>
       <Route path="/routines" element={<Routine />}></Route>
+      <Route path="/editPlanedRoutine/:id" element={<EditPlanedRoutine />}></Route>
     </Routes>
   );
 }

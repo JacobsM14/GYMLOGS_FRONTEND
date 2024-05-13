@@ -1,0 +1,80 @@
+.addSession{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--secondary);
+    border: 0px;
+    border-radius: 5px;
+    outline: none;
+    margin-top: 20px;
+}
+
+.addSession svg{
+    stroke: var(--primary);
+    width: 50px;
+    height: 50px;
+}
+
+.editRoutineShowName{
+    margin-top: 40px;
+}
+
+.editRoutineShowName input{
+    background-color: transparent;
+    border: 0px;
+    outline: none;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: var(--dark-1);
+    font-weight: bold;
+    
+}
+
+.editRoutineShowName input:scope{
+    border: 0px;
+    outline: none;
+}
+
+.editRoutineShowName .tagGlobal{
+    width: fit-content;
+}
+
+.editRoutineShowName button{
+    background-color: var(--dark-1);
+    border-radius: 100%;
+    width: fit-content;
+    border: 0px;
+    width: 30px;
+    height: 30px;
+}
+
+.editRoutineShowName button svg{
+    fill: var(--secondary);
+    /* stroke: var(--secondary); */
+    width: 20px;
+    height: 20px;
+}
+
+/* SESSIONS EDIT */
+.editEachSession{
+    border-radius: 5px;
+    border: 0px;
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding: 0px 20px;
+}
+
+.editEachSession h2{
+    color: var(--light);
+}
+
+.editEachSession svg{
+    fill: var(--light);
+    width: 30px;
+    height: 30px;
+}
+
+.alreadyDone{
+    background-color: var(--secondary) !important;
+    color: var(--dark-1) !important;
+}
