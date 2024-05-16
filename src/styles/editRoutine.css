@@ -1,80 +1,132 @@
-.addSession{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: var(--secondary);
-    border: 0px;
-    border-radius: 5px;
-    outline: none;
-    margin-top: 20px;
+.addSession {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--secondary);
+  border: 0px;
+  border-radius: 5px;
+  outline: none;
+  margin-top: 20px;
 }
 
-.addSession svg{
-    stroke: var(--primary);
-    width: 50px;
-    height: 50px;
+.addSession svg {
+  stroke: var(--primary);
+  width: 50px;
+  height: 50px;
 }
 
-.editRoutineShowName{
-    margin-top: 40px;
+.editRoutineShowName {
+  margin-top: 40px;
 }
 
-.editRoutineShowName input{
-    background-color: transparent;
-    border: 0px;
-    outline: none;
-    text-transform: uppercase;
-    font-size: 20px;
-    color: var(--dark-1);
-    font-weight: bold;
-    
+.textEditRoutinShowLimitation {
+  width: 70%;
 }
 
-.editRoutineShowName input:scope{
-    border: 0px;
-    outline: none;
+.textEditRoutinShowLimitation button {
+  margin-left: 10px;
 }
 
-.editRoutineShowName .tagGlobal{
-    width: fit-content;
+.editRoutineShowName h2 {
+  text-transform: uppercase;
+  font-size: 30px;
+  margin: 0px;
+  color: var(--dark-1);
+  font-weight: bold;
+  overflow: hidden;
 }
 
-.editRoutineShowName button{
-    background-color: var(--dark-1);
-    border-radius: 100%;
-    width: fit-content;
-    border: 0px;
-    width: 30px;
-    height: 30px;
+.editRoutineShowName .tagGlobal {
+  width: fit-content;
 }
 
-.editRoutineShowName button svg{
-    fill: var(--secondary);
-    /* stroke: var(--secondary); */
-    width: 20px;
-    height: 20px;
+.editRoutineShowName button {
+  background-color: var(--dark-1);
+  border-radius: 100%;
+  width: fit-content;
+  border: 0px;
+  margin-top: 10px;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.editRoutineShowName button svg {
+  fill: var(--secondary);
+  /* stroke: var(--secondary); */
+  width: 20px;
+  height: 20px;
+}
+
+.contButtonsEditRoutine {
+  display: flex;
+  width: 30%;
+  justify-content: space-between;
+  /* margin-top: 20px; */
+}
+
+.contButtonsEditRoutine button {
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+}
+
+.contButtonsEditRoutine button svg {
+  fill: var(--light);
+  width: 30px;
+  height: 30px;
 }
 
 /* SESSIONS EDIT */
-.editEachSession{
-    border-radius: 5px;
-    border: 0px;
-    margin-top: 20px;
-    box-sizing: border-box;
-    padding: 0px 20px;
+.editEachSession {
+  border-radius: 5px;
+  border: 0px;
+  margin-top: 20px;
+  box-sizing: border-box;
+  padding: 0px 20px;
 }
 
-.editEachSession h2{
-    color: var(--light);
+.editEachSession h2 {
+  color: var(--light);
+  width: 60%;
 }
 
-.editEachSession svg{
-    fill: var(--light);
-    width: 30px;
-    height: 30px;
+.editEachSession svg {
+  fill: var(--light);
+  width: 30px;
+  height: 30px;
 }
 
-.alreadyDone{
-    background-color: var(--secondary) !important;
-    color: var(--dark-1) !important;
+.alreadyDone {
+  background-color: var(--secondary) !important;
+  color: var(--dark-1) !important;
+}
+
+/* DELETE ADDON */
+#verificateDeleteSession h2,
+#confirmDeleteRoutine h2 {
+  text-align: center !important;
+  margin-bottom: 30px !important;
+}
+
+#verificateDeleteSession button,
+#confirmDeleteRoutine button {
+  border: 0px;
+  border-radius: 3px;
+  padding: 10px 20px;
+  outline: none;
+  margin: 0px auto 20px;
+  font-weight: 700;
+}
+
+/* EDIT ROUTINE BUTTON */
+#editRoutine button {
+  border: 0px;
+  border-radius: 3px;
+  padding: 10px 20px;
+  outline: none;
+  margin: 20px auto 20px;
+  font-weight: 700;
 }

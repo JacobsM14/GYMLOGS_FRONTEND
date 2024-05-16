@@ -1,0 +1,129 @@
+#editSessionExercises .addSession {
+  background-color: var(--dark-1) !important;
+}
+
+#editSessionExercises .addSession svg {
+  stroke: var(--primary) !important;
+}
+
+/* ADDONS */
+/* SELECT EXERCISE TYPES */
+#selectExerciseType {
+  padding: 20px 0px;
+}
+#selectExerciseType .editRoutineShowName {
+  margin-top: 10px;
+}
+
+#selectExerciseType .textEditRoutinShowLimitation h2 {
+  color: var(--light) !important;
+}
+
+#selectExerciseType .editRoutineShowName button {
+  background-color: transparent !important;
+  width: auto !important;
+}
+
+#selectExerciseType .editRoutineShowName button svg {
+  fill: var(--light) !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.showExcerciseTypesButton {
+  border: 0px;
+  border-radius: 5px;
+  outline: none;
+  padding: 20px;
+  margin: 13px 0px;
+  font-size: 15px !important;
+  font-weight: 900;
+  text-align: left;
+  text-transform: uppercase;
+  box-sizing: border-box;
+  color: var(--dark-1) !important;
+}
+
+/* SHOW EXERCISES */
+.addonExercisesShow {
+    box-sizing: border-box;
+  padding: 10px 0px 0px;
+}
+
+.addonExercisesShow .editRoutineShowName{
+    margin: 0px auto 10px;
+}
+
+.addonExercisesShow .editRoutineShowName h2{
+    color: var(--dark-2);
+}
+
+.addonExercisesShow .editRoutineShowName button{
+    background-color: var(--light);
+}
+
+.addonExercisesShow form{
+    max-height: 400px;
+    overflow-y: scroll;   
+}
+
+.addonExercisesShow .labelExercises{
+    width: 100%;
+    box-sizing: border-box;
+    background-color: var(--dark-1);
+    border-radius: 5px;
+    margin: 5px auto;
+    padding: 10px 10px;
+
+}
+
+.addonExercisesShow .labelExercises label{
+    width: 80%;
+    color: var(--light);
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.addonExercisesShow .labelExercises input[type="checkbox"]{
+    width: 20%;
+    margin-left: 10px;
+    border-radius: 100%;
+}
+
+.globalForm{
+    max-height: 300px;
+    overflow-y: scroll;
+
+}
+
+/* .addonExercisesShow .labelExercises input[type="checkbox"]::before{
+    width: 20px;
+    height: 20px;
+    border-radius: 100%;
+    background-color: var(--dark-1);
+    display: block;
+    margin: 0px auto;
+    cursor: pointer;        
+} */
+
+.addonExercisesShow .labelExercises input[type="checkbox"]:checked{
+    background-color: var(--primary);
+}
+
+/* .addonExercisesShow .labelExercises input[type="checkbox"]:checked:after{
+    content: "";
+    width: 10px;
+    height: 10px;
+    border-radius: 100%;
+    background-color: var(--light);
+    display: block;
+    margin: 0px auto;
+} */
+
+.addonExercisesShow input[type="submit"]{
+    width: 100% !important;
+    margin: 15px 0px 0px !important;
+    background-color: var(--dark-1);
+    color: var(--light);
+    border-radius: 0px;
+}

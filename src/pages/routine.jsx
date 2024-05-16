@@ -109,20 +109,44 @@ function Routine() {
     } else {
       let getRoutinedata;
 
+      let daySpanish = {
+        Monday: "Lunes",
+        Tuesday: "Martes",
+        Wednesday: "Miercoles",
+        Thursday: "Jueves",
+        Friday: "Viernes",
+        Saturday: "Sabado",
+        Sunday: "Domingo",
+      };
+
+      const daysOfWeek = [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday",
+      ];
+
+      selectedDays.sort(
+        (a, b) => daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b)
+      );
+
       createRoutine(inputValue, "semanal", selectedDays, null, id)
         .then((data) => {
           getRoutinedata = data;
           console.log("something: " + getRoutinedata);
           if (getRoutinedata !== null) {
-            // console.log("getRoutinedata");
-            // console.log(getRoutinedata.id);
             let routineID = getRoutinedata.id;
 
             if (routineID !== null) {
-              // console.log(selectedDays);
-              // console.log("typeof selectedys: " + typeof selectedDays);
               selectedDays.forEach((element) => {
-                createSessionPlanedRoutine(element, element, routineID)
+                createSessionPlanedRoutine(
+                  daySpanish[element],
+                  element,
+                  routineID
+                )
                   .then((data) => {
                     console.log(data);
                   })
@@ -175,8 +199,7 @@ function Routine() {
       <div className="allCont flex flex-column align-center backgroundGradient position-relative">
         {/* ADDONS GENERAL */}
         <div
-          id="addonSet"
-          className="align-center"
+          className="addonSet align-center"
           style={{
             display:
               isPlanedRoutineVisible || isFreeRoutineVisible ? "flex" : "none",

@@ -8,7 +8,7 @@ import Home from "./home";
 import User from "./user";
 import Routine from "./routine";
 import EditPlanedRoutine from "./editPlanedRoutine";
-
+import EditSession from "./editSession";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -24,6 +24,7 @@ function App() {
       <Route path="/user" element={<User />}></Route>
       <Route path="/routines" element={<Routine />}></Route>
       <Route path="/editPlanedRoutine/:id" element={<EditPlanedRoutine />}></Route>
+      <Route path="/editSession/:id" element={<EditSession />}></Route>
     </Routes>
   );
 }
