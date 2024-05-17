@@ -399,7 +399,7 @@ function Routine() {
           {routines.length > 0 ? (
             routines.map((routine, index) => {
               return (
-                <button
+                <div
                   id={routine.pk_id_routine}
                   key={index}
                   onClick={() => editRoutine(routine.pk_id_routine)}
@@ -417,7 +417,7 @@ function Routine() {
                     {/* <p className="tagGlobal tagColor2">CARDIO</p> */}
                     {/* <p className="tagGlobal tagColor2">PESO LIBRE</p> */}
                   </div>
-                </button>
+                </div>
               );
             })
           ) : (

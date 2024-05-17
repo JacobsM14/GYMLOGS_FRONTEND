@@ -52,7 +52,34 @@ async function postAndPutFetch(method, url, data) {
 }
 
 // API
+//USERS -----------
+// GET USER BY ID - GET
+export async function getUserById(user_id) {
+  return await getFetch(`${urlServer}users/${user_id}`);
+}
 
+// UPDATE USER EMAIL - PUT
+export async function updateUserEmail(user_id, email) {
+  return await postAndPutFetch("PUT", `${urlServer}users/email/${user_id}`, {
+    email: email,
+  });
+}
+
+// UPDATE USER USERNAME - PUT
+export async function updateUserUsername(user_id, username) {
+  return await postAndPutFetch("PUT", `${urlServer}users/username/${user_id}`, {
+    username: username,
+  });
+}
+
+// UPDATE USER PASSWORD - PUT
+export async function updateUserPassword(user_id, password, pastPassword) {
+  return await postAndPutFetch("PUT", `${urlServer}users/password/${user_id}/${pastPassword}`, {
+    pssd: password,
+  });
+}
+
+//POST
 // LOGIN - POST
 export async function login(username, password) {
   console.log("url: " + urlServer);
@@ -73,7 +100,7 @@ export async function register(username, email, password) {
   });
 }
 
-// ROUTINES
+// ROUTINES -----------
 // CREATE ROUTINE - POST
 export async function createRoutine(
   routine_name,
@@ -133,7 +160,25 @@ export async function getRoutineById(routine_id) {
   return await getFetch(`${urlServer}routine/id/${routine_id}`);
 }
 
-// SESSIONS
+// MAIN ROUTINE -----------
+// GET MAIN ROUTINE BY USER ID - GET
+export async function getMainRoutineByUser(user_id) {
+  return await getFetch(`${urlServer}mainRoutine/${user_id}`);
+}
+
+// CREATE MAIN ROUTINE - POST
+export async function createMainRoutine(user_id, routine_id) {
+  return await postAndPutFetch("POST", `${urlServer}mainRoutine/${user_id}`, {
+    fk_id_routine: routine_id,
+  });
+}
+
+// DELETE MAIN ROUTINE BY USER ID - DELETE
+export async function deleteMainRoutineByUser(user_id) {
+  return await deleteFecth(`${urlServer}mainRoutine/${user_id}`);
+}
+
+// SESSIONS -----------
 // GET SESSIONS BY ROUTINE ID - GET
 export async function getSessionsByRoutineId(session_id) {
   return await getFetch(`${urlServer}sessions/routine/${session_id}`);
@@ -162,27 +207,59 @@ export async function createSessionPlanedRoutine(
   );
 }
 
+export async function createSessionFreeRoutine(nom_session, fk_id_routine) {
+  return await postAndPutFetch(
+    "POST",
+    `${urlServer}sessions/${fk_id_routine}`,
+    {
+      nom_session: nom_session,
+      week_day: null,
+      fk_category_1: null,
+      fk_category_2: null,
+    }
+  );
+}
+
 // DELETE SESSION BY ID - DELETE
 export async function deleteSessionById(session_id) {
   return await deleteFecth(`${urlServer}sessions/${session_id}`);
 }
 
-// SESSION EXERCISES
+// SESSION EXERCISES -----------
 // GET EXERCISES BY SESSION ID - GET
 export async function getSessionExercisesBySessionId(session_id) {
   return await getFetch(`${urlServer}sessions_exercise/${session_id}`);
 }
 
+// CREATE EXERCISES BY SESSION ID - POST
+export async function createSessionExercise(fk_id_exercise, fk_id_session) {
+  return await postAndPutFetch("POST", `${urlServer}sessions_exercise`, {
+    fk_id_exercise: fk_id_exercise,
+    fk_id_sessio: fk_id_session,
+  });
+}
 
-// EXERCISES TYPES
+// DELETE EXERCISE BY SESSION AND EXERCISE ID - DELETE
+export async function deleteSessionExerciseById(session_id, exercise_id) {
+  return await deleteFecth(
+    `${urlServer}sessions_exercise/${session_id}/${exercise_id}`
+  );
+}
+
+// EXERCISES TYPES -----------
 // GET ALL EXERCISES TYPES - GET
 export async function getExercisesTypes() {
   return await getFetch(`${urlServer}typeExercise`);
 }
 
-
-// EXERCISES
+// EXERCISES -----------
 // GET ALL EXERCISES BY TYPE - GET
 export async function getExercisesByType(type_id) {
   return await getFetch(`${urlServer}exercise/type/${type_id}`);
+}
+
+// GET EXERCISE BY ID - GET
+export async function getExerciseById(exercise_id) {
+  // console.log("url: " + urlServer + "exercise/id/" + exercise_id)
+  return await getFetch(`${urlServer}exercise/id/${exercise_id}`);
 }

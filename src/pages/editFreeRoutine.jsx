@@ -1,6 +1,6 @@
 import Nav from "./../components/navComponent/navComponent";
 import "./../styles/editRoutine.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
@@ -11,7 +11,7 @@ import {
   getSessionsByRoutineId,
   deleteSessionById,
   updateRoutineDays,
-  createSessionPlanedRoutine,
+  createSessionFreeRoutine,
   updateRoutineName,
   deleteRoutineById,
 } from "./../services/userApi";
@@ -30,22 +30,12 @@ function editPlanedRoutine() {
   const [isDeleteSessionVisible, setDeleteSessionVisible] = useState(false);
   const [isEditRoutineVisible, setEditRoutineVisible] = useState(false);
   const [isConfirmDeleteRoutine, setConfirmDeleteRoutine] = useState(false);
-  const [isSetAsMainRoutine, setSetAsMainRoutine] = useState(false);
 
   // SAVE CONTENT
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
   const [inputRoutineName, setInputRoutineName] = useState("");
-
-  const daysOfWeek = [
-    "Lunes",
-    "Martes",
-    "Miercoles",
-    "Jueves",
-    "Viernes",
-    "Sabado",
-    "Domingo",
-  ];
+  const inputAddSession = useRef();
 
   // NEED TO BE LOGED IN TO ACCESS THIS PAGE
   useEffect(() => {
@@ -108,22 +98,6 @@ function editPlanedRoutine() {
     }
   };
 
-  const selectDay = (day) => {
-    if (!isDayInSessions(day)) {
-      setSelectedDay(day);
-    }
-  };
-
-  const isDayInSessions = (day) => {
-    let isDay = false;
-    sessions.forEach((session) => {
-      if (session.week_day === day) {
-        isDay = true;
-      }
-    });
-    return isDay;
-  };
-
   const addonDeleteSession = (sessionToDelete) => {
     if (isDeleteSessionVisible) {
       setAddonVisible(false);
@@ -155,16 +129,6 @@ function editPlanedRoutine() {
       setAddonVisible(true);
       setConfirmDeleteRoutine(true);
       setEditRoutineVisible(false);
-    }
-  };
-
-  const addonSetAsMainRoutine = () => {
-    if (isSetAsMainRoutine) {
-      setAddonVisible(false);
-      setSetAsMainRoutine(false);
-    } else {
-      setAddonVisible(true);
-      setSetAsMainRoutine(true);
     }
   };
 
@@ -223,63 +187,22 @@ function editPlanedRoutine() {
   };
 
   const createSession = () => {
-    let day_routine = JSON.parse(routine[0].day_routine);
-
-    let daySpanish = {
-      Monday: "Lunes",
-      Tuesday: "Martes",
-      Wednesday: "Miercoles",
-      Thursday: "Jueves",
-      Friday: "Viernes",
-      Saturday: "Sabado",
-      Sunday: "Domingo",
-    };
-
-    if (selectedDay !== "" && !isDayInSessions(selectedDay)) {
-      const daysOfWeek = [
-        "Monday",
-        "Tuesday",
-        "Wednesday",
-        "Thursday",
-        "Friday",
-        "Saturday",
-        "Sunday",
-      ];
-
-      day_routine.push(selectedDay);
-
-      day_routine.sort((a, b) => daysOfWeek.indexOf(a) - daysOfWeek.indexOf(b));
-
-      updateRoutineDays(
-        routine[0].pk_id_routine,
-        null,
-        JSON.stringify(day_routine)
-      );
-      createSessionPlanedRoutine(daySpanish[selectedDay], selectedDay, id)
-        .then((newSession) => {
-          setSessions([...sessions, newSession]);
-          setAddonVisible(false);
-          setNewSessionVisible(false);
-          setSelectedDay("");
-        })
-        .catch((error) => console.error(error));
-    } else {
-      console.log("error");
-    }
-  };
-
-  const setAsMainRoutine = () => {
-    let user_id = routine[0].fk_id_user;
-
-    getRoutineById(user_id).then((res) => {
+    //   updateRoutineDays(
+    //     routine[0].pk_id_routine,
+    //     null,
+    //     null
+    //   );
+    let newSession = inputAddSession.current.value;
+    createSessionFreeRoutine(newSession, id).then((res) => {
       if (res && !res.error) {
-        res.forEach((routine) => {
-          if (routine.type_routine === "principal") {
-            updateRoutineName(routine.pk_id_routine, routine.routine_name);
-          }
-        });
+        setSessions([...sessions, res]);
+        setAddonVisible(false);
+        setNewSessionVisible(false);
+        inputAddSession.current.value = "";
       }
     });
+
+    // createSessionFreeRoutine()
   };
 
   return (
@@ -293,7 +216,7 @@ function editPlanedRoutine() {
           }}
         >
           <div
-            id="createPlanedRoutineAddon"
+            id="createFreeRoutine"
             className="cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isNewSessionVisible ? "block" : "none" }}
           >
@@ -309,75 +232,11 @@ function editPlanedRoutine() {
                 <path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zm-4.793 9.793l-1.414 1.414L12 13.414l-2.793 2.793l-1.414-1.414L10.586 12L7.793 9.207l1.414-1.414L12 10.586l2.793-2.793l1.414 1.414L13.414 12z" />
               </svg>
             </div>
-            <h3>Selecciona los dias</h3>
-            <div
-              id="contWeekDays"
-              className="flex cage90 marginAuto justify-between "
-            >
-              <button
-                id="mondayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Monday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Monday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Monday")}
-              >
-                L
-              </button>
-              <button
-                id="tuesdayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Tuesday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Tuesday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Tuesday")}
-              >
-                M
-              </button>
-              <button
-                id="wednesdayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Wednesday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Wednesday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Wednesday")}
-              >
-                X
-              </button>
-              <button
-                id="thursdayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Thursday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Thursday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Thursday")}
-              >
-                J
-              </button>
-              <button
-                id="fridayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Friday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Friday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Friday")}
-              >
-                V
-              </button>
-              <button
-                id="saturdayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Saturday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Saturday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Saturday")}
-              >
-                S
-              </button>
-              <button
-                id="sundayButton"
-                className={`flex justify-center align-center ${
-                  selectedDay === "Sunday" ? "weekDaySelected" : ""
-                } ${isDayInSessions("Sunday") ? "alreadyDone" : ""}`}
-                onClick={() => selectDay("Sunday")}
-              >
-                D
-              </button>
-            </div>
+            <input
+              type="text"
+              placeholder="Nombre de la Session: "
+              ref={inputAddSession}
+            />
             <button className="createRutineAddonButton" onClick={createSession}>
               CREAR SESSION
             </button>
@@ -443,47 +302,22 @@ function editPlanedRoutine() {
               </button>
             </div>
           </div>
-          <div
-            id="setAsMainRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
-            style={{ display: isSetAsMainRoutine ? "block" : "none" }}
-          >
-            <h2>¿Quieres establecer esta rutina como principal?</h2>
-            <div className="flex justify-between cage45 marginAuto">
-              <button className="tagColor1" onClick={addonSetAsMainRoutine}>
-                NO
-              </button>
-              <button className="tagColor2" onClick={setAsMainRoutine}>
-                SI
-              </button>
-            </div>
-          </div>
         </div>
         {/* PAGE CONTENT */}
         <div id="editPlanedSession" className="cage90 flex flex-column">
           <div className="editRoutineShowName flex justify-between ">
             {routine.map((routine, index) => (
-              <div className="textEditRoutinShowLimitation flex" key={index}>
-                <button className="starIcon" onClick={addonSetAsMainRoutine}>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="128"
-                    height="128"
-                    viewBox="0 0 24 24"
-                  >
-                    <path d="m5.825 21l2.325-7.6L2 9h7.6L12 1l2.4 8H22l-6.15 4.4l2.325 7.6L12 16.3z" />
-                  </svg>
-                </button>
-                <div className="block">
+              <div className="textEditRoutinShowLimitation" key={index}>
+                <div className="flex">
                   <h2>{routine.routine_name}</h2>
-                  <p className="tagGlobal tagColor1">
-                    {routine.type_routine === "semanal"
-                      ? "PLANIFICADA"
-                      : routine.type_routine === "libre"
-                      ? "LIBRE"
-                      : ""}
-                  </p>
                 </div>
+                <p className="tagGlobal tagColor1">
+                  {routine.type_routine === "semanal"
+                    ? "PLANIFICADA"
+                    : routine.type_routine === "libre"
+                    ? "LIBRE"
+                    : ""}
+                </p>
               </div>
             ))}
             <button onClick={addonEditRoutine}>

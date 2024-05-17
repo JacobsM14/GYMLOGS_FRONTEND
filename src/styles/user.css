@@ -1,77 +1,167 @@
 /* HEAD */
-#userPage{
+#userPage {
 }
 
-
-#userPage .showUser{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-bottom: 3px solid var(--primary);
-    padding-bottom: 20px;
+#userPage .showUser {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-bottom: 3px solid var(--primary);
+  padding-bottom: 20px;
 }
 
-#userPage .showUser img{
-    width: 90px;
-    border-radius: 50%;
-    display: block;
-    margin: auto;
-    margin-top: 40px;
-    margin-bottom: -45px;
+#userPage .showUser img {
+  width: 90px;
+  border-radius: 50%;
+  display: block;
+  margin: auto;
+  margin-top: 40px;
+  margin-bottom: -45px;
 }
 
-#userPage .showUser h1{
-    font-size: 20px;
-    font-weight: 500;
-
-    margin: 60px auto 0px;
-    color: var(--light);
+#userPage .showUser h1 {
+  font-size: 20px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 60px auto 0px;
+  color: var(--light);
 }
 
 /* LINKS */
-#userPage #contPrivacity{
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0px;
+#userPage #contPrivacity {
+  display: flex;
+  flex-direction: column;
+  padding: 10px 0px;
 }
 
-#userPage #contPrivacity h2{
-    font-size: 20px;
-    font-weight: 500;
-    color: var(--light);
-    margin: 15px 0px 0px;
+#userPage #contPrivacity h2 {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--light);
+  margin: 15px 0px 0px;
 }
 
-#userPage #contPrivacity .cagePrivacity{
-    padding: 10px 0px;
-    border-radius: 5px;
-    margin-top: 20px;
+#userPage #contPrivacity .cagePrivacity {
+  padding: 10px 0px;
+  border-radius: 5px;
+  margin-top: 20px;
 }
 
-#userPage #contPrivacity .cagePrivacity h3{
-    font-size: 15px;
-    font-weight: 400;
-    margin-left: 20px;
-    color: var(--light);
+#userPage #contPrivacity .cagePrivacity h3 {
+  font-size: 15px;
+  font-weight: 400;
+  margin-left: 20px;
+  color: var(--light);
 }
 
-#userPage #contPrivacity .cagePrivacity svg{
-    fill: var(--light);
-    width: 40px;
-    height: 40px;
+#userPage #contPrivacity .cagePrivacity svg {
+  fill: var(--light);
+  width: 40px;
+  height: 40px;
 }
 
-#userPage #contPrivacity .cagePrivacity svg path{
-    fill: var(--light);
+#userPage #contPrivacity .cagePrivacity svg path {
+  fill: var(--light);
 }
 
-#userPage #contPrivacity .cagePrivacity svg:hover{
-    fill: var(--primary);
+#userPage #contPrivacity .cagePrivacity svg:hover {
+  fill: var(--primary);
 }
 /* NAV */
-#userPage nav{
-    border-top: 2px solid var(--light);
-
+#privacyPolitics nav,
+#userPage nav {
+  border-top: 2px solid var(--light);
 }
 
+/* PRIVACY POLITICS */
+#privacyPolitics .allCont {
+  padding-bottom: 0px !important;
+}
+
+.textPrivacyPolitics {
+  padding: 20px 0px 0px;
+}
+
+.textPrivacyPolitics h1 {
+  color: var(--light);
+  font-size: 23px;
+}
+
+.textPrivacyPolitics button {
+  background-color: var(--secondary);
+  border: none;
+  border-radius: 100px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+}
+
+.textPrivacyPolitics button svg {
+  fill: var(--dark-1);
+  width: 30px;
+  height: 30px;
+}
+
+#privacyPolitics h2 {
+  color: var(--light);
+  font-size: 17px;
+  font-weight: 500;
+  margin: 20px 0px 0px;
+}
+
+#privacyPolitics h3 {
+  color: var(--light);
+  font-size: 15px;
+  font-weight: 500;
+  margin: 10px 0px 0px;
+}
+
+#privacyPolitics p {
+  color: var(--light);
+  font-size: 13px;
+  font-weight: 400;
+  margin: 10px 0px 10px 15px;
+}
+
+#privacyPolitics p span {
+  color: var(--secondary);
+  font-family: 500;
+}
+
+#privacyPolitics ul {
+  margin-top: 0px;
+}
+
+#privacyPolitics ul li {
+  color: var(--light);
+  font-size: 13px;
+  font-weight: 400;
+  margin: 10px 0px 0px 5px;
+}
+
+/* EDIT USER PAGE */
+#userEditPage form{
+    padding-top: 20px;
+}
+
+#userEditPage form input{
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    margin: 15px 0px;
+    border: none;
+    border-radius: 5px;
+}
+
+#userEditPage form input[type="submit"]{
+    background-color: var(--secondary);
+    color: var(--dark-1);
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 10px 0px;
+}

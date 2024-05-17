@@ -106,13 +106,15 @@
 
 /* DELETE ADDON */
 #verificateDeleteSession h2,
-#confirmDeleteRoutine h2 {
+#confirmDeleteRoutine h2,
+#setAsMainRoutine h2 {
   text-align: center !important;
   margin-bottom: 30px !important;
 }
 
 #verificateDeleteSession button,
-#confirmDeleteRoutine button {
+#confirmDeleteRoutine button,
+#setAsMainRoutine button {
   border: 0px;
   border-radius: 3px;
   padding: 10px 20px;
@@ -129,4 +131,18 @@
   outline: none;
   margin: 20px auto 20px;
   font-weight: 700;
+}
+
+/* STAR ICON */
+.starIcon {
+  background-color: transparent !important;
+  width: auto !important;
+  height: fit-content !important;
+}
+
+.starIcon svg {
+  stroke: var(--dark-1) !important;
+  fill: var(--dark-1) !important;
+  width: 30px !important;
+  height: 30px !important;
 }

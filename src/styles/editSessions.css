@@ -1,9 +1,16 @@
-#editSessionExercises .addSession {
-  background-color: var(--dark-1) !important;
-}
-
 #editSessionExercises .addSession svg {
   stroke: var(--primary) !important;
+}
+
+/* DISPLAY EXERCISES CONT*/
+#editSessionExercises .editEachSession {
+  box-shadow: 3px 3px 10px 0px rgb(52, 58, 64, 0.5);
+  height: 80px;
+}
+
+#editSessionExercises .editEachSession h2 {
+  color: var(--secondary);
+  font-size: 20px;
 }
 
 /* ADDONS */
@@ -17,6 +24,7 @@
 
 #selectExerciseType .textEditRoutinShowLimitation h2 {
   color: var(--light) !important;
+  font-size: 25px !important;
 }
 
 #selectExerciseType .editRoutineShowName button {
@@ -37,7 +45,7 @@
   padding: 20px;
   margin: 13px 0px;
   font-size: 15px !important;
-  font-weight: 900;
+  font-weight: 700;
   text-align: left;
   text-transform: uppercase;
   box-sizing: border-box;
@@ -46,54 +54,51 @@
 
 /* SHOW EXERCISES */
 .addonExercisesShow {
-    box-sizing: border-box;
+  box-sizing: border-box;
   padding: 10px 0px 0px;
 }
 
-.addonExercisesShow .editRoutineShowName{
-    margin: 0px auto 10px;
+.addonExercisesShow .editRoutineShowName {
+  margin: 0px auto 10px;
 }
 
-.addonExercisesShow .editRoutineShowName h2{
-    color: var(--dark-2);
+.addonExercisesShow .editRoutineShowName h2 {
+  color: var(--dark-2);
 }
 
-.addonExercisesShow .editRoutineShowName button{
-    background-color: var(--light);
+.addonExercisesShow .editRoutineShowName button {
+  background-color: var(--light);
 }
 
-.addonExercisesShow form{
-    max-height: 400px;
-    overflow-y: scroll;   
+.addonExercisesShow form {
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
-.addonExercisesShow .labelExercises{
-    width: 100%;
-    box-sizing: border-box;
-    background-color: var(--dark-1);
-    border-radius: 5px;
-    margin: 5px auto;
-    padding: 10px 10px;
-
+.addonExercisesShow .labelExercises {
+  width: 100%;
+  box-sizing: border-box;
+  background-color: var(--dark-1);
+  border-radius: 5px;
+  margin: 5px auto;
+  padding: 10px 10px;
 }
 
-.addonExercisesShow .labelExercises label{
-    width: 80%;
-    color: var(--light);
-    font-weight: 700;
-    font-size: 15px;
+.addonExercisesShow .labelExercises label {
+  width: 80%;
+  color: var(--light);
+  font-size: 15px;
 }
 
-.addonExercisesShow .labelExercises input[type="checkbox"]{
-    width: 20%;
-    margin-left: 10px;
-    border-radius: 100%;
+.addonExercisesShow .labelExercises input[type="checkbox"] {
+  width: 20%;
+  margin-left: 10px;
+  border-radius: 100%;
 }
 
-.globalForm{
-    max-height: 300px;
-    overflow-y: scroll;
-
+.globalForm {
+  max-height: 340px;
+  overflow-y: scroll;
 }
 
 /* .addonExercisesShow .labelExercises input[type="checkbox"]::before{
@@ -106,8 +111,8 @@
     cursor: pointer;        
 } */
 
-.addonExercisesShow .labelExercises input[type="checkbox"]:checked{
-    background-color: var(--primary);
+.addonExercisesShow .labelExercises input[type="checkbox"]:checked {
+  background-color: var(--primary);
 }
 
 /* .addonExercisesShow .labelExercises input[type="checkbox"]:checked:after{
@@ -120,10 +125,41 @@
     margin: 0px auto;
 } */
 
-.addonExercisesShow input[type="submit"]{
-    width: 100% !important;
-    margin: 15px 0px 0px !important;
-    background-color: var(--dark-1);
-    color: var(--light);
-    border-radius: 0px;
+.addonExercisesShow input[type="submit"] {
+  width: 100% !important;
+  margin: 30px 0px 0px !important;
+  box-sizing: border-box;
+  background-color: var(--dark-1);
+  color: var(--light);
+  border-radius: 0px;
+  font-size: 15px;
+  padding: 20px 0px;
+}
+
+/* SHOW EXERCISE DESCRIPTION */
+#showExerciseDescription {
+  box-sizing: border-box;
+  padding-bottom: 10px;
+}
+
+#showExerciseDescription .editRoutineShowName {
+  margin: 10px auto;
+}
+
+#showExerciseDescription .textEditRoutinShowLimitation {
+  width: 90%;
+}
+
+#showExerciseDescription .editRoutineShowName h2 {
+  color: var(--secondary);
+  font-size: 20px;
+}
+
+#showExerciseDescription .editRoutineShowName button {
+  background-color: var(--light);
+}
+
+.textDescription {
+  margin: 20px auto;
+  color: var(--light);
 }

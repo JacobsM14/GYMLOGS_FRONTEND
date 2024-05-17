@@ -2,11 +2,15 @@ import Nav from "./../components/navComponent/navComponent";
 import "./../styles/user.css";
 import Cookies from "universal-cookie";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+
+import { getUserById } from "./../services/userApi";
 
 function User() {
   const navigate = useNavigate();
-  
+
+  const [userSaved, setUserSaved] = useState({});
+
   // NEED TO BE LOGED IN TO ACCESS THIS PAGE
   useEffect(() => {
     const cookies = new Cookies();
@@ -15,12 +19,23 @@ function User() {
     if (!token) {
       useNavigate("/login");
     }
+    else{
+      getUserById(token).then((data) => {
+        // console.log(data[0]);
+        setUserSaved(data[0]);
+      });
+    }
   }, []);
 
+  // NAVIAGTION FUNCTIONS
   const closeSession = () => {
     const cookies = new Cookies();
     cookies.remove("token");
     window.location.href = "/";
+  };
+
+  const navigateToPages = (page) => {
+    navigate(`/${page}`);
   };
 
   return (
@@ -33,12 +48,15 @@ function User() {
           <div className="backgroundGradient cage100">
             <img src="user.png" alt="user" />
           </div>
-          <h1>USER EXAMPLE</h1>
+          <h1>{userSaved.username}</h1>
         </div>
         <div id="contPrivacity" className="cage90">
           <h2>Cuenta y Privacidad</h2>
           <div className="cage100 backgroundBlack2 cagePrivacity">
-            <div className="cage90 flex align-center marginAuto">
+            <div
+              className="cage90 flex align-center marginAuto"
+              onClick={() => navigateToPages("privacyPolitics")}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="128"
@@ -51,7 +69,8 @@ function User() {
             </div>
           </div>
           <div className="cage100 backgroundBlack2 cagePrivacity">
-            <div className="cage90 flex align-center marginAuto">
+            <div className="cage90 flex align-center marginAuto"
+            onClick={() => navigateToPages("editUser")}>
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="128"

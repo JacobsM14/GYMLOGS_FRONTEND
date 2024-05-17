@@ -6,8 +6,11 @@ import Register from "./register";
 import Recover from "./recover";
 import Home from "./home";
 import User from "./user";
+import EditUser from "./editUser";
+import PrivacyPolitics from "./privacyPolitics";
 import Routine from "./routine";
 import EditPlanedRoutine from "./editPlanedRoutine";
+import EditFreeRoutine from "./editFreeRoutine";
 import EditSession from "./editSession";
 
 function App() {
@@ -22,8 +25,14 @@ function App() {
       <Route path="/home" element={<Home />} />
       <Route path="/*" element={<Navigate to="/login" />} />
       <Route path="/user" element={<User />}></Route>
+      <Route path="/editUser" element={<EditUser />}></Route>
+      <Route path="/privacyPolitics" element={<PrivacyPolitics />}></Route>
       <Route path="/routines" element={<Routine />}></Route>
-      <Route path="/editPlanedRoutine/:id" element={<EditPlanedRoutine />}></Route>
+      <Route
+        path="/editPlanedRoutine/:id"
+        element={<EditPlanedRoutine />}
+      ></Route>
+      <Route path="/editFreeRoutine/:id" element={<EditFreeRoutine />}></Route>
       <Route path="/editSession/:id" element={<EditSession />}></Route>
     </Routes>
   );
