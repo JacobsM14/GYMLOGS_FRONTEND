@@ -10,9 +10,9 @@ async function getFetch(url) {
         "Content-Type": "application/json",
       },
     });
-    return await response.json();
+    const text = await response.text();
+    return JSON.parse(text);
   } catch (error) {
-    console.log(error);
     throw error;
   }
 }
@@ -114,7 +114,7 @@ export async function createRoutine(
   user_id
 ) {
   if (type_routine === "libre") {
-    return await postAndPutFetch("POST", `${urlServer}routines/${user_id}`, {
+    return await postAndPutFetch("POST", `${urlServer}routine/${user_id}`, {
       routine_name: routine_name,
       type_routine: "libre",
       day_routine: null,
@@ -129,6 +129,7 @@ export async function createRoutine(
     });
   }
 }
+
 //UPDATE ROUTINE DAYS - PUT
 export async function updateRoutineDays(routine_id, num_routine, days) {
   return await postAndPutFetch("PUT", `${urlServer}routine/day/${routine_id}`, {
@@ -172,14 +173,27 @@ export async function getMainRoutineByUser(user_id) {
 
 // GET MAIN ROUTINE BY USER AND ROUTINE ID - GET
 export async function getMainRoutineByUserAndRoutine(routine_id, user_id) {
-  return await getFetch(`${urlServer}mainRoutine/${routine_id}/${user_id}`);
+  const url = `${urlServer}mainRoutine/${routine_id}/${user_id}`;
+  console.log(`Fetching from URL: ${url}`);
+  try {
+    const response = await getFetch(url);
+    console.log('Response:', response);
+    return response;
+  } catch (error) {
+    console.error('Error fetching main routine by user and routine:', error);
+    throw error;
+  }
 }
 
 // CREATE MAIN ROUTINE - POST
 export async function createMainRoutine(user_id, routine_id) {
-  return await postAndPutFetch("POST", `${urlServer}mainRoutine/${routine_id}`, {
-    fk_id_user: user_id,
-  });
+  return await postAndPutFetch(
+    "POST",
+    `${urlServer}mainRoutine/${routine_id}`,
+    {
+      fk_id_user: user_id,
+    }
+  );
 }
 
 // DELETE MAIN ROUTINE BY USER ID - DELETE

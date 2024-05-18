@@ -14,6 +14,10 @@ import {
   createSessionFreeRoutine,
   updateRoutineName,
   deleteRoutineById,
+  getMainRoutineByUser,
+  createMainRoutine,
+  deleteMainRoutineByUser,
+  getMainRoutineByUserAndRoutine,
 } from "./../services/userApi";
 
 function editPlanedRoutine() {
@@ -30,12 +34,15 @@ function editPlanedRoutine() {
   const [isDeleteSessionVisible, setDeleteSessionVisible] = useState(false);
   const [isEditRoutineVisible, setEditRoutineVisible] = useState(false);
   const [isConfirmDeleteRoutine, setConfirmDeleteRoutine] = useState(false);
+  const [isSetAsMainRoutine, setSetAsMainRoutine] = useState(false);
+  const [isDeleteAsMainRoutine, setDeleteAsMainRoutine] = useState(false);
 
   // SAVE CONTENT
-  const [selectedDay, setSelectedDay] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
   const [inputRoutineName, setInputRoutineName] = useState("");
   const inputAddSession = useRef();
+  const [isMainRoutine, setIsMainRoutine] = useState(false);
+  const [isMainRoutine2, setIsMainRoutine2] = useState(false);
 
   // NEED TO BE LOGED IN TO ACCESS THIS PAGE
   useEffect(() => {
@@ -71,8 +78,29 @@ function editPlanedRoutine() {
           }
         })
         .catch((error) => console.error(error));
+
+      getMainRoutineByUserAndRoutine(id, token).then((res) => {
+        if (res.status === 404) {
+          console.log("Main routine not found");
+          setIsMainRoutine(false);
+        } else if (res.error) {
+          console.error("Error:", res.error);
+          setIsMainRoutine(false);
+        } else {
+          setIsMainRoutine(true);
+          // console.log("es main");
+        }
+      });
+
+      getMainRoutineByUser(token).then((res) => {
+        if (res && !res.error) {
+          setIsMainRoutine2(true);
+        } else {
+          setIsMainRoutine2(false);
+        }
+      });
     }
-  }, [id]); // Removed sessions from the dependency array
+  }, [id]);
 
   const updateInputRoutineName = (e) => {
     setInputRoutineName(e.target.value);
@@ -129,6 +157,34 @@ function editPlanedRoutine() {
       setAddonVisible(true);
       setConfirmDeleteRoutine(true);
       setEditRoutineVisible(false);
+    }
+  };
+
+  const addonSelectWithMainRoutine = () => {
+    if (isMainRoutine) {
+      addonDeleteAsMainRoutine();
+    } else {
+      addonSetAsMainRoutine();
+    }
+  };
+
+  const addonSetAsMainRoutine = () => {
+    if (isSetAsMainRoutine) {
+      setAddonVisible(false);
+      setSetAsMainRoutine(false);
+    } else {
+      setAddonVisible(true);
+      setSetAsMainRoutine(true);
+    }
+  };
+
+  const addonDeleteAsMainRoutine = () => {
+    if (isDeleteAsMainRoutine) {
+      setAddonVisible(false);
+      setDeleteAsMainRoutine(false);
+    } else {
+      setAddonVisible(true);
+      setDeleteAsMainRoutine(true);
     }
   };
 
@@ -203,6 +259,54 @@ function editPlanedRoutine() {
     });
 
     // createSessionFreeRoutine()
+  };
+
+  // MAIN ROUTINE
+  const handleMainRoutineCreation = async () => {
+    const cookies = new Cookies();
+    const user_id = cookies.get("token");
+    let routine_id = JSON.parse(id); // replace with the actual routine id
+
+    if (!isMainRoutine && !isMainRoutine2) {
+      await createMainRoutine(user_id, routine_id).then((res) => {
+        if (res && !res.error) {
+          console.log("Main routine created");
+          setIsMainRoutine(true);
+          setIsMainRoutine2(true);
+          setAddonVisible(false);
+          setSetAsMainRoutine(false);
+        }
+      });
+    } else if (!isMainRoutine && isMainRoutine2) {
+      deleteMainRoutineByUser(user_id).then((res) => {
+        if (res && !res.error) {
+          createMainRoutine(user_id, routine_id).then((res) => {
+            if (res && !res.error) {
+              console.log("Main routine created");
+              setIsMainRoutine(true);
+              setIsMainRoutine2(true);
+              setAddonVisible(false);
+              setSetAsMainRoutine(false);
+            }
+          });
+        }
+      });
+    }
+  };
+
+  const handleMainRoutineDeletion = async () => {
+    const cookies = new Cookies();
+    const user_id = cookies.get("token");
+
+    deleteMainRoutineByUser(user_id).then((res) => {
+      if (res && !res.error) {
+        // console.log("Main routine deleted");
+        setIsMainRoutine(false);
+        setIsMainRoutine2(false);
+        setAddonVisible(false);
+        setDeleteAsMainRoutine(false);
+      }
+    });
   };
 
   return (
@@ -302,22 +406,65 @@ function editPlanedRoutine() {
               </button>
             </div>
           </div>
+          <div
+            id="setAsMainRoutine"
+            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isSetAsMainRoutine ? "block" : "none" }}
+          >
+            <h2>¿Quieres establecer esta rutina como principal?</h2>
+            <div className="flex justify-between cage45 marginAuto">
+              <button className="tagColor1" onClick={addonSetAsMainRoutine}>
+                NO
+              </button>
+              <button className="tagColor2" onClick={handleMainRoutineCreation}>
+                SI
+              </button>
+            </div>
+          </div>
+          <div
+            id="deleteMainRoutine"
+            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isDeleteAsMainRoutine ? "block" : "none" }}
+          >
+            <h2>¿Quieres que esta rutina deje de ser tu principal?</h2>
+            <div className="flex justify-between cage45 marginAuto">
+              <button className="tagColor1" onClick={addonDeleteAsMainRoutine}>
+                NO
+              </button>
+              <button className="tagColor2" onClick={handleMainRoutineDeletion}>
+                SI
+              </button>
+            </div>
+          </div>
         </div>
         {/* PAGE CONTENT */}
         <div id="editPlanedSession" className="cage90 flex flex-column">
           <div className="editRoutineShowName flex justify-between ">
             {routine.map((routine, index) => (
-              <div className="textEditRoutinShowLimitation" key={index}>
-                <div className="flex">
+              <div className="textEditRoutinShowLimitation flex" key={index}>
+                <button
+                  className={isMainRoutine ? "starIconActive" : "starIcon"}
+                  onClick={addonSelectWithMainRoutine}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="128"
+                    height="128"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="m5.825 21l2.325-7.6L2 9h7.6L12 1l2.4 8H22l-6.15 4.4l2.325 7.6L12 16.3z" />
+                  </svg>
+                </button>
+                <div className="block">
                   <h2>{routine.routine_name}</h2>
+                  <p className="tagGlobal tagColor1">
+                    {routine.type_routine === "semanal"
+                      ? "PLANIFICADA"
+                      : routine.type_routine === "libre"
+                      ? "LIBRE"
+                      : ""}
+                  </p>
                 </div>
-                <p className="tagGlobal tagColor1">
-                  {routine.type_routine === "semanal"
-                    ? "PLANIFICADA"
-                    : routine.type_routine === "libre"
-                    ? "LIBRE"
-                    : ""}
-                </p>
               </div>
             ))}
             <button onClick={addonEditRoutine}>

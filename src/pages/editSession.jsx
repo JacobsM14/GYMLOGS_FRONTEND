@@ -73,7 +73,7 @@ function editSession() {
               setSelectedSessionExercises(response);
               response.forEach((element) => {
                 getExerciseById(element.fk_id_exercise).then((response) => {
-                  if (response) {
+                  if (Array.isArray(response) && response.length > 0) {
                     setSelectedExercise((prevExercises) => {
                       if (
                         !prevExercises.some(

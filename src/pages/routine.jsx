@@ -139,16 +139,17 @@ function Routine() {
             let routineID = getRoutinedata.id;
 
             if (routineID !== null) {
-              selectedDays.forEach((element) => {
+              const sessionPromises = selectedDays.map((element) =>
                 createSessionPlanedRoutine(
                   daySpanish[element],
                   element,
                   routineID
                 )
-                  .then((data) => {})
-                  .catch((error) => console.error(error));
-              });
-              navigate(`/editPlanedRoutine/${routineID}`);
+              );
+
+              Promise.all(sessionPromises)
+                .then(() => navigate(`/editPlanedRoutine/${routineID}`))
+                .catch((error) => console.error(error));
             }
           }
         })
@@ -160,10 +161,25 @@ function Routine() {
     const cookies = new Cookies();
     const id = cookies.get("token");
     const inputValue = inputFreeRoutine;
+
+    console.log(inputValue);
+    console.log(id);
     if (inputValue === "") {
+      console.log("entra");
       setInputFreeRoutineAdvise(true);
       return;
     } else {
+      console.log("entra2");
+      createRoutine(inputValue, "libre", null, 0, id)
+        .then((data) => {
+          if (data && !data.error) {
+            console.log(data);
+            navigate(`/editFreeRoutine/${data.id}`);
+          } else {
+            console.log("error");
+          }
+        })
+        .catch((error) => console.error(error));
     }
   };
 
