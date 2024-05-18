@@ -345,51 +345,43 @@ function editPlanedRoutine() {
             </button> */}
           </div>
 
-          {sessions
-            .sort((a, b) => {
-              const indexA = daysOfWeek.indexOf(a.nom_session);
-              const indexB = daysOfWeek.indexOf(b.nom_session);
-              if (indexA === -1) return 1;
-              if (indexB === -1) return -1;
-              return indexA - indexB;
-            })
-            .map((session, index) => (
-              <div
-                className="editEachSession backgroundBlack flex justify-between align-center"
-                key={index}
-              >
-                <h2>{session.nom_session}</h2>
+          {sessions.map((session, index) => (
+            <div
+              className="editEachSession backgroundBlack flex justify-between align-center"
+              key={index}
+            >
+              <h2>{session.nom_session}</h2>
 
-                <div className="contButtonsEditRoutine">
-                  <button onClick={() => editSession(session.pk_id_sessio)}>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="128"
-                      height="128"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        fillRule="evenodd"
-                        d="M20.77 12c0-.359-.194-.594-.582-1.066C18.768 9.21 15.636 6 12 6c-3.636 0-6.768 3.21-8.188 4.934c-.388.472-.582.707-.582 1.066c0 .359.194.594.582 1.066C5.232 14.79 8.364 18 12 18c3.636 0 6.768-3.21 8.188-4.934c.388-.472.582-.707.582-1.066M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
-                        clipRule="evenodd"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    onClick={() => addonDeleteSession(session.pk_id_sessio)}
+              <div className="contButtonsEditRoutine">
+                <button onClick={() => editSession(session.pk_id_sessio)}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="128"
+                    height="128"
+                    viewBox="0 0 24 24"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="128"
-                      height="128"
-                      viewBox="0 0 24 24"
-                    >
-                      <path d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z" />
-                    </svg>
-                  </button>
-                </div>
+                    <path
+                      fillRule="evenodd"
+                      d="M20.77 12c0-.359-.194-.594-.582-1.066C18.768 9.21 15.636 6 12 6c-3.636 0-6.768 3.21-8.188 4.934c-.388.472-.582.707-.582 1.066c0 .359.194.594.582 1.066C5.232 14.79 8.364 18 12 18c3.636 0 6.768-3.21 8.188-4.934c.388-.472.582-.707.582-1.066M12 15a3 3 0 1 0 0-6a3 3 0 0 0 0 6"
+                      clipRule="evenodd"
+                    />
+                  </svg>
+                </button>
+                <button
+                  onClick={() => addonDeleteSession(session.pk_id_sessio)}
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="128"
+                    height="128"
+                    viewBox="0 0 24 24"
+                  >
+                    <path d="M7 21q-.825 0-1.412-.587T5 19V6H4V4h5V3h6v1h5v2h-1v13q0 .825-.587 1.413T17 21zm2-4h2V8H9zm4 0h2V8h-2z" />
+                  </svg>
+                </button>
               </div>
-            ))}
+            </div>
+          ))}
           <button className="addSession" onClick={addonNewSession}>
             <svg
               xmlns="http://www.w3.org/2000/svg"

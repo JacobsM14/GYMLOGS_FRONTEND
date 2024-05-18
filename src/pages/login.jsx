@@ -42,7 +42,10 @@ function logIn() {
 
   return (
     <>
-      <div className="allCont backgroundGradient flex justify-center align-center flex-column">
+      <div
+        className="allCont backgroundGradient flex justify-center align-center flex-column"
+        style={{ paddingBottom: "0px" }}
+      >
         <div className="cage80 loginOnDeskop" id="contLogin">
           <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
@@ -50,8 +53,8 @@ function logIn() {
           </div>
           <div className="loginForm">
             <form action="" onSubmit={userLogIn}>
-              <input type="text" placeholder="Correo Electronico:" id="email"/>
-              <input type="password" placeholder="Contraseña:" id="pssd"/>
+              <input type="text" placeholder="Correo Electronico:" id="email" />
+              <input type="password" placeholder="Contraseña:" id="pssd" />
               <input type="submit" className="button1" value="INICIAR SESION" />
               <a href="">Has olvidado tu contraseña?</a>
             </form>

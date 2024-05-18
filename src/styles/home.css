@@ -15,7 +15,8 @@
   margin-bottom: 20px;
 }
 
-#home .routinesShow h2 {
+#home .routinesShow h2, 
+#home .routinesShow2 h2 {
   color: var(--light);
   text-align: center;
   font-size: 20px;
@@ -77,4 +78,94 @@
     font-size: 20px;
     text-align: center;
     margin: 0px;
+}
+
+/* AFTER CONNECTING WITH THE API */
+/* ROUTINES CREATED */
+.routinesShow2{
+    height: auto !important;
+    max-width: none !important;
+    margin-bottom: 20px;
+}
+
+.routineCageContainer{
+    overflow: scroll; 
+    gap: 10px;  
+}
+
+.routineCage{
+    width: 150px;
+    min-width: 150px;
+    box-sizing: border-box;
+    margin: 10px 0px;
+    overflow: hidden;
+}
+
+.routineCage h3{
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    padding-left: 10px;
+    color: var(--dark-1);
+    margin: 0px;
+}
+
+.routineCage p{
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+    color: var(--dark-1);
+    margin: 0px 0px 5px 5px;
+    width: fit-content;
+}
+
+.routineCage button{
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 2px 0px;
+    margin: 2px 0px 0px 0px;
+    border: none;
+    background-color: var(--primary);
+    color: var(--secondary);
+}
+
+/* FAVORITE ROUTINE */
+.sessionCage{
+    width: 120px;
+    min-width: 120px;
+    box-sizing: border-box;
+    overflow: hidden;
+    margin: 10px 0px;
+}
+
+.sessionCage h3{
+    font-size: 15px;
+    font-weight: 700;
+    text-align: left;
+    text-transform: uppercase;
+    padding-left: 10px;
+    color: var(--dark-1);
+    margin: 2px 0px;
+}
+
+.sessionCage p{
+    font-size: 10px;
+    font-weight: 700;
+    text-align: left;
+    color: var(--dark-1);
+    margin: 0px 0px 5px 5px;
+    width: fit-content;
+}
+
+.sessionCage button{
+    width: 100%;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 2px 0px;
+    margin: 2px 0px 0px 0px;
+    border: none;
+    background-color: var(--secondary);
+    color: var(--primary);
 }

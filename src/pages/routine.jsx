@@ -92,7 +92,6 @@ function Routine() {
   // CALL API CONSTS
   // CREATE PLANED ROUTINE
   const createPlanedRoutineOnDB = () => {
-    // console.log("Creating planed routine");
     const cookies = new Cookies();
     const id = cookies.get("token");
     const inputValue = inputPlanedROutine;
@@ -136,7 +135,6 @@ function Routine() {
       createRoutine(inputValue, "semanal", selectedDays, null, id)
         .then((data) => {
           getRoutinedata = data;
-          console.log("something: " + getRoutinedata);
           if (getRoutinedata !== null) {
             let routineID = getRoutinedata.id;
 
@@ -147,9 +145,7 @@ function Routine() {
                   element,
                   routineID
                 )
-                  .then((data) => {
-                    console.log(data);
-                  })
+                  .then((data) => {})
                   .catch((error) => console.error(error));
               });
               navigate(`/editPlanedRoutine/${routineID}`);
@@ -168,8 +164,6 @@ function Routine() {
       setInputFreeRoutineAdvise(true);
       return;
     } else {
-      // console.log(inputValue);
-      // console.log(id);
     }
   };
 
@@ -179,19 +173,15 @@ function Routine() {
     result
       .then((data) => {
         if (data && !data.error) {
-          // console.log("alo: " + data);
           if (data[0].type_routine === "libre") {
             navigate(`/editFreeRoutine/${routineID}`);
           } else if (data[0].type_routine === "semanal") {
             navigate(`/editPlanedRoutine/${routineID}`);
           }
         } else {
-          // console.log("error: ", data.error);
         }
       })
-      .catch((error) => {
-        // console.log("error: ", error);
-      });
+      .catch((error) => {});
   };
 
   return (

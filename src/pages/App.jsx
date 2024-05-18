@@ -8,6 +8,7 @@ import Home from "./home";
 import User from "./user";
 import EditUser from "./editUser";
 import PrivacyPolitics from "./privacyPolitics";
+import PremiumAccount from "./userPremium";
 import Routine from "./routine";
 import EditPlanedRoutine from "./editPlanedRoutine";
 import EditFreeRoutine from "./editFreeRoutine";
@@ -27,6 +28,7 @@ function App() {
       <Route path="/user" element={<User />}></Route>
       <Route path="/editUser" element={<EditUser />}></Route>
       <Route path="/privacyPolitics" element={<PrivacyPolitics />}></Route>
+      <Route path="/premiumAccount" element={<PremiumAccount />}></Route>
       <Route path="/routines" element={<Routine />}></Route>
       <Route
         path="/editPlanedRoutine/:id"

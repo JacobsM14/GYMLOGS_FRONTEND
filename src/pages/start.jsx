@@ -1,8 +1,14 @@
 function Start() {
   return (
     <>
-      <div className="allCont flex justify-center align-center flex-column backgroundBlack">
-        <div className="cage90 flex justify-center align-center flex-column" id="start">
+      <div
+        className="allCont flex justify-center align-center flex-column backgroundBlack"
+        style={{ paddingBottom: "0px" }}
+      >
+        <div
+          className="cage90 flex justify-center align-center flex-column"
+          id="start"
+        >
           <div className="startLogo">
             <img src="logo.png" alt="gymlogs" />
             <h1>GYMLOGS</h1>

@@ -140,9 +140,22 @@
   height: fit-content !important;
 }
 
+.starIconActive{
+  background-color: transparent !important;
+  width: auto !important;
+  height: fit-content !important;
+}
+
 .starIcon svg {
   stroke: var(--dark-1) !important;
   fill: var(--dark-1) !important;
+  width: 30px !important;
+  height: 30px !important;
+}
+
+.starIconActive svg {
+  stroke: var(--secondary) !important;
+  fill: var(--secondary) !important;
   width: 30px !important;
   height: 30px !important;
 }

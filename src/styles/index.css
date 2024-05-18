@@ -70,6 +70,10 @@ input {
   width: 100%;
 }
 
+.cage95 {
+  width: 95%;
+}
+
 .cage90 {
   width: 90%;
 }
@@ -143,6 +147,10 @@ input {
 
 .justify-evenly {
   justify-content: space-evenly;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 .align-center {

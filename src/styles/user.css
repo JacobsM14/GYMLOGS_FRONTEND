@@ -76,20 +76,24 @@
 }
 
 /* PRIVACY POLITICS */
-#privacyPolitics .allCont {
+#privacyPolitics .allCont,
+#premiumAccount .allCont {
   padding-bottom: 0px !important;
 }
 
-.textPrivacyPolitics {
+.textPrivacyPolitics,
+.textPremiumAccount {
   padding: 20px 0px 0px;
 }
 
-.textPrivacyPolitics h1 {
+.textPrivacyPolitics h1,
+.textPremiumAccount h1 {
   color: var(--light);
   font-size: 23px;
 }
 
-.textPrivacyPolitics button {
+.textPrivacyPolitics button,
+.textPremiumAccount button {
   background-color: var(--secondary);
   border: none;
   border-radius: 100px;
@@ -100,34 +104,39 @@
   height: 40px;
 }
 
-.textPrivacyPolitics button svg {
+.textPrivacyPolitics button svg,
+.textPremiumAccount button svg {
   fill: var(--dark-1);
   width: 30px;
   height: 30px;
 }
 
-#privacyPolitics h2 {
+#privacyPolitics h2,
+#premiumAccount h2 {
   color: var(--light);
   font-size: 17px;
   font-weight: 500;
   margin: 20px 0px 0px;
 }
 
-#privacyPolitics h3 {
+#privacyPolitics h3,
+#premiumAccount h3 {
   color: var(--light);
   font-size: 15px;
   font-weight: 500;
   margin: 10px 0px 0px;
 }
 
-#privacyPolitics p {
+#privacyPolitics p,
+#premiumAccount p {
   color: var(--light);
   font-size: 13px;
   font-weight: 400;
   margin: 10px 0px 10px 15px;
 }
 
-#privacyPolitics p span {
+#privacyPolitics p span,
+#premiumAccount p span {
   color: var(--secondary);
   font-family: 500;
 }
@@ -144,24 +153,24 @@
 }
 
 /* EDIT USER PAGE */
-#userEditPage form{
-    padding-top: 20px;
+#userEditPage form {
+  padding-top: 20px;
 }
 
-#userEditPage form input{
-    box-sizing: border-box;
-    width: 100%;
-    padding: 10px;
-    margin: 15px 0px;
-    border: none;
-    border-radius: 5px;
+#userEditPage form input {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  margin: 15px 0px;
+  border: none;
+  border-radius: 5px;
 }
 
-#userEditPage form input[type="submit"]{
-    background-color: var(--secondary);
-    color: var(--dark-1);
-    border: none;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 10px 0px;
+#userEditPage form input[type="submit"] {
+  background-color: var(--secondary);
+  color: var(--dark-1);
+  border: none;
+  border-radius: 5px;
+  padding: 10px;
+  margin: 10px 0px;
 }

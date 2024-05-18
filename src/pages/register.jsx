@@ -44,7 +44,10 @@ function Register() {
 
   return (
     <>
-      <div className="allCont flex justify-center align-center flex-column backgroundGradient">
+      <div
+        className="allCont flex justify-center align-center flex-column backgroundGradient"
+        style={{ paddingBottom: "0px" }}
+      >
         <div className="cage80 loginOnDeskop">
           <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
@@ -74,7 +77,9 @@ function Register() {
               <div className="checkboxForm">
                 <input type="checkbox" name="pricacy" id="privacy" />
                 <label id="privacy">
-                  <a href="/privacyPolitics">Acepto las politicad de Privacidad</a>
+                  <a href="/privacyPolitics">
+                    Acepto las politicad de Privacidad
+                  </a>
                 </label>
               </div>
               <input type="submit" className="button2" value="REGISTRARSE" />

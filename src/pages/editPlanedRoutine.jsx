@@ -14,6 +14,10 @@ import {
   createSessionPlanedRoutine,
   updateRoutineName,
   deleteRoutineById,
+  getMainRoutineByUser,
+  createMainRoutine,
+  deleteMainRoutineByUser,
+  getMainRoutineByUserAndRoutine,
 } from "./../services/userApi";
 
 function editPlanedRoutine() {
@@ -36,6 +40,8 @@ function editPlanedRoutine() {
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
   const [inputRoutineName, setInputRoutineName] = useState("");
+  const [isMainRoutine, setIsMainRoutine] = useState(false);
+  const [isMainRoutine2, setIsMainRoutine2] = useState(false);
 
   const daysOfWeek = [
     "Lunes",
@@ -81,6 +87,23 @@ function editPlanedRoutine() {
           }
         })
         .catch((error) => console.error(error));
+
+      getMainRoutineByUserAndRoutine(id, token).then((res) => {
+        if (res && !res.error) {
+          setIsMainRoutine(true);
+          console.log("es main");
+        }
+      });
+
+      getMainRoutineByUser(token).then((res) => {
+        if (res && !res.error) {
+          res.forEach((mainRoutine) => {
+            if (mainRoutine.fk_id_routine === id) {
+              setIsMainRoutine2(true);
+            }
+          });
+        }
+      });
     }
   }, [id]); // Removed sessions from the dependency array
 
@@ -268,18 +291,34 @@ function editPlanedRoutine() {
     }
   };
 
-  const setAsMainRoutine = () => {
-    let user_id = routine[0].fk_id_user;
+  // MAIN ROUTINE
+  const handleMainRoutineCreation = async () => {
+    const cookies = new Cookies();
+    const user_id = cookies.get("token");
+    let routine_id = JSON.parse(id); // replace with the actual routine id
+    console.log("routine_id", routine_id);
+    console.log("user_id", user_id);
+    console.log("isMainRoutine", isMainRoutine);
+    console.log("isMainRoutine2", isMainRoutine2);
 
-    getRoutineById(user_id).then((res) => {
-      if (res && !res.error) {
-        res.forEach((routine) => {
-          if (routine.type_routine === "principal") {
-            updateRoutineName(routine.pk_id_routine, routine.routine_name);
-          }
-        });
-      }
-    });
+    if (isMainRoutine && isMainRoutine2 === false) {
+      await deleteMainRoutineByUser(user_id);
+      setAddonVisible(false);
+      setSetAsMainRoutine(false);
+    } else if (!isMainRoutine) {
+      await createMainRoutine(user_id, routine_id).then((res) => {
+        if (res && !res.error) {
+          console.log("Main routine created");
+          setIsMainRoutine(true);
+          setIsMainRoutine2(true);
+          setAddonVisible(false);
+          setSetAsMainRoutine(false);
+        }
+      });
+    } else {
+      setAddonVisible(false);
+      setSetAsMainRoutine(false);
+    }
   };
 
   return (
@@ -453,7 +492,7 @@ function editPlanedRoutine() {
               <button className="tagColor1" onClick={addonSetAsMainRoutine}>
                 NO
               </button>
-              <button className="tagColor2" onClick={setAsMainRoutine}>
+              <button className="tagColor2" onClick={handleMainRoutineCreation}>
                 SI
               </button>
             </div>
@@ -464,7 +503,10 @@ function editPlanedRoutine() {
           <div className="editRoutineShowName flex justify-between ">
             {routine.map((routine, index) => (
               <div className="textEditRoutinShowLimitation flex" key={index}>
-                <button className="starIcon" onClick={addonSetAsMainRoutine}>
+                <button
+                  className={isMainRoutine ? "starIconActive" : "starIcon"}
+                  onClick={addonSetAsMainRoutine}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="128"

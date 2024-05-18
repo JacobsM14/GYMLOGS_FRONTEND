@@ -74,9 +74,13 @@ export async function updateUserUsername(user_id, username) {
 
 // UPDATE USER PASSWORD - PUT
 export async function updateUserPassword(user_id, password, pastPassword) {
-  return await postAndPutFetch("PUT", `${urlServer}users/password/${user_id}/${pastPassword}`, {
-    pssd: password,
-  });
+  return await postAndPutFetch(
+    "PUT",
+    `${urlServer}users/password/${user_id}/${pastPassword}`,
+    {
+      pssd: password,
+    }
+  );
 }
 
 //POST
@@ -166,10 +170,15 @@ export async function getMainRoutineByUser(user_id) {
   return await getFetch(`${urlServer}mainRoutine/${user_id}`);
 }
 
+// GET MAIN ROUTINE BY USER AND ROUTINE ID - GET
+export async function getMainRoutineByUserAndRoutine(routine_id, user_id) {
+  return await getFetch(`${urlServer}mainRoutine/${routine_id}/${user_id}`);
+}
+
 // CREATE MAIN ROUTINE - POST
 export async function createMainRoutine(user_id, routine_id) {
-  return await postAndPutFetch("POST", `${urlServer}mainRoutine/${user_id}`, {
-    fk_id_routine: routine_id,
+  return await postAndPutFetch("POST", `${urlServer}mainRoutine/${routine_id}`, {
+    fk_id_user: user_id,
   });
 }
 

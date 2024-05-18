@@ -18,6 +18,7 @@ function editUser() {
   const username = useRef();
   const password = useRef();
   const pastPassword = useRef();
+  const repeatPassword = useRef();
 
   const [userSaved, setUserSaved] = useState({});
   // NEED TO BE LOGED IN TO ACCESS THIS PAGE
@@ -71,7 +72,7 @@ function editUser() {
       });
     }
 
-    if (newPassword !== "" && newpastPassword !== "") {
+    if (newPassword !== "" && newpastPassword !== "" && newPassword === repeatPassword.current.value) {
       updateUserPassword(
         userSaved.pk_id_user,
         newPassword,
@@ -136,6 +137,14 @@ function editUser() {
               className="cage90 marginAuto flex"
               placeholder="Nueva Contraseña"
               ref={password}
+            />
+            <input
+              type="password"
+              id="repeatPassword"
+              name="repeatPassword"
+              className="cage90 marginAuto flex"
+              placeholder="Repetir Nueva Contraseña"
+              ref={repeatPassword}
             />
             <input type="submit" value="EDITAR USUARIO" onClick={editUser} />
           </form>
