@@ -1,6 +1,6 @@
 import Nav from "./../components/navComponent/navComponent";
 import "./../styles/routine.css";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Cookies from "universal-cookie";
@@ -36,16 +36,29 @@ function Routine() {
   // ADDONS SHOW
   const [isPlanedRoutineVisible, setPlanedRoutineVisible] = useState(false);
   const [isFreeRoutineVisible, setFreeRoutineVisible] = useState(false);
-  // ERROR ON CREATE PLANED ROUTINE
-  const [inputPlanedRoutineAdvise, setInputPlanedRoutineAdvise] =
-    useState(false);
-  const [inputFreeRoutineAdvise, setInputFreeRoutineAdvise] = useState(false);
-  const [selectedDaysAdvise, setSelectedDaysAdvise] = useState(false);
+
   // GET SELECTED DAYS
   const [selectedDays, setSelectedDays] = useState([]);
   // GET INPUT VALUE
-  const [inputPlanedROutine, setInputPlanedROutine] = useState("");
-  const [inputFreeRoutine, setInputFreeRoutine] = useState("");
+  const inputPlanedROutine = useRef();
+  const inputFreeRoutine = useRef();
+
+  // ERROR ON CREATE PLANED ROUTINE
+  const [
+    inputPlanedRoutineMinLengthAdvise,
+    setInputPlanedRoutineMinLengthAdvise,
+  ] = useState(false);
+  const [
+    inputPlanedRoutineMaxLengthAdvise,
+    setInputPlanedRoutineMaxLengthAdvise,
+  ] = useState(false);
+  const [selectedDaysAdvise, setSelectedDaysAdvise] = useState(false);
+
+  // ERROR ON CREATE FREE ROUTINE
+  const [inputFreeRoutineMinLengthAdvise, setInputFreeRoutineMinLengthAdvise] =
+    useState(false);
+  const [inputFreeRoutineMaxLengthAdvise, setInputFreeRoutineMaxLengthAdvise] =
+    useState(false);
 
   //SHOW ADDON TO CREATE PLANED ROUTINE
   const createPlanedRoutine = () => {
@@ -56,8 +69,10 @@ function Routine() {
   const quitAddonCreatePlanedRoutine = () => {
     setPlanedRoutineVisible(false);
     setSelectedDays([]);
-    setInputPlanedRoutineAdvise(false);
     setSelectedDaysAdvise(false);
+    setInputPlanedRoutineMinLengthAdvise(false);
+    setInputPlanedRoutineMaxLengthAdvise(false);
+    inputPlanedROutine.current.value = "";
   };
 
   //SELECT DAYS FOR PLANED ROUTINE
@@ -69,16 +84,6 @@ function Routine() {
     }
   };
 
-  //INPUTS VALUES
-  //CHANGE PLANED ROUTINE INPUT VALUE
-  const changeInputPlanedROutine = (event) => {
-    setInputPlanedROutine(event.target.value);
-  };
-
-  const changeInputFreeRoutine = (event) => {
-    setInputFreeRoutine(event.target.value);
-  };
-
   //SHOW ADDON TO CREATE FREE ROUTINE
   const createFreeRoutine = () => {
     setFreeRoutineVisible(true);
@@ -87,6 +92,9 @@ function Routine() {
   //QUIT ADDON TO CREATE FREE ROUTINE
   const quitAddonCreateFreeRoutine = () => {
     setFreeRoutineVisible(false);
+    inputFreeRoutine.current.value = "";
+    setInputFreeRoutineMinLengthAdvise(false);
+    setInputFreeRoutineMaxLengthAdvise(false);
   };
 
   // CALL API CONSTS
@@ -94,13 +102,15 @@ function Routine() {
   const createPlanedRoutineOnDB = () => {
     const cookies = new Cookies();
     const id = cookies.get("token");
-    const inputValue = inputPlanedROutine;
-    if (inputValue === "" && selectedDays.length === 0) {
-      setInputPlanedRoutineAdvise(true);
-      setSelectedDaysAdvise(true);
+    const inputValue = inputPlanedROutine.current.value;
+    
+    if (inputValue === null || inputValue === "" || inputValue.length < 3) {
+      setInputPlanedRoutineMinLengthAdvise(true);
+      setInputPlanedRoutineMaxLengthAdvise(false);
       return;
-    } else if (inputValue === "") {
-      setInputPlanedRoutineAdvise(true);
+    } else if (inputValue.length > 23) {
+      setInputPlanedRoutineMaxLengthAdvise(true);
+      setInputPlanedRoutineMinLengthAdvise(false);
       return;
     } else if (selectedDays.length === 0) {
       setSelectedDaysAdvise(true);
@@ -160,20 +170,22 @@ function Routine() {
   const createFreeRoutineOnDB = () => {
     const cookies = new Cookies();
     const id = cookies.get("token");
-    const inputValue = inputFreeRoutine;
+    const inputValue = inputFreeRoutine.current.value;
 
-    console.log(inputValue);
-    console.log(id);
-    if (inputValue === "") {
-      console.log("entra");
-      setInputFreeRoutineAdvise(true);
+    if (inputValue === null || inputValue === "" || inputValue.lenth < 3) {
+      setInputFreeRoutineMinLengthAdvise(true);
+      setInputFreeRoutineMaxLengthAdvise(false);
+      return;
+    } else if (inputValue.length > 23) {
+      setInputFreeRoutineMaxLengthAdvise(true);
+      setInputFreeRoutineMinLengthAdvise(false);
       return;
     } else {
-      console.log("entra2");
+      setInputFreeRoutineMinLengthAdvise(false);
+      setInputFreeRoutineMaxLengthAdvise(false);
       createRoutine(inputValue, "libre", null, 0, id)
         .then((data) => {
           if (data && !data.error) {
-            console.log(data);
             navigate(`/editFreeRoutine/${data.id}`);
           } else {
             console.log("error");
@@ -232,18 +244,30 @@ function Routine() {
               className="adviseFormText cage90 block marginAuto"
               style={{
                 display:
-                  inputPlanedRoutineAdvise || inputPlanedRoutineAdvise
+                  inputPlanedRoutineMinLengthAdvise ||
+                  inputPlanedRoutineMinLengthAdvise
                     ? "flex"
                     : "none",
               }}
             >
-              Introduce un nombre*
+              Minimo 3 caracteres*
+            </p>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  inputPlanedRoutineMaxLengthAdvise ||
+                  inputPlanedRoutineMaxLengthAdvise
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Maximo 23 caracteres*
             </p>
             <input
               type="text"
               placeholder="Nombre de Rutina: "
-              value={inputPlanedROutine}
-              onChange={changeInputPlanedROutine}
+              ref={inputPlanedROutine}
             />
             <h3>Selecciona los dias</h3>
             <p
@@ -351,17 +375,30 @@ function Routine() {
               className="adviseFormText cage90 block marginAuto"
               style={{
                 display:
-                  inputFreeRoutineAdvise || inputFreeRoutineAdvise
+                  inputFreeRoutineMinLengthAdvise ||
+                  inputFreeRoutineMinLengthAdvise
                     ? "flex"
                     : "none",
               }}
             >
-              Introduce un nombre*
+              Minimo 3 caracteres*
+            </p>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  inputFreeRoutineMaxLengthAdvise ||
+                  inputFreeRoutineMaxLengthAdvise
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Maximo 23 caracteres*
             </p>
             <input
               type="text"
               placeholder="Nombre de Rutina: "
-              onChange={changeInputFreeRoutine}
+              ref={inputFreeRoutine}
             />
             <button
               className="createRutineAddonButton"
@@ -371,6 +408,7 @@ function Routine() {
             </button>
           </div>
         </div>
+        {/* CONT GENERAL */}
         <div id="routine" className="cage80 marginAuto flex flex-column">
           <h2>CREAR RUTINA</h2>
           <button

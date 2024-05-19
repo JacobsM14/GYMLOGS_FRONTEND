@@ -10,7 +10,6 @@ import {
   getRoutineById,
   getSessionsByRoutineId,
   deleteSessionById,
-  updateRoutineDays,
   createSessionFreeRoutine,
   updateRoutineName,
   deleteRoutineById,
@@ -36,6 +35,16 @@ function editPlanedRoutine() {
   const [isConfirmDeleteRoutine, setConfirmDeleteRoutine] = useState(false);
   const [isSetAsMainRoutine, setSetAsMainRoutine] = useState(false);
   const [isDeleteAsMainRoutine, setDeleteAsMainRoutine] = useState(false);
+
+  //ERROR STATES
+  const [createSessionMinLengthError, setCreateSessionMinLengthError] =
+    useState(false);
+  const [createSessionMaxLengthError, setCreateSessionMaxLengthError] =
+    useState(false);
+  const [editRoutineMinLengthError, setEditRoutineMinLengthError] =
+    useState(false);
+  const [editRoutineMaxLengthError, setEditRoutineMaxLengthError] =
+    useState(false);
 
   // SAVE CONTENT
   const [selectedSession, setSelectedSession] = useState("");
@@ -107,10 +116,6 @@ function editPlanedRoutine() {
   };
 
   // MOVE TO ROUTINES
-  const getBack = () => {
-    navigate("/routines");
-  };
-
   const editSession = (id) => {
     navigate(`/editSession/${id}`);
   };
@@ -191,7 +196,15 @@ function editPlanedRoutine() {
   // DATABASE FUNCTIONS
   //ROTUINE
   const updateNameRoutine = () => {
-    if (inputRoutineName !== "") {
+    if (inputRoutineName.length < 3) {
+      setEditRoutineMinLengthError(true);
+      setEditRoutineMaxLengthError(false);
+      return;
+    } else if (inputRoutineName.length > 23) {
+      setEditRoutineMinLengthError(false);
+      setEditRoutineMaxLengthError(true);
+      return;
+    } else {
       updateRoutineName(id, inputRoutineName)
         .then((res) => {
           if (res && !res.error) {
@@ -216,19 +229,9 @@ function editPlanedRoutine() {
 
   // SESSION
   const deleteSession = () => {
-    let day_routineSelected = JSON.parse(routine[0].day_routine);
-
-    sessions.forEach((session) => {
-      if (session.pk_id_sessio === selectedSession) {
-        let index = day_routineSelected.indexOf(session.week_day);
-        day_routineSelected.splice(index, 1);
-      }
-    });
-
     deleteSessionById(selectedSession)
       .then((res) => {
         if (res && !res.error) {
-          updateRoutineDays(id, null, JSON.stringify(day_routineSelected));
           setSessions(
             sessions.filter(
               (session) => session.pk_id_sessio !== selectedSession
@@ -243,22 +246,26 @@ function editPlanedRoutine() {
   };
 
   const createSession = () => {
-    //   updateRoutineDays(
-    //     routine[0].pk_id_routine,
-    //     null,
-    //     null
-    //   );
     let newSession = inputAddSession.current.value;
-    createSessionFreeRoutine(newSession, id).then((res) => {
-      if (res && !res.error) {
-        setSessions([...sessions, res]);
-        setAddonVisible(false);
-        setNewSessionVisible(false);
-        inputAddSession.current.value = "";
-      }
-    });
 
-    // createSessionFreeRoutine()
+    if (newSession.length < 3) {
+      setCreateSessionMinLengthError(true);
+      setCreateSessionMaxLengthError(false);
+      return;
+    } else if (newSession.length > 23) {
+      setCreateSessionMinLengthError(false);
+      setCreateSessionMaxLengthError(true);
+      return;
+    } else {
+      createSessionFreeRoutine(newSession, id).then((res) => {
+        if (res && !res.error) {
+          setSessions([...sessions, res]);
+          setAddonVisible(false);
+          setNewSessionVisible(false);
+          inputAddSession.current.value = "";
+        }
+      });
+    }
   };
 
   // MAIN ROUTINE
@@ -336,6 +343,28 @@ function editPlanedRoutine() {
                 <path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zm-4.793 9.793l-1.414 1.414L12 13.414l-2.793 2.793l-1.414-1.414L10.586 12L7.793 9.207l1.414-1.414L12 10.586l2.793-2.793l1.414 1.414L13.414 12z" />
               </svg>
             </div>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  createSessionMinLengthError || createSessionMinLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Minimo 3 caracteres*
+            </p>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  createSessionMaxLengthError || createSessionMaxLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Maximo 23 caracteres*
+            </p>
             <input
               type="text"
               placeholder="Nombre de la Session: "
@@ -377,6 +406,28 @@ function editPlanedRoutine() {
                 <path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zm-4.793 9.793l-1.414 1.414L12 13.414l-2.793 2.793l-1.414-1.414L10.586 12L7.793 9.207l1.414-1.414L12 10.586l2.793-2.793l1.414 1.414L13.414 12z" />
               </svg>
             </div>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  editRoutineMinLengthError || editRoutineMinLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Minimo 3 caracteres*
+            </p>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  editRoutineMaxLengthError || editRoutineMaxLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Maximo 23 caracteres*
+            </p>
             <input
               type="text"
               placeholder="Nombre de la rutina"

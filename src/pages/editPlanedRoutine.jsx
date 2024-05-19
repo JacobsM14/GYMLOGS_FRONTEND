@@ -37,6 +37,14 @@ function editPlanedRoutine() {
   const [isSetAsMainRoutine, setSetAsMainRoutine] = useState(false);
   const [isDeleteAsMainRoutine, setDeleteAsMainRoutine] = useState(false);
 
+  //ERROR STATES
+  const [createSessionDaySelectedError, setCreateSessionDaySelectedError] =
+    useState(false);
+  const [editRoutineNameMinLengthError, setEditRoutineNameMinLengthError] =
+    useState(false);
+  const [editRoutineNameMaxLengthError, setEditRoutineNameMaxLengthError] =
+    useState(false);
+
   // SAVE CONTENT
   const [selectedDay, setSelectedDay] = useState("");
   const [selectedSession, setSelectedSession] = useState("");
@@ -232,7 +240,15 @@ function editPlanedRoutine() {
   // DATABASE FUNCTIONS
   //ROTUINE
   const updateNameRoutine = () => {
-    if (inputRoutineName !== "") {
+    if (inputRoutineName.length < 3) {
+      setEditRoutineNameMinLengthError(true);
+      setEditRoutineNameMaxLengthError(false);
+      return;
+    } else if (inputRoutineName.length > 23) {
+      setEditRoutineNameMaxLengthError(true);
+      setEditRoutineNameMinLengthError(false);
+      return;
+    } else if (inputRoutineName !== "") {
       updateRoutineName(id, inputRoutineName)
         .then((res) => {
           if (res && !res.error) {
@@ -296,7 +312,11 @@ function editPlanedRoutine() {
       Sunday: "Domingo",
     };
 
-    if (selectedDay !== "" && !isDayInSessions(selectedDay)) {
+    if (selectedDay === "") {
+      setCreateSessionDaySelectedError(true);
+      return;
+    } else if (selectedDay !== "" && !isDayInSessions(selectedDay)) {
+      setCreateSessionDaySelectedError(false);
       const daysOfWeek = [
         "Monday",
         "Tuesday",
@@ -407,6 +427,14 @@ function editPlanedRoutine() {
               </svg>
             </div>
             <h3>Selecciona los dias</h3>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display: createSessionDaySelectedError ? "flex" : "none",
+              }}
+            >
+              Debes seleccionar un dia*
+            </p>
             <div
               id="contWeekDays"
               className="flex cage90 marginAuto justify-between "
@@ -511,6 +539,28 @@ function editPlanedRoutine() {
                 <path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zm-4.793 9.793l-1.414 1.414L12 13.414l-2.793 2.793l-1.414-1.414L10.586 12L7.793 9.207l1.414-1.414L12 10.586l2.793-2.793l1.414 1.414L13.414 12z" />
               </svg>
             </div>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  editRoutineNameMinLengthError || editRoutineNameMinLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Minimo 3 caracteres*
+            </p>
+            <p
+              className="adviseFormText cage90 block marginAuto"
+              style={{
+                display:
+                  editRoutineNameMaxLengthError || editRoutineNameMaxLengthError
+                    ? "flex"
+                    : "none",
+              }}
+            >
+              Maximo 23 caracteres*
+            </p>
             <input
               type="text"
               placeholder="Nombre de la rutina"

@@ -51,6 +51,16 @@ function editSession() {
   const [calisteniaExercises, setCalisteniaExercises] = useState([]);
   const [cardioExercises, setCardioExercises] = useState([]);
   const [maquinasExercises, setMaquinasExercises] = useState([]);
+  const categoryMap = {
+    1: "Pecho",
+    2: "Brazos",
+    3: "Espalda",
+    4: "Piernas",
+  };
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  // CHECKBOXES
+  const [checkedExercises, setCheckedExercises] = useState({});
 
   // DESCRIPTION HOOKS
   const h2Title = useRef();
@@ -206,8 +216,10 @@ function editSession() {
   };
 
   // DATABASE FUNCTIONS
-  const saveExercises = (type) => {
-    const exercises = [];
+  const saveExercises = async (type) => {
+    const exercises = Object.keys(checkedExercises).filter(
+      (id) => checkedExercises[id]
+    );
     let form;
 
     if (type === "Peso Libre") {
@@ -226,31 +238,42 @@ function editSession() {
       }
     }
 
-    exercises.forEach((element) => {
-      createSessionExercise(element, id).then((response) => {
-        if (response) {
-          setSelectedSessionExercises((prevExercises) => [
-            ...prevExercises,
-            response,
-          ]);
-        }
+    setCheckedExercises((prevCheckedExercises) => {
+      const newCheckedExercises = { ...prevCheckedExercises };
+      exercises.forEach((exerciseId) => {
+        newCheckedExercises[exerciseId] = true;
       });
-
-      getExerciseById(JSON.parse(element)).then((response) => {
-        if (response) {
-          setSelectedExercise((prevExercises) => [
-            ...prevExercises,
-            response[0],
-          ]);
-        }
-      });
+      return newCheckedExercises;
     });
 
-    for (let input of form.elements) {
-      if (input.type === "checkbox") {
-        input.checked = false;
+    const uniqueExercises = [...new Set(exercises)];
+
+    const newSessionExercises = [];
+    const newExercises = [];
+
+    for (const exerciseId of uniqueExercises) {
+      const sessionExercise = await createSessionExercise(exerciseId, id);
+      if (sessionExercise) {
+        newSessionExercises.push(sessionExercise);
+        const exerciseDetail = await getExerciseById(JSON.parse(exerciseId));
+        if (exerciseDetail && exerciseDetail[0]) {
+          newExercises.push(exerciseDetail[0]);
+        }
       }
     }
+
+    setSelectedSessionExercises((prevExercises) => [
+      ...prevExercises,
+      ...newSessionExercises,
+    ]);
+    setSelectedExercise((prevExercises) => [...prevExercises, ...newExercises]);
+
+    document.querySelectorAll('input[type="checkbox"]').forEach((checkbox) => {
+      checkbox.checked = false;
+    });
+
+    // Clear the checkedExercises state
+    setCheckedExercises({});
 
     setAddonVisible(false);
     setAddonSelectExerciseTypeVisible(false);
@@ -355,30 +378,90 @@ function editSession() {
                 </svg>
               </button>
             </div>
+            <div className="filterButtons cage90 flex marginAuto">
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 1 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(1)}
+              >
+                Pecho
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 2 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(2)}
+              >
+                Brazos
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 3 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(3)}
+              >
+                Espalda
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 4 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(4)}
+              >
+                Piernas
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === null ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(null)}
+              >
+                Todos
+              </button>
+            </div>
 
             <div className="globalForm flex flex-column cage90 marginAuto">
               {(pesoLibreExercises || [])
-                .filter(
-                  (pesoLibre) =>
-                    !selectedSessionExercises.find(
-                      (exercise) =>
-                        exercise.fk_id_exercise === pesoLibre.pk_id_exercise
-                    )
-                )
-                .map((pesoLibre, index) => {
+                .filter((pesoLibre) => {
+                  const isExerciseSelected = selectedSessionExercises.find(
+                    (exercise) =>
+                      exercise.fk_id_exercise === pesoLibre.pk_id_exercise
+                  );
+                  const isCategorySelected =
+                    !selectedCategory ||
+                    pesoLibre.fk_category_1 === selectedCategory;
+
+                  return !isExerciseSelected && isCategorySelected;
+                })
+                .map((pesoLibre) => {
+                  const exerciseId = String(pesoLibre.pk_id_exercise); // Convert to string
+
                   return (
                     <div
-                      className="labelExercises flex align-center"
-                      key={index}
+                      className="labelExercises flex flex-column"
+                      key={pesoLibre.pk_id_exercise} // Use `pesoLibre.pk_id_exercise` as the key
                     >
-                      <label htmlFor={pesoLibre.pk_id_exercise}>
-                        {pesoLibre.exercise_name}
-                      </label>
-                      <input
-                        id={pesoLibre.pk_id_exercise}
-                        name={pesoLibre.pk_id_exercise}
-                        type="checkbox"
-                      />
+                      <div className="flex align-center">
+                        <label htmlFor={exerciseId}>
+                          {pesoLibre.exercise_name}
+                        </label>
+                        <input
+                          id={exerciseId}
+                          name={exerciseId}
+                          type="checkbox"
+                          checked={checkedExercises[exerciseId] || false}
+                          onChange={(e) => {
+                            setCheckedExercises({
+                              ...checkedExercises,
+                              [exerciseId]: e.target.checked,
+                            });
+                          }}
+                        />
+                      </div>
+                      <p className="tagGlobal tagColor1">
+                        {categoryMap[pesoLibre.fk_category_1]}
+                      </p>
                     </div>
                   );
                 })}
@@ -413,28 +496,92 @@ function editSession() {
                 </svg>
               </button>
             </div>
-
+            <div className="filterButtons cage90 flex marginAuto">
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 1 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(1)}
+              >
+                Pecho
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 2 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(2)}
+              >
+                Brazos
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 3 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(3)}
+              >
+                Espalda
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 4 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(4)}
+              >
+                Piernas
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === null ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(null)}
+              >
+                Todos
+              </button>
+            </div>
             <div className="globalForm flex flex-column cage90 marginAuto">
               {(calisteniaExercises || [])
-                .filter(
-                  (calistenia) =>
-                    !selectedSessionExercises.find(
-                      (exercise) =>
-                        exercise.fk_id_exercise === calistenia.pk_id_exercise
-                    )
-                )
-                .map((calistenia, index) => (
-                  <div className="labelExercises flex align-center" key={index}>
-                    <label htmlFor={calistenia.pk_id_exercise}>
-                      {calistenia.exercise_name}
-                    </label>
-                    <input
-                      id={calistenia.pk_id_exercise}
-                      name={calistenia.pk_id_exercise}
-                      type="checkbox"
-                    />
-                  </div>
-                ))}
+                .filter((calistenia) => {
+                  const isExerciseSelected = selectedSessionExercises.find(
+                    (exercise) =>
+                      exercise.fk_id_exercise === calistenia.pk_id_exercise
+                  );
+                  const isCategorySelected =
+                    !selectedCategory ||
+                    calistenia.fk_category_1 === selectedCategory;
+
+                  return !isExerciseSelected && isCategorySelected;
+                })
+                .map((calistenia) => {
+                  const exerciseId = String(calistenia.pk_id_exercise); // Convert to string
+
+                  return (
+                    <div
+                      className="labelExercises flex flex-column"
+                      key={calistenia.pk_id_exercise} // Use `calistenia.pk_id_exercise` as the key
+                    >
+                      <div className="flex align-center">
+                        <label htmlFor={exerciseId}>
+                          {calistenia.exercise_name}
+                        </label>
+                        <input
+                          id={exerciseId}
+                          name={exerciseId}
+                          type="checkbox"
+                          checked={checkedExercises[exerciseId] || false}
+                          onChange={(e) => {
+                            setCheckedExercises({
+                              ...checkedExercises,
+                              [exerciseId]: e.target.checked,
+                            });
+                          }}
+                        />
+                      </div>
+                      <p className="tagGlobal tagColor1">
+                        {categoryMap[calistenia.fk_category_1]}
+                      </p>
+                    </div>
+                  );
+                })}
             </div>
             <input
               type="submit"
@@ -466,28 +613,92 @@ function editSession() {
                 </svg>
               </button>
             </div>
-
+            <div className="filterButtons cage90 flex marginAuto">
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 1 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(1)}
+              >
+                Pecho
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 2 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(2)}
+              >
+                Brazos
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 3 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(3)}
+              >
+                Espalda
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 4 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(4)}
+              >
+                Piernas
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === null ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(null)}
+              >
+                Todos
+              </button>
+            </div>
             <div className="globalForm flex flex-column cage90 marginAuto">
               {(cardioExercises || [])
-                .filter(
-                  (cardio) =>
-                    !selectedSessionExercises.find(
-                      (exercise) =>
-                        exercise.fk_id_exercise === cardio.pk_id_exercise
-                    )
-                )
-                .map((cardio, index) => (
-                  <div className="labelExercises flex align-center" key={index}>
-                    <label htmlFor={cardio.pk_id_exercise}>
-                      {cardio.exercise_name}
-                    </label>
-                    <input
-                      id={cardio.pk_id_exercise}
-                      name={cardio.pk_id_exercise}
-                      type="checkbox"
-                    />
-                  </div>
-                ))}
+                .filter((cardio) => {
+                  const isExerciseSelected = selectedSessionExercises.find(
+                    (exercise) =>
+                      exercise.fk_id_exercise === cardio.pk_id_exercise
+                  );
+                  const isCategorySelected =
+                    !selectedCategory ||
+                    cardio.fk_category_1 === selectedCategory;
+
+                  return !isExerciseSelected && isCategorySelected;
+                })
+                .map((cardio) => {
+                  const exerciseId = String(cardio.pk_id_exercise); // Convert to string
+
+                  return (
+                    <div
+                      className="labelExercises flex flex-column"
+                      key={cardio.pk_id_exercise} // Use `cardio.pk_id_exercise` as the key
+                    >
+                      <div className="flex align-center">
+                        <label htmlFor={exerciseId}>
+                          {cardio.exercise_name}
+                        </label>
+                        <input
+                          id={exerciseId}
+                          name={exerciseId}
+                          type="checkbox"
+                          checked={checkedExercises[exerciseId] || false}
+                          onChange={(e) => {
+                            setCheckedExercises({
+                              ...checkedExercises,
+                              [exerciseId]: e.target.checked,
+                            });
+                          }}
+                        />
+                      </div>
+                      <p className="tagGlobal tagColor1">
+                        {categoryMap[cardio.fk_category_1]}
+                      </p>
+                    </div>
+                  );
+                })}
             </div>
             <input
               type="submit"
@@ -519,28 +730,92 @@ function editSession() {
                 </svg>
               </button>
             </div>
-
+            <div className="filterButtons cage90 flex marginAuto">
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 1 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(1)}
+              >
+                Pecho
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 2 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(2)}
+              >
+                Brazos
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 3 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(3)}
+              >
+                Espalda
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === 4 ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(4)}
+              >
+                Piernas
+              </button>
+              <button
+                className={`tagGlobal tagColor1 ${
+                  selectedCategory === null ? "selectedButton" : ""
+                }`}
+                onClick={() => setSelectedCategory(null)}
+              >
+                Todos
+              </button>
+            </div>
             <div className="globalForm flex flex-column cage90 marginAuto">
               {(maquinasExercises || [])
-                .filter(
-                  (maquinas) =>
-                    !selectedSessionExercises.find(
-                      (exercise) =>
-                        exercise.fk_id_exercise === maquinas.pk_id_exercise
-                    )
-                )
-                .map((maquinas, index) => (
-                  <div className="labelExercises flex align-center" key={index}>
-                    <label htmlFor={maquinas.pk_id_exercise}>
-                      {maquinas.exercise_name}
-                    </label>
-                    <input
-                      id={maquinas.pk_id_exercise}
-                      name={maquinas.pk_id_exercise}
-                      type="checkbox"
-                    />
-                  </div>
-                ))}
+                .filter((maquina) => {
+                  const isExerciseSelected = selectedSessionExercises.find(
+                    (exercise) =>
+                      exercise.fk_id_exercise === maquina.pk_id_exercise
+                  );
+                  const isCategorySelected =
+                    !selectedCategory ||
+                    maquina.fk_category_1 === selectedCategory;
+
+                  return !isExerciseSelected && isCategorySelected;
+                })
+                .map((maquina) => {
+                  const exerciseId = String(maquina.pk_id_exercise); // Convert to string
+
+                  return (
+                    <div
+                      className="labelExercises flex flex-column"
+                      key={maquina.pk_id_exercise} // Use `maquina.pk_id_exercise` as the key
+                    >
+                      <div className="flex align-center">
+                        <label htmlFor={exerciseId}>
+                          {maquina.exercise_name}
+                        </label>
+                        <input
+                          id={exerciseId}
+                          name={exerciseId}
+                          type="checkbox"
+                          checked={checkedExercises[exerciseId] || false}
+                          onChange={(e) => {
+                            setCheckedExercises({
+                              ...checkedExercises,
+                              [exerciseId]: e.target.checked,
+                            });
+                          }}
+                        />
+                      </div>
+                      <p className="tagGlobal tagColor1">
+                        {categoryMap[maquina.fk_category_1]}
+                      </p>
+                    </div>
+                  );
+                })}
             </div>
             <input
               type="submit"

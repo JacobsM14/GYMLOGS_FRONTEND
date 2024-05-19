@@ -12,7 +12,7 @@
   margin-bottom: 20px;
 }
 
-#home .routinesShow h2, 
+#home .routinesShow h2,
 #home .routinesShow2 h2 {
   color: var(--light);
   text-align: center;
@@ -22,147 +22,341 @@
 }
 
 /* CALENDAR */
-#home #calendarRoutines{
-    padding: 5px;
-    box-sizing: border-box;
+#home #calendarRoutines {
+  padding: 5px;
+  box-sizing: border-box;
 }
 
-#home #calendarRoutines p{
-    color: var(--light);
-    font-size: 20px;
-    font-weight: 500;
-    margin: 0px;
-
+#home #calendarRoutines p {
+  color: var(--light);
+  font-size: 20px;
+  font-weight: 500;
+  margin: 0px;
 }
 
-#home #days{
-    padding: 2px;
-    display: grid;
-    grid-template-columns: repeat(18, 1fr);
-    grid-template-rows: 7;
-    gap: 4px;
-    margin: auto;
+#home #days {
+  padding: 2px;
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  grid-template-rows: 7;
+  gap: 4px;
+  margin: auto;
 }
 
-#home .dayCage{
-    width: 10px;
-    height: 10px;
-    border-radius: 1px;
-    border: 1px solid var(--secondary);
-    background-color: var(--light);
+#home .dayCage {
+  width: 10px;
+  height: 10px;
+  border-radius: 1px;
+  border: 1px solid var(--secondary);
+  background-color: var(--light);
 }
 
 /* STATS */
 
-#home #showStats .cageStat{
-    width: 47%;
-    border-radius: 5px;
-    padding: 10px 0px 30px;
-    margin-top: 20px;
+#home #showStats .cageStat {
+  width: 47%;
+  border-radius: 5px;
+  padding: 10px 0px 30px;
+  margin-top: 20px;
 }
 
-#home #showStats .cageStat h2{
-    color: var(--light);
-    font-size: 50px;
-    font-weight: 600;
-    text-align: center;
-    margin: 0px;
+#home #showStats .cageStat h2 {
+  color: var(--light);
+  font-size: 50px;
+  font-weight: 600;
+  text-align: center;
+  margin: 0px;
 }
 
-#home #showStats .cageStat h3{
-    font-weight: 500;
-    color: var(--light);
-    font-size: 20px;
-    text-align: center;
-    margin: 0px;
+#home #showStats .cageStat h3 {
+  font-weight: 500;
+  color: var(--light);
+  font-size: 20px;
+  text-align: center;
+  margin: 0px;
 }
 
 /* AFTER CONNECTING WITH THE API */
 /* ROUTINES CREATED */
-.routinesShow2{
-    height: auto !important;
-    max-width: none !important;
-    margin-bottom: 20px;
+.routinesShow2 {
+  height: auto !important;
+  max-width: none !important;
+  margin-bottom: 20px;
 }
 
-.routineCageContainer{
-    overflow: scroll; 
-    gap: 10px;  
+.routineCageContainer {
+  overflow: scroll;
+  gap: 10px;
 }
 
-.routineCage{
-    width: 150px;
-    min-width: 150px;
-    box-sizing: border-box;
-    margin: 10px 0px;
-    overflow: hidden;
+.routineCage {
+  width: 150px;
+  min-width: 150px;
+  box-sizing: border-box;
+  margin: 10px 0px;
+  overflow: hidden;
 }
 
-.routineCage h3{
-    font-size: 15px;
-    font-weight: 700;
-    text-align: left;
-    text-transform: uppercase;
-    padding-left: 10px;
-    color: var(--dark-1);
-    margin: 0px;
+.routineCage h3 {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  padding-left: 10px;
+  color: var(--dark-1);
+  margin: 0px;
 }
 
-.routineCage p{
-    font-size: 10px;
-    font-weight: 700;
-    text-align: left;
-    color: var(--dark-1);
-    margin: 0px 0px 5px 5px;
-    width: fit-content;
+.routineCage p {
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--dark-1);
+  margin: 0px 0px 5px 5px;
+  width: fit-content;
 }
 
-.routineCage button{
-    width: 100%;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 2px 0px;
-    margin: 2px 0px 0px 0px;
-    border: none;
-    background-color: var(--primary);
-    color: var(--secondary);
+.routineCage button {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 2px 0px;
+  margin: 2px 0px 0px 0px;
+  border: none;
+  background-color: var(--primary);
+  color: var(--secondary);
 }
 
 /* FAVORITE ROUTINE */
-.sessionCage{
-    width: 120px;
-    min-width: 120px;
-    box-sizing: border-box;
-    overflow: hidden;
-    margin: 10px 0px;
+.sessionCage {
+  width: 120px;
+  min-width: 120px;
+  box-sizing: border-box;
+  overflow: hidden;
+  margin: 10px 0px;
 }
 
-.sessionCage h3{
-    font-size: 15px;
-    font-weight: 700;
-    text-align: left;
-    text-transform: uppercase;
-    padding-left: 10px;
-    color: var(--dark-1);
-    margin: 2px 0px;
+.sessionCage h3 {
+  font-size: 15px;
+  font-weight: 700;
+  text-align: left !important;
+  text-transform: uppercase;
+  padding-left: 10px;
+  color: var(--dark-1);
+  margin: 2px 0px;
 }
 
-.sessionCage p{
-    font-size: 10px;
-    font-weight: 700;
-    text-align: left;
-    color: var(--dark-1);
-    margin: 0px 0px 5px 5px;
-    width: fit-content;
+.sessionCage p {
+  font-size: 10px;
+  font-weight: 700;
+  text-align: left;
+  color: var(--dark-1);
+  margin: 0px 0px 5px 5px;
+  width: fit-content;
 }
 
-.sessionCage button{
+.sessionCage button {
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 2px 0px;
+  margin: 2px 0px 0px 0px;
+  border: none;
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
+/* ADDON SHOW */
+#homeCont .addonSet {
+  z-index: 100;
+}
+
+/* ADDON SHOW EXERCISES */
+#iAddonSessionExercises {
+  position: absolute;
+  bottom: 0px;
+}
+
+.titleSessionExerciseHome {
+  padding: 10px;
+}
+
+.titleSessionExerciseHome h2 {
+  color: var(--light) !important;
+  font-size: 28px !important;
+  font-weight: 600 !important;
+  margin: 0px !important;
+  text-transform: uppercase;
+}
+
+.titleSessionExerciseHome button {
+  width: fit-content;
+  padding: 2px 0px;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.titleSessionExerciseHome button svg {
+  width: 27px !important;
+  height: 27px !important;
+  fill: var(--light) !important;
+}
+
+.time {
+  font-size: 15px;
+  margin: 0px;
+  color: var(--light);
+  margin-bottom: 10px;
+}
+
+.showExercisesOnAddon {
+  width: 100%;
+  margin: 10px 0px 50px;
+}
+
+.arrowButton {
+  width: fit-content;
+  background-color: transparent;
+  height: fit-content;
+  border: 0px;
+}
+
+.arrowButton svg {
+  width: 25px !important;
+  height: 25px !important;
+  fill: var(--secondary) !important;
+}
+
+.arrowRotated {
+  transform: rotate(180deg);
+}
+
+.showExercisesContainer {
+  border-radius: 9px;
+  box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.5);
+  height: 400px;
+  overflow-y: scroll;
+}
+
+.titleExercise {
+  padding: 10px 0px;
+}
+
+.titleExercise h3 {
+  font-size: 23px;
+  color: var(--primary) !important;
+  margin: 0px !important;
+  text-align: left !important;
+}
+
+.titleExercise button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: fit-content;
+  height: fit-content;
+}
+
+.titleExercise button svg {
+  width: 30px !important;
+  height: 30px !important;
+  fill: var(--secondary) !important;
+}
+
+.tableExercisesHeader,
+.tableExercisesBody {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 10px;
+}
+
+.tableExercisesHeader p {
+  font-weight: 600;
+  font-size: 15px;
+  margin: 0;
+  border-radius: 2px;
+  text-align: center;
+}
+
+.tableExercisesBody p,
+.tableExercisesBody input {
+  margin: 0 !important;
+  padding: 2px 8px !important;
+  border-radius: 2px !important;
+  text-align: center !important;
+  color: var(--primary) !important;
+  font-weight: 600 !important;
+}
+
+.tableExercisesBody input {
+    width: 15%;
+}
+
+.tableExercisesBody .backgroundBlack {
+  background-color: var(--dark-1) !important;
+  color: var(--light) !important;
+}
+
+.tableExercisesBody .backgroundYellow {
+  background-color: var(--secondary) !important;
+  color: var(--primary) !important;
+}
+
+.tableExercisesBody .backgroundYellow::placeholder {
+  color: var(--primary) !important;
+}
+
+.tableExercisesBody .backgroundBlack::placeholder {
+  color: var(--light) !important;
+}
+
+.endSession{
     width: 100%;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 2px 0px;
-    margin: 2px 0px 0px 0px;
+    padding: 15px 0px;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: var(--primary);
+    color: var(--secondary);
+    font-size: 25px;
+    font-weight: 600;
     border: none;
+    border-radius: 0px;
+}
+
+.plusButtonSerie{
+    width: 100%;
+    margin: auto;
+    padding: 3px 0px;
+    box-sizing: border-box;
+    border: 0px;
+}
+
+.plusButtonSerie svg{
+    stroke: var(--primary) !important;
+}
+
+.noExercisesText{
+    height: 400px;
+}
+
+.noExercisesText h2{
+    color: var(--dark-1) !important;
+    font-size: 25px !important;
+    text-align: center !important;
+    margin: 0px auto !important;
+    padding: 20px 0px !important;
+    width: 80% !important;
+}
+
+.noExercisesText button{
+    border: 0px;
+    border-radius: 5px;
     background-color: var(--secondary);
     color: var(--primary);
+    padding: 10px 20px;
+    margin: 15px auto;
+    font-size: 14px;
+    font-weight: 600;
 }
