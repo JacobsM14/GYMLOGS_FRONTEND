@@ -177,10 +177,10 @@ export async function getMainRoutineByUserAndRoutine(routine_id, user_id) {
   console.log(`Fetching from URL: ${url}`);
   try {
     const response = await getFetch(url);
-    console.log('Response:', response);
+    console.log("Response:", response);
     return response;
   } catch (error) {
-    console.error('Error fetching main routine by user and routine:', error);
+    console.error("Error fetching main routine by user and routine:", error);
     throw error;
   }
 }
@@ -285,4 +285,47 @@ export async function getExercisesByType(type_id) {
 export async function getExerciseById(exercise_id) {
   // console.log("url: " + urlServer + "exercise/id/" + exercise_id)
   return await getFetch(`${urlServer}exercise/id/${exercise_id}`);
+}
+
+//CALENDAR -----------
+// GET ALL CALENDAR - GET
+export async function getCalendar() {
+  return await getFetch(`${urlServer}calendar`);
+}
+
+// GET CALENDAR BY SESSION_EXERCISE ID - GET
+export async function getCalendarBySessionExerciseId(session_exercise_id) {
+  return await getFetch(`${urlServer}calendar/exercise/${session_exercise_id}`);
+}
+
+// GET CALENDAR BY SESSION_EXERCISE AND DATE - GET
+export async function getCalendarBySessionExerciseAndDate(
+  session_exercise_id,
+  date
+) {
+  return await getFetch(
+    `${urlServer}calendar/exercise/${session_exercise_id}/${date}`
+  );
+}
+
+export async function createCalendar(
+  serie,
+  weight,
+  repetitions,
+  duration,
+  day,
+  fk_id_session_ex
+) {
+  return await postAndPutFetch("POST", `${urlServer}calendar`, {
+    serie: serie,
+    weight: weight,
+    repetitions: repetitions,
+    duration: duration,
+    day: day,
+    fk_id_session_ex: fk_id_session_ex,
+  });
+}
+
+export async function deleteCalenarById(calendar_id) {
+  return await deleteFecth(`${urlServer}calendar/${calendar_id}`);
 }

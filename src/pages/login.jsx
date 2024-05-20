@@ -1,8 +1,18 @@
 import React, { useState, useEffect, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { login } from "./../services/userApi";
 import Cookies from "universal-cookie";
 
 function logIn() {
+  const navigate = useNavigate();
+  // ADDON
+  const [isAddonVisible, setIsAddonVisible] = useState(false);
+  const [isUserValidError, setIsUserValidError] = useState(false);
+  // ADVISES FOR INPUTS
+  const [inputInserMailAdvise, setInputInserMailAdvise] = useState(false);
+  const [inputInserPasswordAdvise, setInputInserPasswordAdvise] =
+    useState(false);
+
   useEffect(() => {
     const cookies = new Cookies();
     const token = cookies.get("token");
@@ -20,22 +30,21 @@ function logIn() {
     let works = true;
     console.log(email, pssd);
     if (email === "" || pssd === "") {
-      alert("Por favor llena todos los campos");
+      setInputInserMailAdvise(true);
+      setInputInserPasswordAdvise(true);
       works = false;
     } else if (emailReg.test(email) === false) {
-      alert("Correo no valido");
+      setInputInserPasswordAdvise(false);
       works = false;
     } else if (works === true) {
       const response = await login(email, pssd);
-      console.log("response: " + JSON.stringify(response));
       if (response && response.id) {
-        alert("Bienvenido");
-        // localStorage.setItem("token", response.id);
         const cookies = new Cookies();
         cookies.set("token", response.id, { path: "/" });
-        window.location.href = "/home";
+        navigate("/home");
       } else {
-        alert("Correo o contraseña incorrecta");
+        setIsAddonVisible(true);
+        setIsUserValidError(true);
       }
     }
   };
@@ -46,6 +55,28 @@ function logIn() {
         className="allCont backgroundGradient flex justify-center align-center flex-column"
         style={{ paddingBottom: "0px" }}
       >
+        <div
+          className="addonSet align-center"
+          style={{
+            display: isAddonVisible ? "flex" : "none",
+          }}
+        >
+          <div
+            id="showUserError"
+            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isUserValidError ? "block" : "none" }}
+          >
+            <h2>EL MAIL Y LA CONTRASEÑA NO COINCIDEN</h2>
+            <button
+              onClick={() => {
+                setIsAddonVisible(false);
+                setIsUserValidError(false);
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </div>
         <div className="cage80 loginOnDeskop" id="contLogin">
           <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
@@ -53,7 +84,29 @@ function logIn() {
           </div>
           <div className="loginForm">
             <form action="" onSubmit={userLogIn}>
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display:
+                    inputInserMailAdvise || inputInserMailAdvise
+                      ? "flex"
+                      : "none",
+                }}
+              >
+                Inserta un correo electronico valido*
+              </p>
               <input type="text" placeholder="Correo Electronico:" id="email" />
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display:
+                    inputInserPasswordAdvise || inputInserPasswordAdvise
+                      ? "flex"
+                      : "none",
+                }}
+              >
+                Inserta una contraseña*
+              </p>
               <input type="password" placeholder="Contraseña:" id="pssd" />
               <input type="submit" className="button1" value="INICIAR SESION" />
               <a href="">Has olvidado tu contraseña?</a>

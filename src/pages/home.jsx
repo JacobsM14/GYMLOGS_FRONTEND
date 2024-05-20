@@ -12,6 +12,10 @@ import {
   getSessionExercisesBySessionId,
   getExerciseById,
   getSessionById,
+  getCalendarBySessionExerciseId,
+  getCalendarBySessionExerciseAndDate,
+  createCalendar,
+  deleteCalenarById,
 } from "./../services/userApi";
 
 function Home() {
@@ -22,6 +26,9 @@ function Home() {
   // ADDON TO START SESSION
   const [isAddonShowSessionExercises, setIsAddonShowSessionExercises] =
     useState(false);
+  // ADON TO START ROUTINE
+  const [isAddonShowSessionRotine, setIsAddonShowSessionRotine] =
+    useState(false);
 
   // SAVE DATE
   const [mainRoutine, setMainRoutine] = useState({});
@@ -30,8 +37,17 @@ function Home() {
   const [routines, setRoutines] = useState([{}]);
   // ADDONS SELECTED DATA
   const [selectedSession, setSelectedSession] = useState({});
+  const [selectedRoutine, setSelectedRoutine] = useState({});
+  const [selectedRoutineData, setSelectedRoutineData] = useState({});
   const [sessionExercises, setSessionExercises] = useState([{}]);
   const [sessionExercisesData, setSessionExercisesData] = useState([]);
+
+  // CALENDAR DATA
+  const [currentSessionExerciseId, setCurrentSessionExerciseId] =
+    useState(null);
+  const [series, setSeries] = useState([{}]);
+  const [newSeries, setNewSeries] = useState({ weight: "", repetitions: "" });
+  const [currentExerciseId, setCurrentExerciseId] = useState(null);
 
   // SWITCH EXERCISES
   const [currentExerciseIndex, setCurrentExerciseIndex] = useState(0);
@@ -78,17 +94,71 @@ function Home() {
   }, []);
 
   useEffect(() => {
-    console.log("sessionExercises");
-    console.log(sessionExercises);
-    console.log("sessionExercisesData");
-    console.log(sessionExercisesData);
-    console.log("selectedSession");
-    console.log(selectedSession);
-  }, [sessionExercises, sessionExercisesData, selectedSession]);
+    if (currentExerciseIndex !== null && sessionExercises.length > 0) {
+      setCurrentExerciseId(
+        sessionExercises[currentExerciseIndex].pk_id_sessio_ex
+      );
+      setCurrentSessionExerciseId(
+        sessionExercises[currentExerciseIndex].pk_id_sessio_ex
+      );
+
+      getCalendarBySessionExerciseId(
+        sessionExercises[currentExerciseIndex].pk_id_sessio_ex
+      ).then((data) => {
+        console.log("Data from database:", data); // Add this line
+
+        if (data && !data.error) {
+          const relevantData = data[0];
+          console.log("relevantData", relevantData); // Add this line
+
+          const sortedData = relevantData.sort(
+            (a, b) => new Date(b.day) - new Date(a.day)
+          );
+          console.log("sortedData", sortedData); // Add this line
+
+          const lastItem = sortedData[0];
+          console.log("lastItem", lastItem); // Add this line
+
+          const sameDateItems = sortedData.filter(
+            (item) =>
+              new Date(item.day).getTime() === new Date(lastItem.day).getTime()
+          );
+          console.log("sameDateItems", sameDateItems); // Add this line
+
+          // Check that sameDateItems is an array before spreading it
+          if (Array.isArray(sameDateItems) && sameDateItems != null) {
+            setSeries((prevSeries) => {
+              // Only add items from sameDateItems that are not already in series
+              console.log("prevSeries", prevSeries); // Add this line
+              console.log("sameDateItems", sameDateItems); // Add this line
+
+              const newItems = sameDateItems.filter((item) => {
+                const itemExistsInPrevSeries = prevSeries.some(
+                  (prevItem) => prevItem.pk_id_calendar === item.pk_id_calendar
+                );
+
+                console.log("item", item); // Add this line
+                console.log("itemExistsInPrevSeries", itemExistsInPrevSeries); // Add this line
+
+                return !itemExistsInPrevSeries;
+              });
+
+              console.log("newItems", newItems);
+
+              const updatedSeries = [...prevSeries, ...newItems];
+              console.log("Updated series:", updatedSeries); // Add this line
+              return updatedSeries;
+            });
+          }
+        }
+      });
+    }
+  }, [currentExerciseIndex, sessionExercises]);
 
   let rotuineID = 0;
   let routineName = "";
   let typeRoutine = "";
+
   if (Array.isArray(mainRoutineData) && mainRoutineData.length > 0) {
     rotuineID = mainRoutineData[0].pk_id_routine;
     routineName = mainRoutineData[0].routine_name;
@@ -109,19 +179,42 @@ function Home() {
   };
 
   // ADDON FUNCTIONS
+  const showSessionRoutineAddon = (routineId) => {
+    setIsAddonVisible(true);
+    setIsAddonShowSessionRotine(true);
+
+    getRoutineById(routineId).then((data) => {
+      if (data && !data.error) {
+        setSelectedRoutine(data);
+      }
+    });
+
+    getSessionsByRoutineId(routineId).then((data) => {
+      if (data && !data.error) {
+        setSelectedRoutineData(data);
+      }
+    });
+  };
+
   const showExercisesAddon = (sessionId) => {
     setIsAddonVisible(true);
+    setIsAddonShowSessionRotine(false);
     setIsAddonShowSessionExercises(true);
+
     getSessionExercisesBySessionId(sessionId).then((data) => {
       if (data && !data.error) {
         setSessionExercises(data);
-        // console.log(data);
+
+        if (
+          currentSessionExerciseId == null ||
+          currentSessionExerciseId == undefined
+        ) {
+          setCurrentSessionExerciseId(data[0].pk_id_sessio_ex);
+        }
         data.map((exercise) => {
-          // console.log(exercise.fk_id_exercise);
           getExerciseById(exercise.fk_id_exercise).then((data) => {
             if (data && !data.error && Object.keys(data).length > 0) {
               setSessionExercisesData((prevData) => [...prevData, ...data]);
-              // console.log(data);
             }
           });
         });
@@ -136,15 +229,141 @@ function Home() {
   };
 
   const handlePrevClick = () => {
-    setCurrentExerciseIndex((prevIndex) => (prevIndex > 0 ? prevIndex - 1 : 0));
+    setCurrentExerciseIndex((prevIndex) => {
+      const newIndex = prevIndex > 0 ? prevIndex - 1 : 0;
+
+      setNewSeries((prevNewSeries) => {
+        if (!prevNewSeries[sessionExercises[newIndex].id]) {
+          return {
+            ...prevNewSeries,
+            [sessionExercises[newIndex].id]: {
+              serie: 1,
+              weight: "",
+              repetitions: "",
+            },
+          };
+        }
+
+        return prevNewSeries;
+      });
+
+      return newIndex;
+    });
   };
 
   const handleNextClick = () => {
-    setCurrentExerciseIndex((prevIndex) =>
-      prevIndex < sessionExercises.length - 1
-        ? prevIndex + 1
-        : sessionExercises.length - 1
-    );
+    setCurrentExerciseIndex((prevIndex) => {
+      const newIndex =
+        prevIndex < sessionExercises.length - 1
+          ? prevIndex + 1
+          : sessionExercises.length - 1;
+
+      setNewSeries((prevNewSeries) => {
+        if (!prevNewSeries[sessionExercises[newIndex].id]) {
+          return {
+            ...prevNewSeries,
+            [sessionExercises[newIndex].id]: {
+              serie: 1,
+              weight: "",
+              repetitions: "",
+            },
+          };
+        }
+
+        return prevNewSeries;
+      });
+
+      return newIndex;
+    });
+  };
+
+  const handleAddSeries = (exerciseId) => {
+    if (!newSeries[exerciseId].weight || !newSeries[exerciseId].repetitions) {
+      return;
+    } else if (
+      newSeries[exerciseId].weight < 0 ||
+      newSeries[exerciseId].repetitions < 0
+    ) {
+      return;
+    } else {
+      setSeries((prevSeries) => {
+        const serieNumber =
+          prevSeries.filter((series) => series.fk_id_session_ex === exerciseId)
+            .length + 1;
+
+        const updatedSeries = [
+          ...prevSeries,
+          {
+            pk_id_sessio_ex: exerciseId,
+            serie: serieNumber,
+            weight: Number(newSeries[exerciseId].weight),
+            repetitions: Number(newSeries[exerciseId].repetitions),
+          },
+        ];
+
+        return updatedSeries;
+      });
+    }
+
+    setNewSeries({
+      ...newSeries,
+      [exerciseId]: {
+        weight: "",
+        repetitions: "",
+      },
+    });
+
+    console.log("series");
+    console.log(series);
+    console.log("newSeries");
+    console.log(newSeries);
+  };
+
+  const handleWeightChange = (e, index, exerciseId) => {
+    setSeries((prevSeries) => ({
+      ...prevSeries,
+      [exerciseId]: prevSeries[exerciseId].map((serie, i) =>
+        i === index ? { ...serie, weight: e.target.value } : serie
+      ),
+    }));
+    console.log("handleWeightChange");
+    console.log(series);
+  };
+
+  const handleRepetitionsChange = (e, index, exerciseId) => {
+    setSeries((prevSeries) => ({
+      ...prevSeries,
+      [exerciseId]: prevSeries[exerciseId].map((serie, i) =>
+        i === index ? { ...serie, repetitions: e.target.value } : serie
+      ),
+    }));
+    console.log("handleRepetitionsChange");
+    console.log(series);
+  };
+
+  const createCalendarData = () => {
+    const date = new Date();
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    const fullDate = `${year}-${month}-${day}`;
+
+    series.map((serie) => {
+      createCalendar(
+        serie.serie,
+        serie.weight,
+        serie.repetitions,
+        0,
+        fullDate,
+        serie.pk_id_sessio_ex
+      ).then((data) => {
+        if (data && !data.error) {
+          console.log("Calendar created");
+        } else {
+          console.log("Error creating calendar");
+        }
+      });
+    });
   };
 
   return (
@@ -159,6 +378,74 @@ function Home() {
             display: isAddonVisible ? "flex" : "none",
           }}
         >
+          <div
+            id="isAddonSessionOnHome"
+            className="cage100 backgroundBlack marginAuto addonSetContainer"
+            style={{
+              display: isAddonShowSessionRotine ? "block" : "none",
+            }}
+          >
+            <div className="titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
+              {selectedRoutine.length > 0 ? (
+                <h2>{selectedRoutine[0].routine_name}</h2>
+              ) : (
+                <h2>Routine</h2>
+              )}
+              <button
+                onClick={() => {
+                  setIsAddonVisible(false);
+                  setIsAddonShowSessionRotine(false);
+                  setSelectedRoutine({});
+                }}
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="128"
+                  height="128"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M21 5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2zm-4.793 9.793l-1.414 1.414L12 13.414l-2.793 2.793l-1.414-1.414L10.586 12L7.793 9.207l1.414-1.414L12 10.586l2.793-2.793l1.414 1.414L13.414 12z" />
+                </svg>
+              </button>
+            </div>
+            <div className="showExercisesOnAddon flex justify-between align-center">
+              {selectedRoutineData.length === 0 ? (
+                <div className="noExercisesText flex justify-center align-center flex-column cage80 marginAuto backgroundWhite">
+                  <h2>ESTA RUTINA NO TIENE SESSIONES</h2>
+                  <button
+                    onClick={() => {
+                      if (selectedRoutine[0].type_routine === "semanal") {
+                        const path = `/editPlanedRoutine/${selectedRoutine[0].pk_id_routine}`;
+                        navigate(path);
+                      } else {
+                        const path = `/editFreeRoutine/${selectedRoutine[0].pk_id_routine}`;
+                        navigate(path);
+                      }
+                    }}
+                  >
+                    AÑADIR EJERCICIOS
+                  </button>
+                </div>
+              ) : (
+                <div className="cage80 marginAuto">
+                  {Array.isArray(selectedRoutineData) &&
+                    selectedRoutineData.map((session, index) => {
+                      return (
+                        <button
+                          key={index}
+                          className="sessionButtonSelectRoutineSession border-r5"
+                          onClick={() =>
+                            showExercisesAddon(session.pk_id_sessio)
+                          }
+                        >
+                          {session.nom_session}
+                        </button>
+                      );
+                    })}
+                </div>
+              )}
+            </div>
+          </div>
           <div
             id="iAddonSessionExercises"
             className="cage100 backgroundBlack marginAuto addonSetContainer"
@@ -204,7 +491,7 @@ function Home() {
                 </svg>
               </button>
               {sessionExercisesData.length === 0 ? (
-                <div className="noExercisesText flex justify-center align-center flex-column">
+                <div className="noExercisesText flex justify-center align-center flex-column cage80 marginAuto backgroundWhite">
                   <h2>ESTA SESIÓN NO TIENE EJERCICIOS</h2>
                   <button
                     onClick={() => {
@@ -290,231 +577,101 @@ function Home() {
                       <p>KG-A</p>
                       <p>REP-A</p>
                     </div>
-                    <div className="tableExercisesBody flex flex-column">
+                    <div className="tableExercisesBody flex justify-between flex-column tagCont cage90">
+                      {Array.isArray(series) &&
+                        series
+                          .filter(
+                            (serie) =>
+                              serie.fk_id_session_ex === currentExerciseId
+                          )
+                          .sort((a, b) => a.serie - b.serie)
+                          .map((serie, index) => (
+                            <div
+                              key={index}
+                              className="flex justify-between tagCont"
+                            >
+                              <p>{serie.serie}</p>
+                              <input
+                                type="number"
+                                className="backgroundYellow"
+                                value={serie.weight}
+                                onChange={(e) =>
+                                  handleWeightChange(
+                                    e,
+                                    index,
+                                    currentExerciseId
+                                  )
+                                }
+                              />
+                              <input
+                                type="number"
+                                className="backgroundYellow"
+                                value={serie.repetitions}
+                                onChange={(e) =>
+                                  handleRepetitionsChange(
+                                    e,
+                                    index,
+                                    currentExerciseId
+                                  )
+                                }
+                              />
+                              <input
+                                type="number"
+                                className="backgroundBlack"
+                                placeholder={serie.weight.toString()}
+                              />
+                              <input
+                                type="number"
+                                className="backgroundBlack"
+                                placeholder={serie.repetitions.toString()}
+                              />
+                            </div>
+                          ))}
                       <div className="flex justify-between tagCont">
-                        <p>1</p>
+                        <p>-</p>
                         <input
                           type="number"
                           className="backgroundYellow"
-                          placeholder="20"
+                          value={
+                            (newSeries[currentExerciseId] || {}).weight || ""
+                          }
+                          onChange={(e) =>
+                            setNewSeries({
+                              ...newSeries,
+                              [currentExerciseId]: {
+                                ...(newSeries[currentExerciseId] || {}),
+                                weight: e.target.value,
+                              },
+                            })
+                          }
                         />
                         <input
                           type="number"
                           className="backgroundYellow"
-                          placeholder="10"
+                          value={
+                            (newSeries[currentExerciseId] || {}).repetitions ||
+                            ""
+                          }
+                          onChange={(e) =>
+                            setNewSeries({
+                              ...newSeries,
+                              [currentExerciseId]: {
+                                ...(newSeries[currentExerciseId] || {}),
+                                repetitions: e.target.value,
+                              },
+                            })
+                          }
                         />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
+                        <input type="number" className="backgroundBlack" />
+                        <input type="number" className="backgroundBlack" />
                       </div>
-                      <div className="flex justify-between tagCont">
-                        <p>2</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>3</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>4</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>5</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>6</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>7</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>8</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <div className="flex justify-between tagCont">
-                        <p>9</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          placeholder="10"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="20"
-                        />
-                        <input
-                          type="number"
-                          className="backgroundBlack"
-                          placeholder="10"
-                        />
-                      </div>
-                      <button className="plusButtonSerie flex justify-center align-center backgroundYellow border-r5">
-                        <svg
-                          xmlns="http://www.w3.org/2000/svg"
-                          width="128"
-                          height="128"
-                          viewBox="0 0 16 16"
-                        >
-                          <path
-                            fill="none"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            strokeWidth="1.5"
-                            d="M12.75 7.75h-10m5-5v10"
-                          />
-                        </svg>
-                      </button>
                     </div>
+                    <button
+                      className="plusButtonSerie backgroundYellow flex justify-center align-center cage90 marginAuto border-r5"
+                      onClick={() => handleAddSeries(currentExerciseId)}
+                    >
+                      GUARDAR SERIE
+                    </button>
                   </div>
                 </div>
               )}
@@ -532,7 +689,9 @@ function Home() {
                 </svg>
               </button>
             </div>
-            <button className="endSession">FINALIZAR</button>
+            <button className="endSession" onClick={createCalendarData}>
+              GUARDAR EJERCICIOS
+            </button>
           </div>
         </div>
         <div className="cage90 marginTop-20" id="home">
@@ -594,7 +753,7 @@ function Home() {
               id="allRoutines"
               onClick={() => navigate("/routines")}
             >
-              <h2>CREA MAS DE UNA RUTINA</h2>
+              <h2>CREA UNA RUTINA</h2>
             </div>
           ) : (
             <div className="routinesShow2 border-r5 backgroundBlack flex flex-column">
@@ -611,7 +770,13 @@ function Home() {
                         ? "Semanal"
                         : "Planificada"}
                     </p>
-                    <button>START</button>
+                    <button
+                      onClick={() =>
+                        showSessionRoutineAddon(routine.pk_id_routine)
+                      }
+                    >
+                      START
+                    </button>
                   </div>
                 ))}
               </div>

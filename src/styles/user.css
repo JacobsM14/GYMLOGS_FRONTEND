@@ -174,3 +174,23 @@
   padding: 10px;
   margin: 10px 0px;
 }
+
+/* ---- */
+#showUserError h2,
+#userRegisteredCorrectly h2 {
+  width: 80% !important;
+  margin: 15px auto !important;
+  color: var(--dark-1) !important;
+  text-align: center !important;
+}
+
+#showUserError button,
+#userRegisteredCorrectly button {
+  width: 100% !important;
+  border: 0px !important;
+  background-color: var(--primary) !important;
+  color: var(--secondary) !important;
+  padding: 10px 0px !important;
+  font-size: 20px !important;
+  font-weight: 600 !important;
+}

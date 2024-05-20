@@ -1,7 +1,24 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { register } from "./../services/userApi";
+import { useNavigate } from "react-router-dom";
 
 function Register() {
+  const navigate = useNavigate();
+
+  // ADDON
+  const [isAddonVisible, setIsAddonVisible] = useState(false);
+  const [isUserRegistered, setIsUserRegistered] = useState(false);
+  const [isUserValidError, setIsUserValidError] = useState(false);
+
+  // ADVISES FOR INPUTS
+  const [allInputAdvise, setAllInputAdvise] = useState(false);
+  const [inputInsertMailValidAdvise, setInputInsertMailValidAdvise] =
+    useState(false);
+  const [inputInsertPasswordAdvise, setInputInserPasswordAdvise] =
+    useState(false);
+  const [inputInsertPrivacyAdvise, setInputInsertPrivacyAdvise] =
+    useState(false);
+
   const registerUser = async (event) => {
     event.preventDefault();
     const user = event.target.user.value;
@@ -14,30 +31,27 @@ function Register() {
     console.log(user, email, pssd, confirmpssd, privacy);
 
     if (user === "" || email === "" || pssd === "" || confirmpssd === "") {
-      alert("Por favor llena todos los campos");
+      setAllInputAdvise(true);
     } else if (emailReg.test(email) === false) {
-      alert("Correo no valido");
+      setAllInputAdvise(false);
+      setInputInsertMailValidAdvise(true);
     } else if (pssd !== confirmpssd) {
-      alert("Las contraseñas no coinciden");
+      setInputInserPasswordAdvise(true);
+      setAllInputAdvise(false);
+      setInputInsertMailValidAdvise(false);
     } else if (privacy === false) {
-      alert("Acepta las politicas de privacidad");
-    } else if (
-      pssd.length < 8 &&
-      pssd.length > 16 &&
-      pssdReg.test(pssd) === false
-    ) {
-      alert("La contraseña debe tener entre 8 y 16 caracteres");
+      setInputInsertPrivacyAdvise(true);
+      setInputInserPasswordAdvise(false);
+      setAllInputAdvise(false);
+      setInputInsertMailValidAdvise(false);
     } else {
       const response = await register(user, email, pssd);
-      if (response) {
-        if (response && response.username) {
-          alert("Usuario registrado correctamente");
-          window.location.href = "/login";
-        } else {
-          alert("Error al registrar usuario");
-        }
+      if (response && !response.error && response.username) {
+        setIsUserRegistered(true);
+        setIsAddonVisible(true);
       } else {
-        alert("Error al registrar usuario");
+        setIsUserValidError(true);
+        setIsAddonVisible(true);
       }
     }
   };
@@ -48,6 +62,42 @@ function Register() {
         className="allCont flex justify-center align-center flex-column backgroundGradient"
         style={{ paddingBottom: "0px" }}
       >
+        <div
+          className="addonSet align-center"
+          style={{
+            display: isAddonVisible ? "flex" : "none",
+          }}
+        >
+          <div
+            id="userNotRegisteredBad"
+            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isUserValidError ? "block" : "none" }}
+          >
+            <h2>USUARIO NO SE HA PODIDO REGISTRAR</h2>
+            <button
+              onClick={() => {
+                setIsAddonVisible(false);
+                setIsUserValidError(false);
+              }}
+            >
+              OK
+            </button>
+          </div>
+          <div
+            id="userRegisteredCorrectly"
+            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isUserRegistered ? "block" : "none" }}
+          >
+            <h2>USUARIO REGISTRADO CORRECTAMENTE</h2>
+            <button
+              onClick={() => {
+                navigate("/login");
+              }}
+            >
+              OK
+            </button>
+          </div>
+        </div>
         <div className="cage80 loginOnDeskop">
           <div className="loginLogo">
             <img src="logo.png" alt="gymlogs" />
@@ -55,13 +105,37 @@ function Register() {
           </div>
           <div className="loginForm">
             <form action="" onSubmit={registerUser}>
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display: allInputAdvise || allInputAdvise ? "flex" : "none",
+                }}
+              >
+                Rellena todos los campos*
+              </p>
               <input type="text" placeholder="Usuario:" name="user" id="user" />
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display: inputInsertMailValidAdvise ? "flex" : "none",
+                }}
+              >
+                Introduce un email valido*
+              </p>
               <input
                 type="text"
                 placeholder="Correo Electronico:"
                 name="email"
                 id="email"
               />
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display: inputInsertPasswordAdvise ? "flex" : "none",
+                }}
+              >
+                La contraseña no coincide*
+              </p>
               <input
                 type="password"
                 placeholder="Contraseña:"
@@ -74,6 +148,14 @@ function Register() {
                 name="confirmpasswd"
                 id="confirmpasswd"
               />
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display: inputInsertPrivacyAdvise ? "flex" : "none",
+                }}
+              >
+                Acepta las politicas de privacidad*
+              </p>
               <div className="checkboxForm">
                 <input type="checkbox" name="pricacy" id="privacy" />
                 <label id="privacy">
