@@ -1,0 +1,54 @@
+#devTools h1{
+    text-align: center;
+    color: var(--dark-1);
+    text-transform: uppercase;
+}
+
+#devTools h2{
+    text-align: center;
+    color: var(--secondary);
+    text-transform: uppercase;
+}
+
+.marginCages{
+    margin: 0px auto 20px;
+}
+
+.cageOfUserCard{
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.addButton{
+    border: 0px;
+    outline: none;
+}
+
+.addButton svg{
+    stroke: var(--primary);
+    width: 30px;
+    height: 30px;
+}
+
+.userCard{
+    margin: 10px auto !important;
+    box-sizing: border-box;
+    padding: 10px;
+}
+
+.userCard p{
+    font-weight: 600;
+    margin: 0px;
+}
+
+.userCard button{
+    background-color: transparent;
+    border: none;
+    outline: none;
+}
+
+.userCard button svg{
+    fill: var(--secondary);
+    width: 30px;
+    height: 30px;
+}

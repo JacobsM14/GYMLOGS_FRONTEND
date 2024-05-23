@@ -87,6 +87,11 @@
 .addonExercisesShow form {
   max-height: 400px;
   overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.addonExercisesShow::-webkit-scrollbar {
+  display: none;
 }
 
 .addonExercisesShow .labelExercises {
@@ -119,6 +124,11 @@
 .globalForm {
   max-height: 340px;
   overflow-y: scroll;
+  scrollbar-width: none;
+}
+
+.globalForm::-webkit-scrollbar {
+  display: none;
 }
 
 /* .addonExercisesShow .labelExercises input[type="checkbox"]::before{

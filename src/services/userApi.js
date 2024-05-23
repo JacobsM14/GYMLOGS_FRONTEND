@@ -53,6 +53,11 @@ async function postAndPutFetch(method, url, data) {
 
 // API
 //USERS -----------
+// GET ALL USERS - GET
+export async function getAllUsers() {
+  return await getFetch(`${urlServer}users`);
+}
+
 // GET USER BY ID - GET
 export async function getUserById(user_id) {
   return await getFetch(`${urlServer}users/${user_id}`);
@@ -254,6 +259,13 @@ export async function getSessionExercisesBySessionId(session_id) {
   return await getFetch(`${urlServer}sessions_exercise/${session_id}`);
 }
 
+// GET SESSION EXERCISE BY SESSION EXERCISE ID - GET
+export async function getSessionExerciseById(session_exercise_id) {
+  return await getFetch(
+    `${urlServer}sessions_exercise/session/${session_exercise_id}`
+  );
+}
+
 // CREATE EXERCISES BY SESSION ID - POST
 export async function createSessionExercise(fk_id_exercise, fk_id_session) {
   return await postAndPutFetch("POST", `${urlServer}sessions_exercise`, {
@@ -276,6 +288,11 @@ export async function getExercisesTypes() {
 }
 
 // EXERCISES -----------
+// GET ALL EXERCISES - GET
+export async function getAllExercises() {
+  return await getFetch(`${urlServer}exercise`);
+}
+
 // GET ALL EXERCISES BY TYPE - GET
 export async function getExercisesByType(type_id) {
   return await getFetch(`${urlServer}exercise/type/${type_id}`);
@@ -326,6 +343,6 @@ export async function createCalendar(
   });
 }
 
-export async function deleteCalenarById(calendar_id) {
+export async function deleteCalendarById(calendar_id) {
   return await deleteFecth(`${urlServer}calendar/${calendar_id}`);
 }

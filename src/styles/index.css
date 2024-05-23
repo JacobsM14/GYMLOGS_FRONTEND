@@ -28,6 +28,11 @@ input {
   height: 100vh;
   overflow-y: scroll;
   padding-bottom: 20%;
+  scrollbar-width: none;
+}
+
+.allCont::-webkit-scrollbar {
+  display: none;
 }
 
 /* BACKGROUNDX */

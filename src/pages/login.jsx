@@ -18,7 +18,7 @@ function logIn() {
     const token = cookies.get("token");
 
     if (token) {
-      window.location.href = "/home";
+      navigate("/home");
     }
   }, []);
 
@@ -41,6 +41,7 @@ function logIn() {
       if (response && response.id) {
         const cookies = new Cookies();
         cookies.set("token", response.id, { path: "/" });
+        cookies.set("userRole", response.urole, { path: "/" });
         navigate("/home");
       } else {
         setIsAddonVisible(true);

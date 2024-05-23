@@ -1,4 +1,5 @@
 import Nav from "./../components/navComponent/navComponent";
+import GitCalendar from "./../components/gitCalendar/gitCalendar";
 import "./../styles/home.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
@@ -15,7 +16,7 @@ import {
   getCalendarBySessionExerciseId,
   getCalendarBySessionExerciseAndDate,
   createCalendar,
-  deleteCalenarById,
+  deleteCalendarById,
 } from "./../services/userApi";
 
 function Home() {
@@ -69,7 +70,6 @@ function Home() {
               if (data && !data.error) {
                 setMainRoutineData(data);
               } else {
-                console.log("No main routine found");
               }
             });
 
@@ -87,7 +87,6 @@ function Home() {
           setRoutines(data);
         } else {
           setRoutines([]);
-          console.log("No routines found");
         }
       });
     }
@@ -109,44 +108,29 @@ function Home() {
 
         if (data && !data.error) {
           const relevantData = data[0];
-          console.log("relevantData", relevantData); // Add this line
 
           const sortedData = relevantData.sort(
             (a, b) => new Date(b.day) - new Date(a.day)
           );
-          console.log("sortedData", sortedData); // Add this line
 
           const lastItem = sortedData[0];
-          console.log("lastItem", lastItem); // Add this line
 
           const sameDateItems = sortedData.filter(
             (item) =>
               new Date(item.day).getTime() === new Date(lastItem.day).getTime()
           );
-          console.log("sameDateItems", sameDateItems); // Add this line
 
-          // Check that sameDateItems is an array before spreading it
           if (Array.isArray(sameDateItems) && sameDateItems != null) {
             setSeries((prevSeries) => {
-              // Only add items from sameDateItems that are not already in series
-              console.log("prevSeries", prevSeries); // Add this line
-              console.log("sameDateItems", sameDateItems); // Add this line
-
               const newItems = sameDateItems.filter((item) => {
                 const itemExistsInPrevSeries = prevSeries.some(
                   (prevItem) => prevItem.pk_id_calendar === item.pk_id_calendar
                 );
 
-                console.log("item", item); // Add this line
-                console.log("itemExistsInPrevSeries", itemExistsInPrevSeries); // Add this line
-
                 return !itemExistsInPrevSeries;
               });
 
-              console.log("newItems", newItems);
-
               const updatedSeries = [...prevSeries, ...newItems];
-              console.log("Updated series:", updatedSeries); // Add this line
               return updatedSeries;
             });
           }
@@ -278,92 +262,99 @@ function Home() {
   };
 
   const handleAddSeries = (exerciseId) => {
-    if (!newSeries[exerciseId].weight || !newSeries[exerciseId].repetitions) {
-      return;
-    } else if (
-      newSeries[exerciseId].weight < 0 ||
-      newSeries[exerciseId].repetitions < 0
-    ) {
-      return;
-    } else {
-      setSeries((prevSeries) => {
-        const serieNumber =
-          prevSeries.filter((series) => series.fk_id_session_ex === exerciseId)
-            .length + 1;
+    const newSerie = {
+      fk_id_session_ex: exerciseId,
+      serie:
+        series.filter((serie) => serie.fk_id_session_ex === exerciseId).length +
+        1,
+      weight: newSeries[exerciseId]?.weight || 0,
+      repetitions: newSeries[exerciseId]?.repetitions || 0,
+      date: new Date().toISOString().split("T")[0], // fecha de hoy en formato yyyy-mm-dd
+    };
 
-        const updatedSeries = [
-          ...prevSeries,
-          {
-            pk_id_sessio_ex: exerciseId,
-            serie: serieNumber,
-            weight: Number(newSeries[exerciseId].weight),
-            repetitions: Number(newSeries[exerciseId].repetitions),
-          },
-        ];
+    setSeries((prevSeries) => [...prevSeries, newSerie]);
+    setNewSeries((prevNewSeries) => ({
+      ...prevNewSeries,
+      [exerciseId]: { weight: "", repetitions: "" },
+    }));
+  };
 
-        return updatedSeries;
-      });
-    }
-
-    setNewSeries({
-      ...newSeries,
-      [exerciseId]: {
-        weight: "",
-        repetitions: "",
-      },
+  const handleWeightChange = (value, serieNumber, sessionExId) => {
+    const updatedSeries = series.map((serie) => {
+      if (
+        serie.serie === serieNumber &&
+        serie.fk_id_session_ex === sessionExId
+      ) {
+        return { ...serie, weight: Number(value) };
+      } else {
+        return serie;
+      }
     });
-
-    console.log("series");
-    console.log(series);
-    console.log("newSeries");
-    console.log(newSeries);
+    setSeries(updatedSeries);
   };
 
-  const handleWeightChange = (e, index, exerciseId) => {
-    setSeries((prevSeries) => ({
-      ...prevSeries,
-      [exerciseId]: prevSeries[exerciseId].map((serie, i) =>
-        i === index ? { ...serie, weight: e.target.value } : serie
-      ),
-    }));
-    console.log("handleWeightChange");
-    console.log(series);
-  };
-
-  const handleRepetitionsChange = (e, index, exerciseId) => {
-    setSeries((prevSeries) => ({
-      ...prevSeries,
-      [exerciseId]: prevSeries[exerciseId].map((serie, i) =>
-        i === index ? { ...serie, repetitions: e.target.value } : serie
-      ),
-    }));
-    console.log("handleRepetitionsChange");
-    console.log(series);
+  const handleRepetitionsChange = (value, serieNumber, sessionExId) => {
+    const updatedSeries = series.map((serie) => {
+      if (
+        serie.serie === serieNumber &&
+        serie.fk_id_session_ex === sessionExId
+      ) {
+        return { ...serie, repetitions: Number(value) };
+      } else {
+        return serie;
+      }
+    });
+    setSeries(updatedSeries);
   };
 
   const createCalendarData = () => {
-    const date = new Date();
-    const day = date.getDate();
-    const month = date.getMonth() + 1;
-    const year = date.getFullYear();
-    const fullDate = `${year}-${month}-${day}`;
+    // Obtener la fecha de hoy en formato yyyy-mm-dd
+    const today = new Date();
+    const fullDate = today.toISOString().split("T")[0];
+    const todayFormatted = today.toISOString().split("T")[0];
 
-    series.map((serie) => {
-      createCalendar(
-        serie.serie,
-        serie.weight,
-        serie.repetitions,
-        0,
-        fullDate,
-        serie.pk_id_sessio_ex
-      ).then((data) => {
-        if (data && !data.error) {
-          console.log("Calendar created");
-        } else {
-          console.log("Error creating calendar");
-        }
+    // Obtener los pk_id_calendar de las series de ejercicios creadas hoy
+    const calendarIdsToDelete = series
+      .filter((serie) => {
+        const serieDay = serie.day ? serie.day.split("T")[0] : undefined;
+        return serieDay === fullDate;
+      })
+      .map((serie) => serie.pk_id_calendar);
+
+    if (
+      calendarIdsToDelete[0] != undefined ||
+      calendarIdsToDelete.length != 0
+    ) {
+      calendarIdsToDelete.forEach((calendarId) => {
+        deleteCalendarById(calendarId)
+          .then(() => {
+            console.log(`Calendar with ID ${calendarId} deleted`);
+          })
+          .catch((error) =>
+            console.log(`Error deleting calendar with ID ${calendarId}:`, error)
+          );
       });
+    }
+
+    series.forEach((element) => {
+      console.log("Processing element:", element);
+      if (element.serie !== null || element !== undefined) {
+        createCalendar(
+          element.serie,
+          Number(element.weight),
+          Number(element.repetitions),
+          null,
+          todayFormatted,
+          element.fk_id_session_ex
+        ).then((data) => {});
+      }
     });
+
+    setSeries([]);
+    setNewSeries({ weight: "", repetitions: "" });
+    setIsAddonVisible(false);
+    setIsAddonShowSessionRotine(false);
+    setIsAddonShowSessionExercises(false);
   };
 
   return (
@@ -466,6 +457,10 @@ function Home() {
                   setSessionExercisesData([]);
                   setSelectedSession({});
                   setCurrentExerciseIndex(0);
+                  setSeries([]);
+                  setNewSeries({ weight: "", repetitions: "" });
+                  setIsAddonVisible(false);
+                  setIsAddonShowSessionRotine(false);
                 }}
               >
                 <svg
@@ -478,18 +473,23 @@ function Home() {
                 </svg>
               </button>
             </div>
-            <p className="time cage75 marginAuto flex">00:00</p>
+            {/* <p className="time cage75 marginAuto flex">00:00</p> */}
             <div className="showExercisesOnAddon flex justify-between align-center">
-              <button className="arrowButton" onClick={handlePrevClick}>
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="128"
-                  height="128"
-                  viewBox="0 0 1024 1024"
-                >
-                  <path d="M685.248 104.704a64 64 0 0 1 0 90.496L368.448 512l316.8 316.8a64 64 0 0 1-90.496 90.496L232.704 557.248a64 64 0 0 1 0-90.496l362.048-362.048a64 64 0 0 1 90.496 0" />
-                </svg>
-              </button>
+              {sessionExercisesData.length === 0 ? (
+                ""
+              ) : (
+                <button className="arrowButton" onClick={handlePrevClick}>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="128"
+                    height="128"
+                    viewBox="0 0 1024 1024"
+                  >
+                    <path d="M685.248 104.704a64 64 0 0 1 0 90.496L368.448 512l316.8 316.8a64 64 0 0 1-90.496 90.496L232.704 557.248a64 64 0 0 1 0-90.496l362.048-362.048a64 64 0 0 1 90.496 0" />
+                  </svg>
+                </button>
+              )}
+
               {sessionExercisesData.length === 0 ? (
                 <div className="noExercisesText flex justify-center align-center flex-column cage80 marginAuto backgroundWhite">
                   <h2>ESTA SESIÓN NO TIENE EJERCICIOS</h2>
@@ -580,53 +580,62 @@ function Home() {
                     <div className="tableExercisesBody flex justify-between flex-column tagCont cage90">
                       {Array.isArray(series) &&
                         series
-                          .filter(
-                            (serie) =>
-                              serie.fk_id_session_ex === currentExerciseId
-                          )
+                          .filter((serie) => {
+                            // console.log("Filtering series:", serie);
+                            return serie.fk_id_session_ex === currentExerciseId;
+                          })
                           .sort((a, b) => a.serie - b.serie)
-                          .map((serie, index) => (
-                            <div
-                              key={index}
-                              className="flex justify-between tagCont"
-                            >
-                              <p>{serie.serie}</p>
-                              <input
-                                type="number"
-                                className="backgroundYellow"
-                                value={serie.weight}
-                                onChange={(e) =>
-                                  handleWeightChange(
-                                    e,
-                                    index,
-                                    currentExerciseId
-                                  )
-                                }
-                              />
-                              <input
-                                type="number"
-                                className="backgroundYellow"
-                                value={serie.repetitions}
-                                onChange={(e) =>
-                                  handleRepetitionsChange(
-                                    e,
-                                    index,
-                                    currentExerciseId
-                                  )
-                                }
-                              />
-                              <input
-                                type="number"
-                                className="backgroundBlack"
-                                placeholder={serie.weight.toString()}
-                              />
-                              <input
-                                type="number"
-                                className="backgroundBlack"
-                                placeholder={serie.repetitions.toString()}
-                              />
-                            </div>
-                          ))}
+                          .map((serie, index) => {
+                            // console.log("Mapping series:", serie);
+                            return (
+                              <div
+                                key={index}
+                                className="flex justify-between tagCont"
+                              >
+                                <p>{serie.serie}</p>
+                                <input
+                                  type="number"
+                                  className="backgroundYellow"
+                                  value={serie.weight}
+                                  onChange={(e) =>
+                                    handleWeightChange(
+                                      e.target.value,
+                                      index + 1,
+                                      currentExerciseId
+                                    )
+                                  }
+                                />
+                                <input
+                                  type="number"
+                                  className="backgroundYellow"
+                                  value={serie.repetitions}
+                                  onChange={(e) =>
+                                    handleRepetitionsChange(
+                                      e.target.value,
+                                      index + 1,
+                                      currentExerciseId
+                                    )
+                                  }
+                                />
+                                {/* Los inputs con clase backgroundBlack no se modifican */}
+                                {serie.serie !== undefined && (
+                                  <input
+                                    type="number"
+                                    className="backgroundBlack"
+                                    placeholder={serie.weight.toString()}
+                                  />
+                                )}
+                                {serie.serie !== undefined && (
+                                  <input
+                                    type="number"
+                                    className="backgroundBlack"
+                                    placeholder={serie.repetitions.toString()}
+                                  />
+                                )}
+                              </div>
+                            );
+                          })}
+
                       <div className="flex justify-between tagCont">
                         <p>-</p>
                         <input
@@ -675,21 +684,25 @@ function Home() {
                   </div>
                 </div>
               )}
-              <button
-                className="arrowButton arrowRotated"
-                onClick={handleNextClick}
-              >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="128"
-                  height="128"
-                  viewBox="0 0 1024 1024"
+              {sessionExercisesData.length === 0 ? (
+                ""
+              ) : (
+                <button
+                  className="arrowButton arrowRotated"
+                  onClick={handleNextClick}
                 >
-                  <path d="M685.248 104.704a64 64 0 0 1 0 90.496L368.448 512l316.8 316.8a64 64 0 0 1-90.496 90.496L232.704 557.248a64 64 0 0 1 0-90.496l362.048-362.048a64 64 0 0 1 90.496 0" />
-                </svg>
-              </button>
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="128"
+                    height="128"
+                    viewBox="0 0 1024 1024"
+                  >
+                    <path d="M685.248 104.704a64 64 0 0 1 0 90.496L368.448 512l316.8 316.8a64 64 0 0 1-90.496 90.496L232.704 557.248a64 64 0 0 1 0-90.496l362.048-362.048a64 64 0 0 1 90.496 0" />
+                  </svg>
+                </button>
+              )}
             </div>
-            <button className="endSession" onClick={createCalendarData}>
+            <button className="endSession" onClick={() => createCalendarData()}>
               GUARDAR EJERCICIOS
             </button>
           </div>
@@ -782,150 +795,8 @@ function Home() {
               </div>
             </div>
           )}
-          <div
-            id="calendarRoutines"
-            className="border-r5 backgroundBlack cage100"
-          >
-            <p>Calendario</p>
-            <div id="days" className="">
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-              <div className="dayCage"></div>
-            </div>
-          </div>
-          <div id="showStats" className="flex justify-between align-center">
-            <div className="cageStat backgroundBlack">
-              <h2>08</h2>
-              <h3>Dias Completados</h3>
-            </div>
-            <div className="cageStat backgroundBlack">
-              <h2>02</h2>
-              <h3>Racha de Semanas</h3>
-            </div>
-          </div>
+
+          <GitCalendar />
         </div>
         <Nav webPage="home" />
       </div>

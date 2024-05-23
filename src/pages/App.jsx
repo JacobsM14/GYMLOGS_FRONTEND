@@ -13,6 +13,8 @@ import Routine from "./routine";
 import EditPlanedRoutine from "./editPlanedRoutine";
 import EditFreeRoutine from "./editFreeRoutine";
 import EditSession from "./editSession";
+import Calendar from "./calendar";
+import DevTools from "./devTools";
 
 function App() {
   // const [count, setCount] = useState(0);
@@ -36,6 +38,8 @@ function App() {
       ></Route>
       <Route path="/editFreeRoutine/:id" element={<EditFreeRoutine />}></Route>
       <Route path="/editSession/:id" element={<EditSession />}></Route>
+      <Route path="/calendar" element={<Calendar />}></Route>
+      <Route path="/devTools" element={<DevTools />}></Route>
     </Routes>
   );
 }

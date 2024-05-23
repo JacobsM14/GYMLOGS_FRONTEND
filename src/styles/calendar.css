@@ -1,0 +1,160 @@
+/* GIT CALENDAR */
+.calendar {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  overflow-x: scroll;
+  scrollbar-width: none;
+}
+
+.calendar::-webkit-scrollbar {
+  display: none;
+}
+
+.calendar-grid {
+  display: flex;
+  flex-direction: row-reverse;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+
+.calendar-grid::-webkit-scrollbar {
+  display: none;
+}
+
+.calendar-week {
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: flex-end;
+  gap: 6px;
+}
+
+.dayCage {
+  width: 50px;
+  height: 50px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* CALENDAR OF CALENDAR PAGE */
+.calendarSection {
+  margin: 50px auto 20px;
+  box-sizing: border-box;
+}
+
+.monthName {
+  padding: 10px 0px;
+}
+
+.monthName h2 {
+  color: var(--secondary);
+  font-size: 25px;
+  font-weight: 500;
+  margin: 0px;
+  text-transform: uppercase;
+}
+
+.monthCalendarDays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 5px;
+  margin: 0px auto;
+  padding: 5px;
+}
+
+.day {
+  width: 40px;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  background-color: var(--light);
+  border-radius: 3px;
+  display: flex;
+}
+
+.day p {
+  align-self: flex-end;
+  justify-self: flex-end;
+  text-align: left;
+  font-size: 10px;
+  margin: 0px;
+  padding: 2px;
+}
+
+.showCategory {
+  background-color: var(--secondary);
+  color: var(--darl-1);
+  font-size: 13px;
+  border-radius: 100px;
+  padding: 0px 4px !important;
+}
+
+/* DETALLES DE EJERCICIO POR DIA */
+.dayDetails {
+  padding: 10px 5px 20px;
+  gap: 10px;
+  align-items: center;
+}
+
+.daysButtons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin: 10px 0px;
+}
+
+.dayButtonExercise {
+  border: 0px;
+  outline: none;
+  background-color: var(--secondary);
+  border-radius: 5px;
+  box-sizing: 5px 10px;
+  color: var(--dark-1);
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.selectedButton {
+  background-color: var(--primary);
+  color: var(--secondary);
+}
+
+.dayDetailsCard {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.dayDetailsCard h3 {
+  color: var(--primary);
+  font-size: 20px;
+  margin: 0px;
+}
+
+.dayDetailsCard table {
+  width: fit-content;
+}
+
+.dayDetailsCard table tr {
+  padding: 0px 10px;
+}
+
+.dayDetailsCard table th {
+  font-size: 15px;
+  color: var(--secondary);
+  text-align: center;
+}
+
+.dayDetailsCard table td {
+  font-size: 15px;
+  color: var(--light);
+  text-align: center;
+}

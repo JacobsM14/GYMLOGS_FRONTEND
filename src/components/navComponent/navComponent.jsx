@@ -1,17 +1,37 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import "./../../styles/componentStyles/navComponent.css";
+import Cookies from "universal-cookie";
 
 function NavComponent({ webPage }) {
+  const routines = useRef(null);
+  const calendar = useRef(null);
+  const home = useRef(null);
+  const user = useRef(null);
+  const devTools = useRef(null);
+
   useEffect(() => {
     // console.log(webPage);
+    const cookies = new Cookies();
+    const urole = cookies.get("userRole");
+
+    if (urole === 1) {
+      devTools.current.style.display = "block";
+    } else if (urole === 2) {
+      devTools.current.style.display = "none";
+    } else if (urole === 3) {
+      devTools.current.style.display = "none";
+    }
+
     if (webPage === "rutina") {
-      document.getElementById("rutinaNav").classList.add("active");
+      routines.current.classList.add("active");
     } else if (webPage === "calendario") {
-      document.getElementById("calendarioNav").classList.add("active");
+      calendar.current.classList.add("active");
     } else if (webPage === "home") {
-      document.getElementById("homeNav").classList.add("active");
+      home.current.classList.add("active");
     } else if (webPage === "user") {
-      document.getElementById("userNav").classList.add("active");
+      user.current.classList.add("active");
+    } else if (webPage === "devTools") {
+      devTools.current.classList.add("active");
     }
   });
 
@@ -19,7 +39,7 @@ function NavComponent({ webPage }) {
     <>
       <div id="navHeight60"></div>
       <nav>
-        <a href="/routines" id="rutinaNav">
+        <a href="/routines" id="rutinaNav" ref={routines}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -30,7 +50,7 @@ function NavComponent({ webPage }) {
           </svg>
           {/* <p>Rutinas</p> */}
         </a>
-        <a href="" id="calendarioNav">
+        <a href="/calendar" id="calendarioNav" ref={calendar}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -41,7 +61,7 @@ function NavComponent({ webPage }) {
           </svg>
           {/* <p>Calendar</p> */}
         </a>
-        <a href="/home" id="homeNav">
+        <a href="/home" id="homeNav" ref={home}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
@@ -52,7 +72,19 @@ function NavComponent({ webPage }) {
           </svg>
           {/* <p>Inicio</p> */}
         </a>
-        <a href="/user" id="userNav">
+        <a href="/devTools" id="devTools" ref={devTools}>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="128"
+            height="128"
+            viewBox="0 0 20 20"
+          >
+            <path
+              d="M16.68 9.77a4.543 4.543 0 0 1-4.95.99l-5.41 6.52c-.99.99-2.59.99-3.58 0s-.99-2.59 0-3.57l6.52-5.42c-.68-1.65-.35-3.61.99-4.95c1.28-1.28 3.12-1.62 4.72-1.06l-2.89 2.89l2.82 2.82l2.86-2.87c.53 1.58.18 3.39-1.08 4.65M3.81 16.21c.4.39 1.04.39 1.43 0c.4-.4.4-1.04 0-1.43c-.39-.4-1.03-.4-1.43 0a1.02 1.02 0 0 0 0 1.43"
+            />
+          </svg>
+        </a>
+        <a href="/user" id="userNav" ref={user}>
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="128"
