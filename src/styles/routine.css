@@ -19,7 +19,7 @@
   height: 50px;
 }
 
-#routine .editRoutineAdvise{
+#routine .editRoutineAdvise {
   margin-top: 30px;
 }
 
@@ -30,7 +30,7 @@
   text-align: center;
 }
 
-#routine .editRoutine{
+#routine .editRoutine {
   border: 0px;
   box-sizing: border-box;
 }
@@ -43,7 +43,6 @@
   font-weight: 700;
   text-align: left;
 }
-
 
 #routine .editRoutine {
   margin-top: 30px;
@@ -116,6 +115,27 @@
   font-weight: 600;
 }
 
+.addonSet .addonSetContainer textarea {
+  display: block;
+  width: 90%;
+  box-sizing: border-box;
+  margin: 10px auto;
+  padding: 10px 20px;
+  border: 0px;
+  border-radius: 3px;
+  outline: none;
+  background-color: var(--primary);
+  color: var(--secondary);
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.addonSet .addonSetContainer textarea::placeholder {
+  color: var(--secondary);
+  font-size: 15px;
+  font-weight: 600;
+}
+
 .addonSet #contWeekDays {
   gap: 10px;
 }
@@ -159,16 +179,15 @@
 }
 
 /* SHOW ADDONS */
-.addonSet{
-    display: none;
-    position: fixed;
+.addonSet {
+  display: none;
+  position: fixed;
 }
 
-#createPlanedRoutineAddon{
-    display: none;
+#createPlanedRoutineAddon {
+  display: none;
 }
 
-#createFreeRoutineAddon{
-    display: none;
+#createFreeRoutineAddon {
+  display: none;
 }
-

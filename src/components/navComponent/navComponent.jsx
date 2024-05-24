@@ -15,7 +15,7 @@ function NavComponent({ webPage }) {
     const urole = cookies.get("userRole");
 
     if (urole === 1) {
-      devTools.current.style.display = "block";
+      devTools.current.style.display = "flex";
     } else if (urole === 2) {
       devTools.current.style.display = "none";
     } else if (urole === 3) {

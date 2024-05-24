@@ -411,7 +411,7 @@ function editPlanedRoutine() {
         >
           <div
             id="createPlanedRoutineAddon"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isNewSessionVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -509,7 +509,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="verificateDeleteSession"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isDeleteSessionVisible ? "block" : "none" }}
           >
             <h2>¿Estas seguro de que quieres eliminar esta session?</h2>
@@ -524,7 +524,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="editRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isEditRoutineVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -577,7 +577,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="confirmDeleteRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isConfirmDeleteRoutine ? "block" : "none" }}
           >
             <h2>¿Estas seguro de que quieres eliminar esta rutina?</h2>
@@ -592,7 +592,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="setAsMainRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isSetAsMainRoutine ? "block" : "none" }}
           >
             <h2>¿Quieres establecer esta rutina como principal?</h2>
@@ -607,7 +607,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="deleteMainRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isDeleteAsMainRoutine ? "block" : "none" }}
           >
             <h2>¿Quieres que esta rutina deje de ser tu principal?</h2>
@@ -622,7 +622,7 @@ function editPlanedRoutine() {
           </div>
         </div>
         {/* PAGE CONTENT */}
-        <div id="editPlanedSession" className="cage90 flex flex-column">
+        <div id="editPlanedSession" className="allContResponsive cage90 flex flex-column">
           <div className="editRoutineShowName flex justify-between ">
             {routine.map((routine, index) => (
               <div className="textEditRoutinShowLimitation flex" key={index}>
@@ -661,19 +661,6 @@ function editPlanedRoutine() {
                 <path d="M3 21v-4.25L16.2 3.575q.3-.275.663-.425t.762-.15t.775.15t.65.45L20.425 5q.3.275.438.65T21 6.4q0 .4-.137.763t-.438.662L7.25 21zM17.6 7.8L19 6.4L17.6 5l-1.4 1.4z" />
               </svg>
             </button>
-            {/* <button
-              className="flex justify-center align-center"
-              onClick={getBack}
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="128"
-                height="128"
-                viewBox="0 0 24 24"
-              >
-                <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6l6 6l1.41-1.41L5.83 13H21V7z" />
-              </svg>
-            </button> */}
           </div>
 
           {sessions
@@ -692,7 +679,7 @@ function editPlanedRoutine() {
                 <h2>{session.nom_session}</h2>
 
                 <div className="contButtonsEditRoutine">
-                  <button onClick={() => editSession(session.pk_id_sessio)}>
+                  <button onClick={() => editSession(session.pk_id_sessio)} className="hoverYellow">
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       width="128"
@@ -707,7 +694,7 @@ function editPlanedRoutine() {
                     </svg>
                   </button>
                   <button
-                    onClick={() => addonDeleteSession(session.pk_id_sessio)}
+                    onClick={() => addonDeleteSession(session.pk_id_sessio)} className="hoverYellow"
                   >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"

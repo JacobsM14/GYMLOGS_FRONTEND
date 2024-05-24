@@ -56,19 +56,28 @@
   color: var(--light);
 }
 
+#userPage #contPrivacity .cagePrivacity:hover h3 {
+  color: var(--secondary) !important;
+}
+
 #userPage #contPrivacity .cagePrivacity svg {
   fill: var(--light);
   width: 40px;
   height: 40px;
 }
 
+#userPage #contPrivacity .cagePrivacity:hover svg {
+  fill: var(--secondary) !important;
+}
+
 #userPage #contPrivacity .cagePrivacity svg path {
   fill: var(--light);
 }
 
-#userPage #contPrivacity .cagePrivacity svg:hover {
-  fill: var(--primary);
+#userPage #contPrivacity .cagePrivacity:hover svg path {
+  fill: var(--secondary) !important;
 }
+
 /* NAV */
 #privacyPolitics nav,
 #userPage nav {

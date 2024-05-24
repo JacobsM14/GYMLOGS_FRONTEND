@@ -1,6 +1,7 @@
 import Nav from "./../components/navComponent/navComponent";
 import GitCalendar from "./../components/gitCalendar/gitCalendar";
 import "./../styles/home.css";
+import "./../styles/responsiveContent.css";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState, useRef } from "react";
 import Cookies from "universal-cookie";
@@ -24,11 +25,15 @@ function Home() {
 
   // ADDON SET
   const [isAddonVisible, setIsAddonVisible] = useState(false);
+  const [isAddon2Visible, setAddon2Visible] = useState(false);
+
   // ADDON TO START SESSION
   const [isAddonShowSessionExercises, setIsAddonShowSessionExercises] =
     useState(false);
   // ADON TO START ROUTINE
   const [isAddonShowSessionRotine, setIsAddonShowSessionRotine] =
+    useState(false);
+  const [isAddon2ShowExerciseDescription, setAddon2ShowExerciseDescription] =
     useState(false);
 
   // SAVE DATE
@@ -104,8 +109,6 @@ function Home() {
       getCalendarBySessionExerciseId(
         sessionExercises[currentExerciseIndex].pk_id_sessio_ex
       ).then((data) => {
-        console.log("Data from database:", data); // Add this line
-
         if (data && !data.error) {
           const relevantData = data[0];
 
@@ -327,9 +330,7 @@ function Home() {
     ) {
       calendarIdsToDelete.forEach((calendarId) => {
         deleteCalendarById(calendarId)
-          .then(() => {
-            console.log(`Calendar with ID ${calendarId} deleted`);
-          })
+          .then(() => {})
           .catch((error) =>
             console.log(`Error deleting calendar with ID ${calendarId}:`, error)
           );
@@ -337,7 +338,6 @@ function Home() {
     }
 
     series.forEach((element) => {
-      console.log("Processing element:", element);
       if (element.serie !== null || element !== undefined) {
         createCalendar(
           element.serie,
@@ -357,12 +357,41 @@ function Home() {
     setIsAddonShowSessionExercises(false);
   };
 
+  //SHOW DESCRIPTION 2
+  const showDescription2 = (exercise) => {
+    setAddon2Visible((prevState) => !prevState);
+    setAddon2ShowExerciseDescription((prevState) => !prevState);
+    h2Title2.current.innerHTML = exercise.exercise_name;
+    pDescription2.current.innerHTML = exercise.description;
+
+    if (exercise.fk_category_1 === 1) {
+      category2.current.innerHTML = "Pecho";
+    } else if (exercise.fk_category_1 === 2) {
+      category2.current.innerHTML = "Brazos";
+    } else if (exercise.fk_category_1 === 3) {
+      category2.current.innerHTML = "Espalda";
+    } else if (exercise.fk_category_1 === 4) {
+      category2.current.innerHTML = "Piernas";
+    }
+  };
+
+  const h2Title2 = useRef();
+  const pDescription2 = useRef();
+  const category2 = useRef();
+
+  // CLOSE DESCRIPTION 2
+  const closeShowDescription2 = () => {
+    setAddon2Visible(false);
+    setAddon2ShowExerciseDescription(false);
+  };
+
   return (
     <>
       <div
         id="homeCont"
         className="allCont flex flex-column align-center backgroundGradient position-relative"
       >
+        {/* ADDONS */}
         <div
           className="addonSet"
           style={{
@@ -376,7 +405,7 @@ function Home() {
               display: isAddonShowSessionRotine ? "block" : "none",
             }}
           >
-            <div className="titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
+            <div className="allContResponsive titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
               {selectedRoutine.length > 0 ? (
                 <h2>{selectedRoutine[0].routine_name}</h2>
               ) : (
@@ -399,7 +428,7 @@ function Home() {
                 </svg>
               </button>
             </div>
-            <div className="showExercisesOnAddon flex justify-between align-center">
+            <div className="allContResponsive showExercisesOnAddon flex justify-between align-center">
               {selectedRoutineData.length === 0 ? (
                 <div className="noExercisesText flex justify-center align-center flex-column cage80 marginAuto backgroundWhite">
                   <h2>ESTA RUTINA NO TIENE SESSIONES</h2>
@@ -444,13 +473,14 @@ function Home() {
               display: isAddonShowSessionExercises ? "block" : "none",
             }}
           >
-            <div className="titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
+            <div className="allContResponsive titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
               {selectedSession.length > 0 ? (
                 <h2>{selectedSession[0].nom_session}</h2>
               ) : (
                 <h2>Sesión</h2>
               )}
               <button
+                className="hoverYellow"
                 onClick={() => {
                   setIsAddonVisible(false);
                   setIsAddonShowSessionExercises(false);
@@ -474,11 +504,14 @@ function Home() {
               </button>
             </div>
             {/* <p className="time cage75 marginAuto flex">00:00</p> */}
-            <div className="showExercisesOnAddon flex justify-between align-center">
+            <div className="allContResponsive showExercisesOnAddon flex justify-between align-center">
               {sessionExercisesData.length === 0 ? (
                 ""
               ) : (
-                <button className="arrowButton" onClick={handlePrevClick}>
+                <button
+                  className="arrowButton hoverPurple"
+                  onClick={handlePrevClick}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="128"
@@ -511,8 +544,13 @@ function Home() {
                           sessionExercisesData[currentExerciseIndex]
                             .exercise_name}
                       </h3>
-                      <button>
+                      <button className="hoverPurple">
                         <svg
+                          onClick={() =>
+                            showDescription2(
+                              sessionExercisesData[currentExerciseIndex]
+                            )
+                          }
                           xmlns="http://www.w3.org/2000/svg"
                           width="128"
                           height="128"
@@ -581,12 +619,10 @@ function Home() {
                       {Array.isArray(series) &&
                         series
                           .filter((serie) => {
-                            // console.log("Filtering series:", serie);
                             return serie.fk_id_session_ex === currentExerciseId;
                           })
                           .sort((a, b) => a.serie - b.serie)
                           .map((serie, index) => {
-                            // console.log("Mapping series:", serie);
                             return (
                               <div
                                 key={index}
@@ -688,7 +724,7 @@ function Home() {
                 ""
               ) : (
                 <button
-                  className="arrowButton arrowRotated"
+                  className="arrowButton arrowRotated hoverPurple"
                   onClick={handleNextClick}
                 >
                   <svg
@@ -707,7 +743,40 @@ function Home() {
             </button>
           </div>
         </div>
-        <div className="cage90 marginTop-20" id="home">
+        <div
+          className="addonSet addonSuperior align-center"
+          style={{
+            display: isAddon2Visible ? "flex" : "none",
+          }}
+        >
+          <div
+            id="showExerciseDescription"
+            className="allContResponsive cage90 backgroundPurple marginAuto addonSetContainer"
+            style={{
+              display: isAddon2ShowExerciseDescription ? "block" : "none",
+            }}
+          >
+            <div className="editRoutineShowName flex justify-between cage90 marginAuto">
+              <div className="textEditRoutinShowLimitation">
+                <h2 ref={h2Title2}></h2>
+                <p className="tagGlobal tagColor2" ref={category2}></p>
+              </div>
+              <button onClick={closeShowDescription2}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="128"
+                  height="128"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6l6 6l1.41-1.41L5.83 13H21V7z" />
+                </svg>
+              </button>
+            </div>
+            <p className=" cage90 textDescription" ref={pDescription2}></p>
+          </div>
+        </div>
+        {/* CAGE CONTENT */}
+        <div className="allContResponsive cage90 marginTop-20" id="home">
           {!mainRoutine || Object.keys(mainRoutine).length === 0 ? (
             <div
               className="routinesShow border-r5 backgroundBlack"

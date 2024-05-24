@@ -91,7 +91,7 @@ function editUser() {
         id="userEditPage"
         className="allCont flex flex-column align-center backgroundBlack position-relative"
       >
-        <div className=" cage90 marginAuto flex flex-column">
+        <div className="allContResponsive cage90 marginAuto flex flex-column">
           <div className="textPrivacyPolitics flex justify-between align-center">
             <h1>Configuración de Cuenta</h1>
             <button onClick={goBack}>

@@ -110,7 +110,7 @@ function logIn() {
               </p>
               <input type="password" placeholder="Contraseña:" id="pssd" />
               <input type="submit" className="button1" value="INICIAR SESION" />
-              <a href="">Has olvidado tu contraseña?</a>
+              {/* <a href="">Has olvidado tu contraseña?</a> */}
             </form>
             <a href="/register">
               <button className="button2">REGISTRARSE</button>

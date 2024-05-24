@@ -14,10 +14,19 @@
 }
 
 /* ADDONS */
+.addonInferior{
+  z-index: 100;
+}
+
+.addonSuperior{
+  z-index: 200;
+}
+
 /* SELECT EXERCISE TYPES */
 #selectExerciseType {
   padding: 20px 0px;
 }
+
 #selectExerciseType .editRoutineShowName {
   margin-top: 10px;
 }
@@ -52,6 +61,17 @@
   color: var(--dark-1) !important;
 }
 
+.infoButton{
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+  width: fit-content;
+}
+
+.infoButton svg{
+  fill: var(--light) !important;
+}
+
 /* SHOW EXERCISES */
 .addonExercisesShow {
   box-sizing: border-box;
@@ -77,6 +97,10 @@
 
 .selectedButton {
   filter: grayscale(0) !important;
+}
+
+.filterButtons{
+  margin-bottom: 10px !important;
 }
 
 .filterButtons button {
@@ -159,8 +183,8 @@
   width: 100% !important;
   margin: 30px 0px 0px !important;
   box-sizing: border-box;
-  background-color: var(--dark-1);
-  color: var(--light);
+  background-color: var(--light);
+  color: var(--primary);
   border-radius: 0px;
   font-size: 15px;
   padding: 20px 0px;

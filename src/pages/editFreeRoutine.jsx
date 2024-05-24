@@ -328,7 +328,7 @@ function editPlanedRoutine() {
         >
           <div
             id="createFreeRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isNewSessionVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -376,7 +376,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="verificateDeleteSession"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isDeleteSessionVisible ? "block" : "none" }}
           >
             <h2>¿Estas seguro de que quieres eliminar esta session?</h2>
@@ -391,7 +391,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="editRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isEditRoutineVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -444,7 +444,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="confirmDeleteRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isConfirmDeleteRoutine ? "block" : "none" }}
           >
             <h2>¿Estas seguro de que quieres eliminar esta rutina?</h2>
@@ -459,7 +459,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="setAsMainRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isSetAsMainRoutine ? "block" : "none" }}
           >
             <h2>¿Quieres establecer esta rutina como principal?</h2>
@@ -474,7 +474,7 @@ function editPlanedRoutine() {
           </div>
           <div
             id="deleteMainRoutine"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isDeleteAsMainRoutine ? "block" : "none" }}
           >
             <h2>¿Quieres que esta rutina deje de ser tu principal?</h2>
@@ -489,7 +489,7 @@ function editPlanedRoutine() {
           </div>
         </div>
         {/* PAGE CONTENT */}
-        <div id="editPlanedSession" className="cage90 flex flex-column">
+        <div id="editPlanedSession" className="allContResponsive cage90 flex flex-column">
           <div className="editRoutineShowName flex justify-between ">
             {routine.map((routine, index) => (
               <div className="textEditRoutinShowLimitation flex" key={index}>

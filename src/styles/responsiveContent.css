@@ -1,0 +1,72 @@
+@media (min-width: 546px) {
+  .monthName h2 {
+    font-size: 30px !important;
+  }
+
+  .day {
+    height: 70px !important;
+  }
+
+  .day p {
+    font-size: 15px !important;
+  }
+}
+
+@media (min-width: 768px) {
+  .allContResponsive {
+    width: 70% !important;
+  }
+
+  .allCont {
+    padding-bottom: 6% !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .allContResponsive {
+    width: 60% !important;
+  }
+
+  .allCont {
+    padding-bottom: 4% !important;
+  }
+
+  .monthName h2 {
+    font-size: 35px !important;
+  }
+
+  .day {
+    height: 80px !important;
+  }
+
+  .day p {
+    font-size: 17px !important;
+  }
+}
+
+@media (min-width: 1406px) {
+  #calendarCont,
+  #privacyPolitics {
+    padding-bottom: 10% !important;
+  }
+
+  .allContResponsive {
+    width: 50% !important;
+  }
+
+  .allCont {
+    padding-bottom: 2% !important;
+  }
+
+  .monthName h2 {
+    font-size: 35px !important;
+  }
+
+  .day {
+    height: 90px !important;
+  }
+
+  .day p {
+    font-size: 17px !important;
+  }
+}

@@ -225,7 +225,7 @@ function Routine() {
         >
           <div
             id="createPlanedRoutineAddon"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isPlanedRoutineVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -356,7 +356,7 @@ function Routine() {
           </div>
           <div
             id="createFreeRoutineAddon"
-            className="cage90 backgroundWhite marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
             style={{ display: isFreeRoutineVisible ? "block" : "none" }}
           >
             <div className="cage90 marginAuto flex align-center justify-between">
@@ -409,7 +409,7 @@ function Routine() {
           </div>
         </div>
         {/* CONT GENERAL */}
-        <div id="routine" className="cage80 marginAuto flex flex-column">
+        <div id="routine" className="allContResponsive cage80 marginAuto flex flex-column">
           <h2>CREAR RUTINA</h2>
           <button
             className="createRoutine backgroundBlack border-r5 flex align-center"
@@ -447,7 +447,7 @@ function Routine() {
                   id={routine.pk_id_routine}
                   key={index}
                   onClick={() => editRoutine(routine.pk_id_routine)}
-                  className="editRoutine backgroundBlack border-r5 flex flex-column"
+                  className="cursorPointer editRoutine backgroundBlack border-r5 flex flex-column"
                 >
                   <h3>{routine.routine_name}</h3>
                   <div className="tagCont flex cage90 marginAuto">

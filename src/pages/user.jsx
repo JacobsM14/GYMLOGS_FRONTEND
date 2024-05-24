@@ -51,7 +51,7 @@ function User() {
         </div>
         <div id="contPrivacity" className="cage90">
           <h2>Cuenta y Privacidad</h2>
-          <div className="cage100 backgroundBlack2 cagePrivacity">
+          <div className="cage100 backgroundBlack2 cagePrivacity cursorPointer">
             <div
               className="cage90 flex align-center marginAuto"
               onClick={() => navigateToPages("privacyPolitics")}
@@ -67,7 +67,7 @@ function User() {
               <h3>Políticas de privacidad</h3>
             </div>
           </div>
-          <div className="cage100 backgroundBlack2 cagePrivacity">
+          <div className="cage100 backgroundBlack2 cagePrivacity cursorPointer">
             <div
               className="cage90 flex align-center marginAuto"
               onClick={() => navigateToPages("editUser")}
@@ -88,7 +88,7 @@ function User() {
               <h3>Configuración de cuenta</h3>
             </div>
           </div>
-          <div className="cage100 backgroundBlack2 cagePrivacity">
+          <div className="cage100 backgroundBlack2 cagePrivacity cursorPointer">
             <div
               className="cage90 flex align-center marginAuto"
               onClick={() => navigateToPages("premiumAccount")}
@@ -108,7 +108,7 @@ function User() {
             </div>
           </div>
           <div
-            className="cage100 backgroundBlack2 cagePrivacity"
+            className="cage100 backgroundBlack2 cagePrivacity cursorPointer"
             onClick={closeSession}
           >
             <div className="cage90 flex align-center marginAuto">

@@ -65,19 +65,18 @@
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 5px;
-  margin: 0px auto;
+  margin: 0 auto;
   padding: 5px;
+  width: calc(100% - 10px);
 }
 
 .day {
-  width: 40px;
   height: 40px;
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
   background-color: var(--light);
   border-radius: 3px;
-  display: flex;
 }
 
 .day p {

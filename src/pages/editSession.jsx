@@ -29,6 +29,8 @@ function editSession() {
 
   // ADDON STATES
   const [isAddonVisible, setAddonVisible] = useState(false);
+  const [isAddon2Visible, setAddon2Visible] = useState(false);
+
   const [isAddonSelectExerciseTypeVisible, setAddonSelectExerciseTypeVisible] =
     useState(false);
   const [isAddonShowCalisteniaExercises, setAddonShowCalisteniaExercises] =
@@ -40,6 +42,9 @@ function editSession() {
   const [isAddonShowMaquinasExercises, setAddonShowMaquinasExercises] =
     useState(false);
   const [isAddonShowExerciseDescription, setAddonShowExerciseDescription] =
+    useState(false);
+
+  const [isAddon2ShowExerciseDescription, setAddon2ShowExerciseDescription] =
     useState(false);
 
   // SAVE CONTENT
@@ -57,6 +62,7 @@ function editSession() {
     3: "Espalda",
     4: "Piernas",
   };
+
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   // CHECKBOXES
@@ -215,6 +221,35 @@ function editSession() {
     setAddonShowExerciseDescription(false);
   };
 
+  //SHOW DESCRIPTION 2
+  const showDescription2 = (exercise) => {
+    let indexofExercise = selectedExercise.indexOf(exercise);
+    setAddon2Visible((prevState) => !prevState);
+    setAddon2ShowExerciseDescription((prevState) => !prevState);
+    h2Title2.current.innerHTML = exercise.exercise_name;
+    pDescription2.current.innerHTML = exercise.description;
+
+    if (exercise.fk_category_1 === 1) {
+      category2.current.innerHTML = "Pecho";
+    } else if (exercise.fk_category_1 === 2) {
+      category2.current.innerHTML = "Brazos";
+    } else if (exercise.fk_category_1 === 3) {
+      category2.current.innerHTML = "Espalda";
+    } else if (exercise.fk_category_1 === 4) {
+      category2.current.innerHTML = "Piernas";
+    }
+  };
+
+  const h2Title2 = useRef();
+  const pDescription2 = useRef();
+  const category2 = useRef();
+
+  // CLOSE DESCRIPTION 2
+  const closeShowDescription2 = () => {
+    setAddon2Visible(false);
+    setAddon2ShowExerciseDescription(false);
+  };
+
   // DATABASE FUNCTIONS
   const saveExercises = async (type) => {
     const exercises = Object.keys(checkedExercises).filter(
@@ -309,14 +344,14 @@ function editSession() {
       <div className="allCont flex flex-column align-center backgroundGradient position-relative">
         {/* ADDONS GENERAL */}
         <div
-          className="addonSet align-center"
+          className="addonSet addonInferior align-center"
           style={{
             display: isAddonVisible ? "flex" : "none",
           }}
         >
           <div
             id="selectExerciseType"
-            className="cage90 backgroundBlack marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundBlack marginAuto addonSetContainer"
             style={{
               display: isAddonSelectExerciseTypeVisible ? "block" : "none",
             }}
@@ -357,7 +392,7 @@ function editSession() {
           <form
             ref={pesoLibreForm}
             id="showPesoLibreExercises"
-            className="cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
+            className="allContResponsive cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
             style={{
               display: isAddonShowPesoLibreExercises ? "block" : "none",
             }}
@@ -439,29 +474,44 @@ function editSession() {
 
                   return (
                     <div
-                      className="labelExercises flex flex-column"
+                      className="labelExercises flex"
                       key={pesoLibre.pk_id_exercise} // Use `pesoLibre.pk_id_exercise` as the key
                     >
-                      <div className="flex align-center">
-                        <label htmlFor={exerciseId}>
-                          {pesoLibre.exercise_name}
-                        </label>
-                        <input
-                          id={exerciseId}
-                          name={exerciseId}
-                          type="checkbox"
-                          checked={checkedExercises[exerciseId] || false}
-                          onChange={(e) => {
-                            setCheckedExercises({
-                              ...checkedExercises,
-                              [exerciseId]: e.target.checked,
-                            });
-                          }}
-                        />
+                      <button
+                        className="infoButton"
+                        onClick={() => showDescription2(pesoLibre)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="128"
+                          height="128"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22" />
+                        </svg>
+                      </button>
+                      <div className="flex flex-column cage100">
+                        <div className="flex align-center">
+                          <label htmlFor={exerciseId}>
+                            {pesoLibre.exercise_name}
+                          </label>
+                          <input
+                            id={exerciseId}
+                            name={exerciseId}
+                            type="checkbox"
+                            checked={checkedExercises[exerciseId] || false}
+                            onChange={(e) => {
+                              setCheckedExercises({
+                                ...checkedExercises,
+                                [exerciseId]: e.target.checked,
+                              });
+                            }}
+                          />
+                        </div>
+                        <p className="tagGlobal tagColor1">
+                          {categoryMap[pesoLibre.fk_category_1]}
+                        </p>
                       </div>
-                      <p className="tagGlobal tagColor1">
-                        {categoryMap[pesoLibre.fk_category_1]}
-                      </p>
                     </div>
                   );
                 })}
@@ -474,7 +524,7 @@ function editSession() {
           </form>
           <form
             id="showCalisteniaExercises"
-            className="cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
+            className="allContResponsive cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
             style={{
               display: isAddonShowCalisteniaExercises ? "block" : "none",
             }}
@@ -556,29 +606,44 @@ function editSession() {
 
                   return (
                     <div
-                      className="labelExercises flex flex-column"
+                      className="labelExercises flex"
                       key={calistenia.pk_id_exercise} // Use `calistenia.pk_id_exercise` as the key
                     >
-                      <div className="flex align-center">
-                        <label htmlFor={exerciseId}>
-                          {calistenia.exercise_name}
-                        </label>
-                        <input
-                          id={exerciseId}
-                          name={exerciseId}
-                          type="checkbox"
-                          checked={checkedExercises[exerciseId] || false}
-                          onChange={(e) => {
-                            setCheckedExercises({
-                              ...checkedExercises,
-                              [exerciseId]: e.target.checked,
-                            });
-                          }}
-                        />
+                      <button
+                        className="infoButton"
+                        onClick={() => showDescription2(calistenia)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="128"
+                          height="128"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22" />
+                        </svg>
+                      </button>
+                      <div className="flex flex-column cage100">
+                        <div className="flex align-center">
+                          <label htmlFor={exerciseId}>
+                            {calistenia.exercise_name}
+                          </label>
+                          <input
+                            id={exerciseId}
+                            name={exerciseId}
+                            type="checkbox"
+                            checked={checkedExercises[exerciseId] || false}
+                            onChange={(e) => {
+                              setCheckedExercises({
+                                ...checkedExercises,
+                                [exerciseId]: e.target.checked,
+                              });
+                            }}
+                          />
+                        </div>
+                        <p className="tagGlobal tagColor1">
+                          {categoryMap[calistenia.fk_category_1]}
+                        </p>
                       </div>
-                      <p className="tagGlobal tagColor1">
-                        {categoryMap[calistenia.fk_category_1]}
-                      </p>
                     </div>
                   );
                 })}
@@ -591,7 +656,7 @@ function editSession() {
           </form>
           <form
             id="showCardioExercises"
-            className="cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
+            className="allContResponsive cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
             style={{
               display: isAddonShowCardioExercises ? "block" : "none",
             }}
@@ -673,29 +738,44 @@ function editSession() {
 
                   return (
                     <div
-                      className="labelExercises flex flex-column"
+                      className="labelExercises flex"
                       key={cardio.pk_id_exercise} // Use `cardio.pk_id_exercise` as the key
                     >
-                      <div className="flex align-center">
-                        <label htmlFor={exerciseId}>
-                          {cardio.exercise_name}
-                        </label>
-                        <input
-                          id={exerciseId}
-                          name={exerciseId}
-                          type="checkbox"
-                          checked={checkedExercises[exerciseId] || false}
-                          onChange={(e) => {
-                            setCheckedExercises({
-                              ...checkedExercises,
-                              [exerciseId]: e.target.checked,
-                            });
-                          }}
-                        />
+                      <button
+                        className="infoButton"
+                        onClick={() => showDescription2(cardio)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="128"
+                          height="128"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22" />
+                        </svg>
+                      </button>
+                      <div className="flex flex-column cage100">
+                        <div className="flex align-center">
+                          <label htmlFor={exerciseId}>
+                            {cardio.exercise_name}
+                          </label>
+                          <input
+                            id={exerciseId}
+                            name={exerciseId}
+                            type="checkbox"
+                            checked={checkedExercises[exerciseId] || false}
+                            onChange={(e) => {
+                              setCheckedExercises({
+                                ...checkedExercises,
+                                [exerciseId]: e.target.checked,
+                              });
+                            }}
+                          />
+                        </div>
+                        <p className="tagGlobal tagColor1">
+                          {categoryMap[cardio.fk_category_1]}
+                        </p>
                       </div>
-                      <p className="tagGlobal tagColor1">
-                        {categoryMap[cardio.fk_category_1]}
-                      </p>
                     </div>
                   );
                 })}
@@ -708,7 +788,7 @@ function editSession() {
           </form>
           <form
             id="showMaquinasExercises"
-            className="cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
+            className="allContResponsive cage90 addonExercisesShow backgroundYellow marginAuto addonSetContainer"
             style={{
               display: isAddonShowMaquinasExercises ? "block" : "none",
             }}
@@ -790,29 +870,44 @@ function editSession() {
 
                   return (
                     <div
-                      className="labelExercises flex flex-column"
+                      className="labelExercises flex"
                       key={maquina.pk_id_exercise} // Use `maquina.pk_id_exercise` as the key
                     >
-                      <div className="flex align-center">
-                        <label htmlFor={exerciseId}>
-                          {maquina.exercise_name}
-                        </label>
-                        <input
-                          id={exerciseId}
-                          name={exerciseId}
-                          type="checkbox"
-                          checked={checkedExercises[exerciseId] || false}
-                          onChange={(e) => {
-                            setCheckedExercises({
-                              ...checkedExercises,
-                              [exerciseId]: e.target.checked,
-                            });
-                          }}
-                        />
+                      <button
+                        className="infoButton"
+                        onClick={() => showDescription2(maquina)}
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="128"
+                          height="128"
+                          viewBox="0 0 24 24"
+                        >
+                          <path d="M11 17h2v-6h-2zm1-8q.425 0 .713-.288T13 8t-.288-.712T12 7t-.712.288T11 8t.288.713T12 9m0 13q-2.075 0-3.9-.788t-3.175-2.137T2.788 15.9T2 12t.788-3.9t2.137-3.175T8.1 2.788T12 2t3.9.788t3.175 2.137T21.213 8.1T22 12t-.788 3.9t-2.137 3.175t-3.175 2.138T12 22" />
+                        </svg>
+                      </button>
+                      <div className="flex flex-column cage100">
+                        <div className="flex align-center">
+                          <label htmlFor={exerciseId}>
+                            {maquina.exercise_name}
+                          </label>
+                          <input
+                            id={exerciseId}
+                            name={exerciseId}
+                            type="checkbox"
+                            checked={checkedExercises[exerciseId] || false}
+                            onChange={(e) => {
+                              setCheckedExercises({
+                                ...checkedExercises,
+                                [exerciseId]: e.target.checked,
+                              });
+                            }}
+                          />
+                        </div>
+                        <p className="tagGlobal tagColor1">
+                          {categoryMap[maquina.fk_category_1]}
+                        </p>
                       </div>
-                      <p className="tagGlobal tagColor1">
-                        {categoryMap[maquina.fk_category_1]}
-                      </p>
                     </div>
                   );
                 })}
@@ -825,7 +920,7 @@ function editSession() {
           </form>
           <div
             id="showExerciseDescription"
-            className="cage90 backgroundBlack marginAuto addonSetContainer"
+            className="allContResponsive cage90 backgroundBlack marginAuto addonSetContainer"
             style={{
               display: isAddonShowExerciseDescription ? "block" : "none",
             }}
@@ -849,8 +944,40 @@ function editSession() {
             <p className=" cage90 textDescription" ref={pDescription}></p>
           </div>
         </div>
+        <div
+          className="addonSet addonSuperior align-center"
+          style={{
+            display: isAddon2Visible ? "flex" : "none",
+          }}
+        >
+          <div
+            id="showExerciseDescription"
+            className="allContResponsive cage90 backgroundPurple marginAuto addonSetContainer"
+            style={{
+              display: isAddon2ShowExerciseDescription ? "block" : "none",
+            }}
+          >
+            <div className="editRoutineShowName flex justify-between cage90 marginAuto">
+              <div className="textEditRoutinShowLimitation">
+                <h2 ref={h2Title2}></h2>
+                <p className="tagGlobal tagColor2" ref={category2}></p>
+              </div>
+              <button onClick={closeShowDescription2}>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="128"
+                  height="128"
+                  viewBox="0 0 24 24"
+                >
+                  <path d="M19 7v4H5.83l3.58-3.59L8 6l-6 6l6 6l1.41-1.41L5.83 13H21V7z" />
+                </svg>
+              </button>
+            </div>
+            <p className=" cage90 textDescription" ref={pDescription2}></p>
+          </div>
+        </div>
         {/* PAGE CONTENT */}
-        <div id="editSessionExercises" className="cage90 flex flex-column">
+        <div id="editSessionExercises" className="allContResponsive cage90 flex flex-column">
           {(selectedSession || []).map((session, index) => (
             <div
               className="editRoutineShowName flex justify-between"
@@ -896,7 +1023,7 @@ function editSession() {
               <h2>{exercise.exercise_name}</h2>
 
               <div className="contButtonsEditRoutine">
-                <button onClick={() => showDescription(exercise)}>
+                <button onClick={() => showDescription(exercise)} className="hoverYellow">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     width="128"
@@ -908,7 +1035,7 @@ function editSession() {
                 </button>
                 <button
                   onClick={() => deleteSessionExercise(exercise.pk_id_exercise)}
-                  className="tagGlobal tagColor1"
+                  className="hoverYellow tagGlobal tagColor1"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"

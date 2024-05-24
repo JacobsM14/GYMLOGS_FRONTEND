@@ -17,10 +17,32 @@ body {
 
 button {
   font-family: "Kanit", sans-serif;
+  transition: 400ms;
 }
 
 input {
   font-family: "Kanit", sans-serif;
+}
+
+textarea {
+  font-family: "Kanit", sans-serif;
+  resize: none;
+}
+
+.cursorPointer {
+  cursor: pointer;
+}
+
+.hoverPurple:hover svg{
+  fill: var(--primary);
+}
+
+.hoverYellow:hover svg{
+  fill: var(--secondary);
+}
+
+.hoverYellow:hover h3{
+  color: var(--secondary);
 }
 
 .allCont {
@@ -82,7 +104,6 @@ input {
 .cage90 {
   width: 90%;
 }
-
 
 .cage80 {
   width: 80%;
@@ -165,6 +186,10 @@ input {
 
 .justify-start {
   justify-content: flex-start;
+}
+
+.justify-end {
+  justify-content: flex-end;
 }
 
 .align-center {
@@ -364,30 +389,30 @@ button a {
   }
 
   .loginLogo h1 {
-    font-size: 50px;
+    font-size: 40px;
   }
 
   .loginForm input {
-    padding: 15px 20px;
-    margin: 15px 0px;
-    font-size: 20px;
+    padding: 10px 20px;
+    margin: 10px 0px;
+    font-size: 15px;
   }
 
   .loginForm input::placeholder {
-    font-size: 20px;
+    font-size: 15px;
   }
 
   .loginForm button {
-    padding: 15px 0px;
-    margin: 15px 0px;
+    padding: 10px 0px;
+    margin: 10px 0px;
   }
 
   .loginForm a {
-    font-size: 20px;
+    font-size: 15px;
   }
 
   .loginForm button {
-    font-size: 20px;
+    font-size: 15px;
   }
 }
 
@@ -464,15 +489,15 @@ button a {
   }
 
   #start .startLogo img {
-    width: 290px;
+    width: 230px;
   }
 
   #start .startLogo h1 {
-    font-size: 60px;
+    font-size: 40px;
   }
 
   .startText p {
-    font-size: 30px;
+    font-size: 20px;
   }
 
   .startText .buttonsText button {
@@ -480,6 +505,6 @@ button a {
   }
 
   .startText button {
-    font-size: 30px;
+    font-size: 20px;
   }
 }

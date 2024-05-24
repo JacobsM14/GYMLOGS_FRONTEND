@@ -308,7 +308,7 @@ function Calendar() {
         id="calendarCont"
         className="allCont flex flex-column align-center backgroundGradient position-relative"
       >
-        <div className="calendarSection backgroundBlack cage90 border-r5">
+        <div className="allContResponsive calendarSection backgroundBlack cage90 border-r5">
           <div className="flex justify-center align-center monthName">
             <button
               className="arrowButton flex align-center"
@@ -366,7 +366,7 @@ function Calendar() {
             )}
           </div>
         </div>
-        <div className="exercicesMadeDay backgroundBlack cage90 border-r5">
+        <div className="allContResponsive exercicesMadeDay backgroundBlack cage90 border-r5">
           <div className="flex justify-center align-center monthName">
             <button
               className="arrowButton flex align-center"

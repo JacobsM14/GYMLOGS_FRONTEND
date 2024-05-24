@@ -1,54 +1,116 @@
-#devTools h1{
-    text-align: center;
-    color: var(--dark-1);
-    text-transform: uppercase;
+#devTools h1 {
+  text-align: center;
+  color: var(--dark-1);
+  text-transform: uppercase;
 }
 
-#devTools h2{
-    text-align: center;
-    color: var(--secondary);
-    text-transform: uppercase;
+#devTools h2 {
+  text-align: center;
+  color: var(--secondary);
+  text-transform: uppercase;
 }
 
-.marginCages{
-    margin: 0px auto 20px;
+.marginCages {
+  margin: 0px auto 40px;
 }
 
-.cageOfUserCard{
-    max-height: 300px;
-    overflow-y: scroll;
+.cageOfUserCard {
+  max-height: 300px;
+  overflow-y: scroll;
+  margin: 15px auto !important;
+  scrollbar-width: 0px;
 }
 
-.addButton{
-    border: 0px;
-    outline: none;
+.cageOfUserCard::-webkit-scrollbar {
+  display: none;
 }
 
-.addButton svg{
-    stroke: var(--primary);
-    width: 30px;
-    height: 30px;
+.addButton {
+  border: 0px;
+  outline: none;
+  margin: 0px auto 10px;
 }
 
-.userCard{
-    margin: 10px auto !important;
-    box-sizing: border-box;
-    padding: 10px;
+.addButton svg {
+  stroke: var(--primary);
+  width: 30px;
+  height: 30px;
 }
 
-.userCard p{
-    font-weight: 600;
-    margin: 0px;
+.userCard {
+  margin: 10px auto !important;
+  box-sizing: border-box;
+  padding: 10px;
 }
 
-.userCard button{
-    background-color: transparent;
-    border: none;
-    outline: none;
+.userCard p {
+  font-weight: 600;
+  margin: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 200px;
 }
 
-.userCard button svg{
-    fill: var(--secondary);
-    width: 30px;
-    height: 30px;
+.userCard button {
+  background-color: transparent;
+  border: none;
+  outline: none;
+}
+
+.userCard button svg {
+  fill: var(--secondary);
+  width: 30px;
+  height: 30px;
+}
+
+.textAddonDevtools h2 {
+  color: var(--primary) !important;
+  text-transform: uppercase;
+}
+
+.crossDevtoolsButton {
+  background-color: transparent;
+  border: 0px;
+  outline: none;
+}
+
+.crossDevtoolsButton svg {
+  fill: var(--dark-1);
+  width: 30px;
+  height: 30px;
+}
+
+.userTypeSelect {
+  margin: 10px auto;
+}
+
+.userTypeSelect button {
+  border: 0px;
+  outline: 0px;
+  filter: grayscale(1);
+}
+
+.submitDevtoolsButton {
+  border: 0px;
+  outline: none;
+  margin: 10px 0px 0px !important;
+  width: 100% !important;
+  background-color: var(--secondary) !important;
+  color: var(--dark-1) !important;
+}
+.confirmDeleteDevTools {
+  box-sizing: border-box;
+  padding: 20px 0px;
+}
+
+.confirmDeleteDevTools h2 {
+  text-align: center !important;
+  margin-bottom: 10px !important;
+}
+
+.confirmDeleteDevTools button {
+  border: 0px;
+  outline: 0px;
+  border-radius: 5px;
+  width: 40%;
 }

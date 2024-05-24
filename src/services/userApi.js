@@ -77,6 +77,13 @@ export async function updateUserUsername(user_id, username) {
   });
 }
 
+// UPDATE USER ROLE - PUT
+export async function updateUserRole(user_id, role) {
+  return await postAndPutFetch("PUT", `${urlServer}users/urole/${user_id}`, {
+    urole: role,
+  });
+}
+
 // UPDATE USER PASSWORD - PUT
 export async function updateUserPassword(user_id, password, pastPassword) {
   return await postAndPutFetch(
@@ -86,6 +93,11 @@ export async function updateUserPassword(user_id, password, pastPassword) {
       pssd: password,
     }
   );
+}
+
+// DELETE USER BY ID - DELETE
+export async function deleteUserById(user_id) {
+  return await deleteFecth(`${urlServer}users/${user_id}`);
 }
 
 //POST
@@ -302,6 +314,42 @@ export async function getExercisesByType(type_id) {
 export async function getExerciseById(exercise_id) {
   // console.log("url: " + urlServer + "exercise/id/" + exercise_id)
   return await getFetch(`${urlServer}exercise/id/${exercise_id}`);
+}
+
+// CREATE EXERCISE - POST
+export async function createExercise(
+  exercise_name,
+  description,
+  fk_category_1,
+  fk_id_type
+) {
+  return await postAndPutFetch("POST", `${urlServer}exercise`, {
+    exercise_name: exercise_name,
+    description: description,
+    fk_category_1: fk_category_1,
+    fk_id_type: fk_id_type,
+  });
+}
+
+// UPDATE EXERCISE - PUT
+export async function updateExercise(
+  exercise_id,
+  exercise_name,
+  description,
+  fk_category_1,
+  fk_id_type
+) {
+  return await postAndPutFetch("PUT", `${urlServer}exercise/${exercise_id}`, {
+    exercise_name: exercise_name,
+    description: description,
+    fk_category_1: fk_category_1,
+    fk_id_type: fk_id_type,
+  });
+}
+
+// DELETE EXERCISE BY ID - DELETE
+export async function deleteExerciseById(exercise_id) {
+  return await deleteFecth(`${urlServer}exercise/${exercise_id}`);
 }
 
 //CALENDAR -----------

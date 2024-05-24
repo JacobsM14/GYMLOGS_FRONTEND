@@ -38,7 +38,7 @@
   margin: 0px;
 }
 
-#home #calendarRoutines .leyenda{
+#home #calendarRoutines .leyenda {
   justify-content: right;
   gap: 10px;
 }
@@ -89,7 +89,8 @@
   color: var(--light);
   font-size: 20px;
   text-align: center;
-  margin: 0px;
+  margin: 0px auto;
+  width: 85%;
 }
 
 /* AFTER CONNECTING WITH THE API */
@@ -148,6 +149,11 @@
   color: var(--secondary);
 }
 
+.routineCage button:hover {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
 /* FAVORITE ROUTINE */
 .sessionCage {
   width: 120px;
@@ -185,6 +191,11 @@
   border: none;
   background-color: var(--secondary);
   color: var(--primary);
+}
+
+.sessionCage button:hover {
+  background-color: var(--primary);
+  color: var(--secondary);
 }
 
 /* ADDON SHOW */
@@ -237,7 +248,7 @@
 
 .showExercisesOnAddon {
   width: 100%;
-  margin: 10px 0px 50px;
+  margin: 10px auto 50px;
 }
 
 .arrowButton {
@@ -355,6 +366,11 @@
   border-radius: 0px;
 }
 
+.endSession:hover {
+  background-color: var(--secondary);
+  color: var(--primary);
+}
+
 .plusButtonSerie {
   width: 100%;
   margin: auto;
@@ -367,8 +383,17 @@
   text-align: center;
 }
 
+.plusButtonSerie:hover {
+  background-color: var(--primary) !important;
+  color: var(--secondary) !important;
+}
+
 .plusButtonSerie svg {
   stroke: var(--primary) !important;
+}
+
+.plusButtonSerie:hover svg {
+  stroke: var(--secondary) !important;
 }
 
 .noExercisesText {
@@ -395,6 +420,11 @@
   margin: 15px auto;
   font-size: 14px;
   font-weight: 600;
+}
+
+.noExercisesText button:hover {
+  background-color: var(--primary);
+  color: var(--secondary);
 }
 
 /* TABLE SESSION */
