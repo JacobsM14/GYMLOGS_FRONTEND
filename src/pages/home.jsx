@@ -405,7 +405,7 @@ function Home() {
               display: isAddonShowSessionRotine ? "block" : "none",
             }}
           >
-            <div className="allContResponsive titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
+            <div className="titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
               {selectedRoutine.length > 0 ? (
                 <h2>{selectedRoutine[0].routine_name}</h2>
               ) : (
@@ -428,7 +428,7 @@ function Home() {
                 </svg>
               </button>
             </div>
-            <div className="allContResponsive showExercisesOnAddon flex justify-between align-center">
+            <div className="showExercisesOnAddon flex justify-between align-center">
               {selectedRoutineData.length === 0 ? (
                 <div className="noExercisesText flex justify-center align-center flex-column cage80 marginAuto backgroundWhite">
                   <h2>ESTA RUTINA NO TIENE SESSIONES</h2>
@@ -473,7 +473,7 @@ function Home() {
               display: isAddonShowSessionExercises ? "block" : "none",
             }}
           >
-            <div className="allContResponsive titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
+            <div className=" titleSessionExerciseHome cage75 marginAuto flex justify-between align-center">
               {selectedSession.length > 0 ? (
                 <h2>{selectedSession[0].nom_session}</h2>
               ) : (
@@ -504,7 +504,7 @@ function Home() {
               </button>
             </div>
             {/* <p className="time cage75 marginAuto flex">00:00</p> */}
-            <div className="allContResponsive showExercisesOnAddon flex justify-between align-center">
+            <div className=" showExercisesOnAddon flex justify-between align-center">
               {sessionExercisesData.length === 0 ? (
                 ""
               ) : (
@@ -608,109 +608,137 @@ function Home() {
                     </div>
                   </div>
                   <div className="tableExercises">
-                    <div className="tableExercisesHeader flex justify-between tagCont">
-                      <p>SERIE</p>
-                      <p>KG</p>
-                      <p>REP</p>
-                      <p>KG-A</p>
-                      <p>REP-A</p>
-                    </div>
-                    <div className="tableExercisesBody flex justify-between flex-column tagCont cage90">
-                      {Array.isArray(series) &&
-                        series
-                          .filter((serie) => {
-                            return serie.fk_id_session_ex === currentExerciseId;
-                          })
-                          .sort((a, b) => a.serie - b.serie)
-                          .map((serie, index) => {
-                            return (
-                              <div
-                                key={index}
-                                className="flex justify-between tagCont"
-                              >
-                                <p>{serie.serie}</p>
-                                <input
-                                  type="number"
-                                  className="backgroundYellow"
-                                  value={serie.weight}
-                                  onChange={(e) =>
-                                    handleWeightChange(
-                                      e.target.value,
-                                      index + 1,
-                                      currentExerciseId
-                                    )
-                                  }
-                                />
-                                <input
-                                  type="number"
-                                  className="backgroundYellow"
-                                  value={serie.repetitions}
-                                  onChange={(e) =>
-                                    handleRepetitionsChange(
-                                      e.target.value,
-                                      index + 1,
-                                      currentExerciseId
-                                    )
-                                  }
-                                />
-                                {/* Los inputs con clase backgroundBlack no se modifican */}
-                                {serie.serie !== undefined && (
-                                  <input
-                                    type="number"
-                                    className="backgroundBlack"
-                                    placeholder={serie.weight.toString()}
-                                  />
-                                )}
-                                {serie.serie !== undefined && (
-                                  <input
-                                    type="number"
-                                    className="backgroundBlack"
-                                    placeholder={serie.repetitions.toString()}
-                                  />
-                                )}
-                              </div>
-                            );
-                          })}
+                    <table className="cage90 block">
+                      <thead className="tableExercisesHeader tagCont">
+                        <tr>
+                          <th>SERIE</th>
+                          <th>KG</th>
+                          <th>REP</th>
+                          <th>KG-A</th>
+                          <th>REP-A</th>
+                        </tr>
+                      </thead>
+                      <tbody className="tableExercisesBody">
+                        {Array.isArray(series) &&
+                          series
+                            .filter((serie) => {
+                              return (
+                                serie.fk_id_session_ex === currentExerciseId
+                              );
+                            })
+                            .sort((a, b) => a.serie - b.serie)
+                            .map((serie, index) => {
+                              return (
+                                <tr
+                                  key={index}
+                                >
+                                  <td>{serie.serie}</td>
+                                  <td>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      className="backgroundYellow"
+                                      value={serie.weight}
+                                      onChange={(e) =>
+                                        handleWeightChange(
+                                          e.target.value,
+                                          index + 1,
+                                          currentExerciseId
+                                        )
+                                      }
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      type="number"
+                                      min={0}
+                                      className="backgroundYellow"
+                                      value={serie.repetitions}
+                                      onChange={(e) =>
+                                        handleRepetitionsChange(
+                                          e.target.value,
+                                          index + 1,
+                                          currentExerciseId
+                                        )
+                                      }
+                                    />
+                                  </td>
+                                  {/* Los inputs con clase backgroundBlack no se modifican */}
+                                  {serie.serie !== undefined && (
+                                    <td>
+                                      <input
+                                        type="number"
+                                        min={0}
+                                        className="backgroundBlack"
+                                        placeholder={serie.weight.toString()}
+                                      />
+                                    </td>
+                                  )}
+                                  {serie.serie !== undefined && (
+                                    <td>
+                                      <input
+                                        type="number"
+                                        min={0}
+                                        className="backgroundBlack"
+                                        placeholder={serie.repetitions.toString()}
+                                      />
+                                    </td>
+                                  )}
+                                </tr>
+                              );
+                            })}
 
-                      <div className="flex justify-between tagCont">
-                        <p>-</p>
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          value={
-                            (newSeries[currentExerciseId] || {}).weight || ""
-                          }
-                          onChange={(e) =>
-                            setNewSeries({
-                              ...newSeries,
-                              [currentExerciseId]: {
-                                ...(newSeries[currentExerciseId] || {}),
-                                weight: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                        <input
-                          type="number"
-                          className="backgroundYellow"
-                          value={
-                            (newSeries[currentExerciseId] || {}).repetitions ||
-                            ""
-                          }
-                          onChange={(e) =>
-                            setNewSeries({
-                              ...newSeries,
-                              [currentExerciseId]: {
-                                ...(newSeries[currentExerciseId] || {}),
-                                repetitions: e.target.value,
-                              },
-                            })
-                          }
-                        />
-                        <input type="number" className="backgroundBlack" />
-                        <input type="number" className="backgroundBlack" />
-                      </div>
-                    </div>
+                        <tr>
+                          <td>-</td>
+                          <td>
+                            <input
+                              type="number"
+                              min={0}
+                              className="backgroundYellow"
+                              value={
+                                (newSeries[currentExerciseId] || {}).weight ||
+                                ""
+                              }
+                              onChange={(e) =>
+                                setNewSeries({
+                                  ...newSeries,
+                                  [currentExerciseId]: {
+                                    ...(newSeries[currentExerciseId] || {}),
+                                    weight: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input
+                              type="number"
+                              min={0}
+                              className="backgroundYellow"
+                              value={
+                                (newSeries[currentExerciseId] || {})
+                                  .repetitions || ""
+                              }
+                              onChange={(e) =>
+                                setNewSeries({
+                                  ...newSeries,
+                                  [currentExerciseId]: {
+                                    ...(newSeries[currentExerciseId] || {}),
+                                    repetitions: e.target.value,
+                                  },
+                                })
+                              }
+                            />
+                          </td>
+                          <td>
+                            <input min={0} type="number" className="backgroundBlack" />
+                          </td>
+                          <td>
+                            <input min={0} type="number" className="backgroundBlack" />
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
                     <button
                       className="plusButtonSerie backgroundYellow flex justify-center align-center cage90 marginAuto border-r5"
                       onClick={() => handleAddSeries(currentExerciseId)}
@@ -785,7 +813,7 @@ function Home() {
             >
               <h2>
                 {routines.length === 0
-                  ? "CREA UNA RUTINA"
+                  ? "CREA UNA RUTINA Y AÑADELA COMO FAVORITA"
                   : "ESTABLECE UNA RUTINA FAVORITA"}
               </h2>
             </div>

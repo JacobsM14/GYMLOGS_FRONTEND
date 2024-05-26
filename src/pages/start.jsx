@@ -1,4 +1,16 @@
+import { useNavigate } from "react-router-dom";
+
 function Start() {
+  const navigate = useNavigate();
+
+  const goRegisterPage = () => {
+    navigate("/register");
+  };
+
+  const goLoginPage = () => {
+    navigate("/login");
+  };
+
   return (
     <>
       <div
@@ -16,21 +28,21 @@ function Start() {
           <div className="startText">
             <p>
               <span className="backgroundModified">Gymlogs</span> es una web que
-              permite a los usuarios regsitrar y hacer un{" "}
-              <span>seguimiento de sus progresos en el gimnasio</span>, esta
-              enfocada para su uso en mobil, por lo tanto en escritorio el uso
-              esta limitado a consultar estadisticas.
+              permite a los usuarios registrar y hacer un
+              <span> seguimiento de sus progresos en el gimnasio</span>, está
+              enfocada para su uso en móvil, por lo tanto, en escritorio el uso
+              está limitado a consultar estadísticas.
             </p>
             <p>
-              Registrate gratis y prueba la version limitada o Inicia sesion si
+              Regístrate gratis y prueba la versión limitada o Inicia sesion si
               ya tienes una cuenta.
             </p>
             <div className="buttonsText">
-              <button className="button2">
-                <a href="/register">REGISTRARSE</a>
+              <button className="button2" onClick={goRegisterPage}>
+                REGISTRARSE
               </button>
-              <button className="button3">
-                <a href="/login">YA TIENES CUENTA?</a>
+              <button className="button3" onClick={goLoginPage}>
+                YA TIENES CUENTA?
               </button>
             </div>
           </div>

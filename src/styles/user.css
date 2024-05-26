@@ -80,7 +80,9 @@
 
 /* NAV */
 #privacyPolitics nav,
-#userPage nav {
+#userPage nav,
+#userEditPage nav,
+#premiumAccount nav {
   border-top: 2px solid var(--light);
 }
 
@@ -202,4 +204,17 @@
   padding: 10px 0px !important;
   font-size: 20px !important;
   font-weight: 600 !important;
+}
+
+#deleteAccount{
+  border: 0px;
+  outline: none;
+  background-color: red;
+  color: var(--dark-1);
+  border-radius: 5px;
+  width: 100%;
+  font-size: 15px;
+  font-weight: 700;
+  box-sizing: border-box;
+  padding: 10px;
 }

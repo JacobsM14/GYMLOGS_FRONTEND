@@ -148,6 +148,7 @@ function editUser() {
             />
             <input type="submit" value="EDITAR USUARIO" onClick={editUser} />
           </form>
+          <button id="deleteAccount">BORRAR CUENTA</button>
         </div>
 
         <Nav webPage="user" />

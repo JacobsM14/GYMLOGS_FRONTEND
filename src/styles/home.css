@@ -305,15 +305,20 @@
   fill: var(--secondary) !important;
 }
 
-.tableExercisesHeader,
-.tableExercisesBody {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  gap: 10px;
-  padding: 10px;
+.tableExercises table{
+  margin: 0px auto 20px !important;
 }
 
-.tableExercisesHeader p {
+.tableExercisesHeader,
+.tableExercisesBody {
+  text-align: center;
+}
+
+.tableExercisesBody{
+  margin-bottom: 20px !important;
+}
+
+.tableExercisesHeader th {
   font-weight: 600;
   font-size: 15px;
   margin: 0;
@@ -323,16 +328,13 @@
 
 .tableExercisesBody p,
 .tableExercisesBody input {
+  width: 100% !important;
   margin: 0 !important;
   padding: 2px 8px !important;
   border-radius: 2px !important;
   text-align: center !important;
   color: var(--primary) !important;
   font-weight: 600 !important;
-}
-
-.tableExercisesBody input {
-  width: 15%;
 }
 
 .tableExercisesBody .backgroundBlack {
