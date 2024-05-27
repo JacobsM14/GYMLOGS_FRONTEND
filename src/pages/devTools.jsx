@@ -937,7 +937,7 @@ function DevTools() {
           <div className="marginCages cage100 backgroundBlack flex flex-column border-r5">
             <h2>USUARIOS</h2>
             <div className="cageOfUserCard cage90 marginAuto flex flex-column">
-              {users.map((user) => {
+            {users.filter(user => user.urole !== 1).map((user) => {
                 return (
                   <div
                     className="userCard cage100 marginAuto flex justify-between align-center backgroundWhite border-r5"

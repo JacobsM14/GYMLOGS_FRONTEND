@@ -37,6 +37,8 @@ function Routine() {
   const [isPlanedRoutineVisible, setPlanedRoutineVisible] = useState(false);
   const [isFreeRoutineVisible, setFreeRoutineVisible] = useState(false);
 
+  const [isClientRoutineComplete, setClientRoutineComplete] = useState(false);
+
   // GET SELECTED DAYS
   const [selectedDays, setSelectedDays] = useState([]);
   // GET INPUT VALUE
@@ -97,13 +99,19 @@ function Routine() {
     setInputFreeRoutineMaxLengthAdvise(false);
   };
 
+  const quitAddonNoMoreThan5Routines = () => {
+    setClientRoutineComplete(false);
+    quitAddonCreateFreeRoutine();
+    quitAddonCreatePlanedRoutine();
+  };
+
   // CALL API CONSTS
   // CREATE PLANED ROUTINE
   const createPlanedRoutineOnDB = () => {
     const cookies = new Cookies();
     const id = cookies.get("token");
     const inputValue = inputPlanedROutine.current.value;
-    
+
     if (inputValue === null || inputValue === "" || inputValue.length < 3) {
       setInputPlanedRoutineMinLengthAdvise(true);
       setInputPlanedRoutineMaxLengthAdvise(false);
@@ -145,7 +153,7 @@ function Routine() {
       createRoutine(inputValue, "semanal", selectedDays, null, id)
         .then((data) => {
           getRoutinedata = data;
-          if (getRoutinedata !== null) {
+          if (getRoutinedata !== null && !data.error) {
             let routineID = getRoutinedata.id;
 
             if (routineID !== null) {
@@ -161,6 +169,11 @@ function Routine() {
                 .then(() => navigate(`/editPlanedRoutine/${routineID}`))
                 .catch((error) => console.error(error));
             }
+          } else if (data.error === "No se pueden tener más de 5 rutinas") {
+            setPlanedRoutineVisible(false);
+            setClientRoutineComplete(true);
+          } else {
+            console.log("error");
           }
         })
         .catch((error) => console.error(error));
@@ -187,6 +200,9 @@ function Routine() {
         .then((data) => {
           if (data && !data.error) {
             navigate(`/editFreeRoutine/${data.id}`);
+          } else if (data.error === "No se pueden tener más de 5 rutinas") {
+            setFreeRoutineVisible(false);
+            setClientRoutineComplete(true);
           } else {
             console.log("error");
           }
@@ -220,7 +236,11 @@ function Routine() {
           className="addonSet align-center"
           style={{
             display:
-              isPlanedRoutineVisible || isFreeRoutineVisible ? "flex" : "none",
+              isClientRoutineComplete ||
+              isPlanedRoutineVisible ||
+              isFreeRoutineVisible
+                ? "flex"
+                : "none",
           }}
         >
           <div
@@ -407,9 +427,28 @@ function Routine() {
               CREAR RUTINA
             </button>
           </div>
+          <div
+            id="noMoreThan5RoutinesAddon"
+            className="allContResponsive cage90 backgroundWhite marginAuto addonSetContainer"
+            style={{ display: isClientRoutineComplete ? "block" : "none" }}
+          >
+            <div className="cage90 marginAuto flex align-center justify-center">
+              <h2>Una cuenta gratis no puede hacer mas de 5 rutinas.</h2>
+            </div>
+
+            <button
+              className="createRutineAddonButton"
+              onClick={quitAddonNoMoreThan5Routines}
+            >
+              VALE
+            </button>
+          </div>
         </div>
         {/* CONT GENERAL */}
-        <div id="routine" className="allContResponsive cage80 marginAuto flex flex-column">
+        <div
+          id="routine"
+          className="allContResponsive cage80 marginAuto flex flex-column"
+        >
           <h2>CREAR RUTINA</h2>
           <button
             className="createRoutine backgroundBlack border-r5 flex align-center"

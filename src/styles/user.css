@@ -206,7 +206,7 @@
   font-weight: 600 !important;
 }
 
-#deleteAccount{
+#deleteAccount {
   border: 0px;
   outline: none;
   background-color: red;
@@ -217,4 +217,24 @@
   font-weight: 700;
   box-sizing: border-box;
   padding: 10px;
+}
+
+#verifyDeleteUser h2 {
+  text-align: center;
+  margin: 10px auto;
+}
+
+#verifyDeleteUser .buttonYesNo {
+  margin: 30px auto;
+  gap: 10px;
+}
+
+#verifyDeleteUser .buttonYesNo button {
+  width: 60%;
+  font-weight: 700;
+  padding: 5px;
+  box-sizing: border-box;
+  border-radius: 5px;
+  border: 0px;
+  outline: none;
 }

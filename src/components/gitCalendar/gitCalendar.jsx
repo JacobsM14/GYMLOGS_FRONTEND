@@ -121,9 +121,11 @@ const GitCalendar = () => {
     let currentWeek = [];
 
     dates.forEach((date) => {
-      if (currentWeek.length === 1) {
+      if (currentWeek.length === 0) {
+        console.log(date);
         currentWeek.push(date);
       } else if (date.getDay() === 0) {
+        console.log(date);
         weeks.push(currentWeek);
         currentWeek = [date];
       } else {

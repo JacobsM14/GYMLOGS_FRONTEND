@@ -191,25 +191,35 @@
 }
 
 /* SHOW EXERCISE DESCRIPTION */
-#showExerciseDescription {
+#showExerciseDescription1,
+#showExerciseDescription2,
+#showExerciseDescription3 {
   box-sizing: border-box;
   padding-bottom: 10px;
 }
 
-#showExerciseDescription .editRoutineShowName {
+#showExerciseDescription1 .editRoutineShowName,
+#showExerciseDescription2 .editRoutineShowName,
+#showExerciseDescription3 .editRoutineShowName{
   margin: 10px auto;
 }
 
-#showExerciseDescription .textEditRoutinShowLimitation {
+#showExerciseDescription1 .textEditRoutinShowLimitation,
+#showExerciseDescription2 .textEditRoutinShowLimitation,
+#showExerciseDescription3 .textEditRoutinShowLimitation{
   width: 90%;
 }
 
-#showExerciseDescription .editRoutineShowName h2 {
+#showExerciseDescription1 .editRoutineShowName h2,
+#showExerciseDescription2 .editRoutineShowName h2,
+#showExerciseDescription3 .editRoutineShowName h2{
   color: var(--secondary);
   font-size: 20px;
 }
 
-#showExerciseDescription .editRoutineShowName button {
+#showExerciseDescription1 .editRoutineShowName button,
+#showExerciseDescription2 .editRoutineShowName button,
+#showExerciseDescription3 .editRoutineShowName button{
   background-color: var(--light);
 }
 

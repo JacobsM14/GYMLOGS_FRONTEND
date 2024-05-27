@@ -919,7 +919,7 @@ function editSession() {
             />
           </form>
           <div
-            id="showExerciseDescription"
+            id="showExerciseDescription1"
             className="allContResponsive cage90 backgroundBlack marginAuto addonSetContainer"
             style={{
               display: isAddonShowExerciseDescription ? "block" : "none",
@@ -951,7 +951,7 @@ function editSession() {
           }}
         >
           <div
-            id="showExerciseDescription"
+            id="showExerciseDescription2"
             className="allContResponsive cage90 backgroundPurple marginAuto addonSetContainer"
             style={{
               display: isAddon2ShowExerciseDescription ? "block" : "none",

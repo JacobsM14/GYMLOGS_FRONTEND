@@ -16,6 +16,10 @@ function Register() {
     useState(false);
   const [inputInsertPasswordAdvise, setInputInserPasswordAdvise] =
     useState(false);
+  const [
+    inputInsertCorrectPasswordAdvise,
+    setInputInsertCorrectPasswordAdvise,
+  ] = useState(false);
   const [inputInsertPrivacyAdvise, setInputInsertPrivacyAdvise] =
     useState(false);
 
@@ -42,6 +46,11 @@ function Register() {
     } else if (privacy === false) {
       setInputInsertPrivacyAdvise(true);
       setInputInserPasswordAdvise(false);
+      setAllInputAdvise(false);
+      setInputInsertMailValidAdvise(false);
+    } else if (pssdReg.test(pssd) === false) {
+      setInputInsertCorrectPasswordAdvise(true);
+      setInputInsertPrivacyAdvise(false);
       setAllInputAdvise(false);
       setInputInsertMailValidAdvise(false);
     } else {
@@ -128,6 +137,15 @@ function Register() {
                 name="email"
                 id="email"
               />
+              <p
+                className="adviseFormText cage90 block marginAuto"
+                style={{
+                  display: inputInsertCorrectPasswordAdvise ? "flex" : "none",
+                }}
+              >
+                La contraseña tiene que tener entre 8 y 16 caracteres y contener
+                al menos un número, una letra mayúscula y una letra minúscula*
+              </p>
               <p
                 className="adviseFormText cage90 block marginAuto"
                 style={{

@@ -778,7 +778,7 @@ function Home() {
           }}
         >
           <div
-            id="showExerciseDescription"
+            id="showExerciseDescription3"
             className="allContResponsive cage90 backgroundPurple marginAuto addonSetContainer"
             style={{
               display: isAddon2ShowExerciseDescription ? "block" : "none",
